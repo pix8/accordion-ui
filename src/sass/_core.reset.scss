@@ -1,0 +1,254 @@
+/*
+*	Compressed and generated using grunt.js sass/compass build tools
+*
+*	@title: 		core.reset.scss (partial)
+* 	@project: 		pix8 reset
+* 	@author: 		Jonathan Brincat@pix8.co.uk, <jonathan@pix8.co.uk>
+*
+*	@description:
+*
+**/
+
+@charset "UTF-8";
+
+/* =============================================================================
+	Root
+	========================================================================== */
+html, body {
+	background-color: #FFF;
+	font-family: 'Quicksand', 'Nunito', verdana, helvetica, arial, clean, sans-serif;
+	color: $color__grey;
+}
+
+html{
+	font-size: 62.5%;
+	line-height: 1;
+}
+
+body{
+	font-size: 10px;
+	line-height: 1;
+}
+
+
+/* =============================================================================
+	Headings
+	========================================================================== */
+h1, h2, h3, h4, h5, h6{
+	line-height: 1.4;
+	font-weight: 400;
+	margin: $margin 0;
+
+	@include font-size($baseFontSizeRem);
+
+	a {}
+}
+
+h1 {
+	color: $theme__primary;
+	font-weight: 700;
+}
+
+h2, h3 {
+	color: $theme__secondary;
+}
+
+h1{		@include font-size(2.0rem);} 		//62px
+h2{ 	@include font-size(1.6rem);} 		//22px
+h3{ 	@include font-size(2rem);} 			//20px
+h4{ 	@include font-size(1.8rem);} 		//18px
+h5{ 	@include font-size(1.6rem);} 		//16px
+h6{ 	@include font-size(1.6rem);} 		//16px
+
+@media screen and (min-width: $screen-sm-min) {
+	h1{		@include font-size(7.2rem);} 		//62px
+	h2{ 	@include font-size(2.0rem);} 		//26px
+	h3{ 	@include font-size(2.2rem);} 		//22px
+	h4{ 	@include font-size(2rem);} 			//20px
+	h5{ 	@include font-size(1.8rem);} 		//18px
+	h6{ 	@include font-size(1.6rem);} 		//16px
+}
+
+/* =============================================================================
+	Core
+	========================================================================== */
+a{
+	text-decoration: none;
+	cursor: pointer;
+
+	&:link{		color: $theme__primary;}
+	&:visited{	color: $theme__primary;}
+	&:hover{	text-decoration: underline;}
+	&:focus{	outline-color: $theme__primary;}
+	&:active{}
+}
+
+img{
+	max-width:100%;
+	height:auto;
+
+	a{border:0 none;}
+}
+
+p{
+	@include font-size($baseFontSizeRem);
+	line-height: 1.3;
+
+	a{}
+}
+
+p, li{
+	margin:$margin 0; 						//18px
+
+	word-break: break-word;
+	hypens: auto;
+}
+
+ul, ol, dl, menu{
+	@include font-size($baseFontSizeRem);
+	margin:$margin 0;
+
+	p,
+	label, button, input, select, textarea,
+	table{
+		font-size:1em;
+	}
+}
+
+ul, ol{}
+
+ul{
+	list-style-type:disc;
+}
+
+ol{}
+
+dl{}
+
+li ul,
+li ol{
+	font-size:1em;
+	line-height:1;
+}
+
+li, dt, dd {
+	line-height: 1.3;
+}
+
+dt,dd{margin:$margin 0;}
+
+dt{
+	font-weight:normal;
+}
+
+dd{}
+
+button{
+	@include font-size($baseFontSizeRem);
+	margin:$margin 0;
+	padding:$halfpadding $padding;
+}
+
+hr{
+	border-color:$color__grey75;
+	margin:$margin 0;
+}
+
+b, strong, .strong{
+}
+
+i{}
+
+span{}
+
+address, figcaption,
+blockquote, q, .quote,
+cite{
+	@include font-size(1.6rem);
+	line-height: 1.2;
+	font-style: normal;
+}
+
+blockquote, q,
+.quote{
+	@include font-size(2.6rem);
+	line-height: 1.4;
+	quotes: initial;
+	display: block;
+	margin: $margin 0;
+}
+
+cite {
+	display: block;
+	margin-bottom: $margin/2;
+}
+
+code {
+	color: $theme__primary;
+}
+
+address {
+}
+
+video{
+	display:block;
+}
+
+/* =============================================================================
+	Layout
+	========================================================================== */
+div{}
+article{}
+section{position:relative;}
+aside{}
+
+
+/* =============================================================================
+	Table
+	========================================================================== */
+table{
+	@include font-size($baseFontSizeRem);
+	color:$color__grey;
+	width:100%;
+	margin:$margin 0;
+
+	tbody{}
+	thead{}
+
+	th{
+		font-weight:normal;
+		text-align:left;
+	}
+
+	th,td{
+		padding:6px;
+	}
+}
+
+
+/* =============================================================================
+	Form
+	========================================================================== */
+form{}
+fieldset{}
+
+legend,
+label,
+.label{
+	@include font-size($baseFontSizeRem);
+	color:$color__grey;
+	margin:$margin 0;
+}
+
+button, input, select, option, textarea{
+	@include font-size($baseFontSizeRem);
+	color:$color__grey;
+}
+
+button, input, select, textarea{
+	margin:$margin 0;
+}
+
+select{
+	display:block;
+}

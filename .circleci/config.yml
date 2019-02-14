@@ -1,0 +1,95 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      #- image: circleci/node:7.10
+      #- image: circleci/node:boron
+      #- image: circleci/php:5.6-apache
+      #- image: ubuntu:16.04
+      - image: samueldebruyn/debian-git
+      #  environment:
+            #NODE_ENV: 'production'
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # DEVNOTE: circleci images are not logged as root(default) but as a user circleci(so needs sudo command)
+      # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: The question is... does it blend??
+          command: echo "Release Master branch to staging environment"
+
+      - run: 
+          name: Installing and updating environment dependencies
+          command: |
+            apt-get update
+            apt-get -y install curl build-essential libssl-dev
+          #apt-get -y install nodejs npm
+          #ln -s /usr/bin/nodejs /usr/bin/node
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ arch }}-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-{{ arch }}
+      
+      - run:
+          name: Installing Node. Crunch the deployables!... Build the deployables... Deploy the deployables!!
+          command: |
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+            export NVM_DIR="$HOME/.nvm"
+            source $NVM_DIR/nvm.sh
+            nvm install --lts=boron
+            nvm use --lts=boron
+            npm install -g npm@latest
+            npm install
+            npm test
+            npm run deploy
+      #ssh-keyscan -H 178.62.9.155 >> ~/.ssh/known_hosts
+      #rsync -avz -e "ssh" dist/ deploy@178.62.9.155:/var/www/staging.pix8.co.uk/mytr
+      #rsync -avz root/repo/dist/ deploy@178.62.9.155:/var/www/staging.pix8.co.uk/mytr
+      #ssh deploy@178.62.9.155
+            #whoami
+            #command -v nvm
+            #npm install --only=dev
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ arch }}-{{ checksum "package.json" }}
+
+      # run tests!
+      #- run: yarn test
+
+      #Deploy development
+      - deploy: 
+          name: Deploy to development server
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "develop" ];
+              then
+                ssh-keyscan -H 178.62.9.155 >> ~/.ssh/known_hosts
+                rsync -avz -P -e "ssh" dist/ deploy@178.62.9.155:/var/www/dev.pix8.co.uk/{project}
+              fi
+          #mkdir ~/.ssh
+
+      #Deploy production
+      - deploy: 
+          name: Deploy to staging(production) server
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ];
+              then
+                ssh-keyscan -H 178.62.9.155 >> ~/.ssh/known_hosts
+                rsync -avz -e "ssh" dist/ deploy@178.62.9.155:/var/www/staging.pix8.co.uk/{project}
+              fi
+          #mkdir ~/.ssh

@@ -1,0 +1,15 @@
+extends master
+
+block _globals
+
+block _default
+	header#app--masthead(role="complementary")
+		block _masthead
+
+	main#app--main(role="main")
+		block _header
+
+		block _content
+
+	footer#app--footer
+		block _footer
