@@ -46,7 +46,7 @@ body{
 #app--content{
 }
 	main {
-		width: 50%;
+		width: 60%;
   		margin: 0 auto;
   		flex: 1;
 
@@ -73,6 +73,15 @@ p {
 p, li, dt, dd {
 	font-size: 1.4rem;
 	margin: 1em 0;
+}
+
+a {
+	color: #A7C55D;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;;
+	}
 }
 
 @mixin list-unstyled {

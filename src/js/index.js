@@ -1,7 +1,7 @@
 'use strict';
 
 
-document.documentElement.classList.remove('client__no-js');
+document.documentElement.classList.remove("client__no-js");
 
 //DEVNOTE: if no id use UID generator to assign aria hooks
 
@@ -20,8 +20,10 @@ function uiAccordion(_selector) {
 
 		[].forEach.call($$button, ($toggle, i) => {
 
-			//DEVNOTE: execution of repeated clicks on the button of the active header needs to be restricted
+			//DEVNOTE: TODO: clicks from nested accordions would bubble up to the parent and conflict
 			$toggle.addEventListener("click", function(event) {
+				if(this.parentElement.classList.contains("state__active")) return false;
+
 				clickHandler.call(this, event, $accordion);
 			}, false);
 		});
