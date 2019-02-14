@@ -7,27 +7,30 @@ document.documentElement.classList.remove("client__no-js");
 
 function uiAccordion(_selector) {
 
-	const $ = (selector, el = document) => [].slice.call(el.querySelector(selector));
-	const $$ = (selector, el = document) => [].slice.call(el.querySelectorAll(selector));
+	const $ = (selector, el = document) => [].slice.call(el.querySelector(selector)); //[].from(el.querySelector(selector))
+	const $$ = (selector, el = document) => [].slice.call(el.querySelectorAll(selector)); //[].from(el.querySelectorAll(selector))
 
 	//DEVNOTE: Nodelist is an array-like object; this will shallow copy to an actual array.
 	var $$ui = $$(_selector);
 
 	$$ui.length && [].forEach.call($$ui, ($accordion, i) => {
 		
-		var $$button = $$("dt > button", $accordion);
+		//let $$button = $$(":scope > .accordion__header > button", $accordion); //DEVNOTE: :scope is still in w3c draft //for robust solution 1)would need a rooted query to impose the relationship as direct child from accordion 2)or ditch queryselector and use children and evaluate elementName
+		let $$button = $$(".accordion__header > button", $accordion).filter( (node) => node.parentNode.parentNode === $accordion);
 
 		[].forEach.call($$button, ($toggle, i) => {
 
 			//DEVNOTE: TODO: clicks from nested accordions would bubble up to the parent and conflict
 			$toggle.addEventListener("click", function(event) {
+				event.stopPropagation();
+
 				if(this.parentElement.classList.contains("state__active")) return false;
 
 				clickHandler.call(this, event, $accordion);
 			}, false);
 		});
 			
-		var $$pane = $$("dd", $accordion);
+		var $$pane = $$(".accordion__pane", $accordion);
 		
 		$$pane.forEach(($pane) => {
 			$pane.addEventListener("transitionend", function(event) {
@@ -38,9 +41,9 @@ function uiAccordion(_selector) {
 
 	function clickHandler(event, $accordion) {
 
-		var $$headers = $$("dt", $accordion),
-			$target = this.parentElement,
-			$pane = $target.nextElementSibling;
+		let $$headers = $$(".accordion__header", $accordion),
+			$target = this.parentElement;//,
+			//$pane = $target.nextElementSibling;
 			
 		[].forEach.call($$headers, ($header, i) => {
 			

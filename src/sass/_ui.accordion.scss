@@ -37,6 +37,7 @@ $color__base: 			#888888;
 			border-top: 3px solid #FFF;
 			border-right: 3px solid #FFF;
 			transform: rotate(135deg);
+			transform-origin: 50%;
 			transition: transform 500ms;
 
 			html:not(.client__no-js) & {
@@ -129,7 +130,7 @@ $color__base: 			#888888;
 	a {
 		color: $color__primary;
 	}
-	
+
 	dt,
 	.accordion__header {
 		button {
