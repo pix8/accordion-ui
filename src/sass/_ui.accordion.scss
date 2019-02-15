@@ -39,7 +39,7 @@ $color__base: 			#888888;
 			transition: transform 500ms;
 
 			html:not(.client__no-js) & {
-				content: "\00A0";
+				content: "";
 			}
 		}
 	
@@ -77,7 +77,7 @@ $color__base: 			#888888;
 				}
 
 				& > div {
-					opacity: 1;
+					// opacity: 1;
 				}
 			}
 		}
@@ -92,7 +92,7 @@ $color__base: 			#888888;
 
 		//DEVNOTE: this is a more elegant way to accomodate the visual realisation of bottom border and allowing it to collapse and get cropped(leaving no residual artifact to counter i.e. a visible bottom border remaining below each accordion tab external to the button's hotspot)
 		&:after {
-			content: "\00A0";
+			content: "";
 			background-color: $color__base;
 			height: 4px;
 			position: absolute;
@@ -102,10 +102,11 @@ $color__base: 			#888888;
 		}
 
 		& > div {
-			padding: 0 10px 4px;
+			flex: 1 1 auto;
 			overflow: hidden; /*counter margin collapse*/
-			opacity: 0;
-			transition: opacity ease-out 500ms 100ms;
+			padding: 0 10px 4px;
+			// opacity: 0;
+			// transition: opacity ease-out 500ms 100ms;
 		}
 	}
 }

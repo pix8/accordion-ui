@@ -30,7 +30,7 @@ export default function A11y(_$ui) {
 		$tab.setAttribute("aria-controls", "pane-" + i);
 		//$tab.setAttribute("tabindex", 0);
 
-		let $toggle = $("button", $tab);
+		let $toggle = $(".ui__toggle", $tab);
 
 		$toggle.addEventListener("click", function(event) {
 			event.stopPropagation();
@@ -62,7 +62,7 @@ export default function A11y(_$ui) {
 	//ARIA state management
 	function clickHandler(event, _$accordion, _$tabs) {
 		
-		let $$tabs = $$(".ui__tab", _$accordion),
+		let $$tabs = $$(":scope > .ui__tab", _$accordion),
 			$target = this.parentElement;
 			
 		_$tabs.forEach( ($tab, i) => {
