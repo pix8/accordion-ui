@@ -17,8 +17,6 @@ export default function A11y(_$ui) {
 	var 	$$tabs = $$(".ui__tab", _$ui).filter( (node) => node.parentNode === _$ui),
 			$$panes = $$(".ui__pane", _$ui).filter( (node) => node.parentNode === _$ui);
 	
-	//console.log($$tabs, $$panes);
-
 	// declare ARIA attributes/metadata
 	// --> parent accordion
 	_$ui.setAttribute("role", "tablist");
@@ -47,13 +45,19 @@ export default function A11y(_$ui) {
 
 	// --> child pane
 	$$panes.forEach( ($pane, i) => {
-		$pane.setAttribute("role", "tabpanel");
+		$pane.setAttribute("role", "tabpanel"); //$pane.setAttribute("role", "region");
 		$pane.setAttribute("id", "pane-"+i);
 		$pane.setAttribute("aria-labelledby", "tab-" + i);
 		//$pane.setAttribute("tabindex", 0);
 	});
 
 	//apply enhanced keyboard controls
+	//DEVNOTE: optional keyboard interactions as defined by WAI-ARIA Authoring Practices 1.1 accordion pattern link(https://www.w3.org/TR/wai-aria-practices-1.1/#accordion),
+	// down/up arrows, home/end key not applied as this conflicts with default browser behaviours already assigned to these keys that are assigned to overflow scroll and document navigation I think this is a mistake/bad form.
+	function keyHandler(event) {
+	}
+
+	//state__active tab that can't be interacted with - because it is open and won't collapse - should have aria-disabled="true"
 
 	//ARIA state management
 	function clickHandler(event, _$accordion, _$tabs) {

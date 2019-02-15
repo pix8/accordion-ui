@@ -2,6 +2,16 @@ import transition from './transition'
 import A11y from './a11y'
 import { $, $$ } from './util'
 
+import './accordion.style.scss'
+
+//checks to perform to assert an open pane
+	//class of .state__active is present
+	//aria-selected="true" is present on the tab
+	//aria-expanded="true" is present on the tab
+	//aria-hidden="false" is present on the pane
+		//if either is true the counterpart is enforced too
+		//if multiples exist; the first occurance is honoured(the remainder are realigned)
+
 
 /**
 * @param "string" class selector
@@ -14,18 +24,16 @@ export default function uiAccordion(_selector) {
 	var $$ui = $$(_selector);
 
 	// Appraise and initialise each individual accordion nominated element found within the document
-	$$ui.length && [].forEach.call($$ui, ($accordion, i) => {
+	$$ui.length && $$ui.forEach( ($accordion, i) => {
 
 		//accessibility initilisation
-		let a11y = new A11y($accordion);
-		//a11y.create();
+		//let a11y = new A11y($accordion);
 		
 		//let $$toggles = $$(":scope > .ui__tab > button", $accordion); //DEVNOTE: :scope is still in w3c draft //for robust solution 1)would need a rooted query to impose the relationship as direct child from accordion 2)or ditch queryselector and use children and evaluate elementName
 		let $$toggles = $$(".ui__tab > button", $accordion).filter( (node) => node.parentNode.parentNode === $accordion);
 
 		$$toggles.forEach( ($toggle, i) => {
 
-			//DEVNOTE: TODO: clicks from nested accordions would bubble up to the parent and conflict
 			$toggle.addEventListener("click", function(event) {
 				event.stopPropagation();
 

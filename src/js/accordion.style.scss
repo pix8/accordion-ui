@@ -1,0 +1,24 @@
+.ui__accordion {
+
+	.ui__tab {
+		position: relative;
+
+		.ui__toggle {
+			display: block;
+
+			//DEVNOTE: redundant operation; if javascript was disabled these styles simply wouldn't get loaded
+			//html:not(.client__no-js) & {
+				cursor: pointer;
+			//}
+		}
+	}
+
+	.ui__pane {
+		position: relative;
+
+		//html:not(.client__no-js) & {
+			height: 0;
+			overflow: hidden;
+		//}
+	}
+}

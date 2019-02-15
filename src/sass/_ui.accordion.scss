@@ -20,12 +20,10 @@ $color__base: 			#888888;
 .ui__accordion {
 	@include list-unstyled;
 
-	dt,
 	.ui__tab {
 		color: #FFF;
 		text-transform: uppercase;
 		font-size: 1.2rem;
-		position: relative;
 		margin: 0;
 	
 		&:after {
@@ -45,20 +43,17 @@ $color__base: 			#888888;
 			}
 		}
 	
-		button {
+		.ui__toggle {
 			background-color: $color__base;
 			border: 0 none;
 			text-transform: inherit;
 			font-size: inherit;
 			color: inherit;
 			text-align: left;
-			display: block;
 			width: 100%;
 			padding: 10px 42px 10px 10px;
 			
 			html:not(.client__no-js) & {
-				cursor: pointer;
-
 				&:hover {
 					background-color: $color__primary;
 				}
@@ -70,11 +65,11 @@ $color__base: 			#888888;
 				transform: rotate(-45deg);
 			}
 
-			button {
+			.ui__toggle {
 				background-color: $color__primary;
 			}
 
-			& + dd {
+			& + .ui__pane {
 				border-color: $color__primary;
 
 				&:after {
@@ -88,12 +83,10 @@ $color__base: 			#888888;
 		}
 	}
 
-	dd,
 	.ui__pane {
 		border: 4px solid $color__base;
 		border-top-width: 0;
 		border-bottom-width: 0;
-		position: relative;
 		margin: 0 0 4px;
 		transition: height ease-out 250ms;
 
@@ -106,11 +99,6 @@ $color__base: 			#888888;
 			bottom: 0;
 			left: 0;
 			right: 0;
-		}
-
-		html:not(.client__no-js) & {
-			height: 0;
-			overflow: hidden;
 		}
 
 		& > div {
@@ -131,9 +119,8 @@ $color__base: 			#888888;
 		color: $color__primary;
 	}
 
-	dt,
 	.ui__tab {
-		button {
+		.ui__toggle {
 			html:not(.client__no-js) & {
 				&:hover {
 					background-color: $color__primary;
@@ -142,11 +129,11 @@ $color__base: 			#888888;
 		}
 	
 		&.state__active {
-			button {
+			.ui__toggle {
 				background-color: $color__primary;
 			}
 
-			& + dd {
+			& + .ui__pane {
 				border-color: $color__primary;
 
 				&:after {
@@ -162,9 +149,8 @@ $color__base: 			#888888;
 		color: $color__secondary;
 	}
 
-	dt,
 	.ui__tab {
-		button {
+		.ui__toggle {
 			html:not(.client__no-js) & {
 				&:hover {
 					background-color: $color__secondary;
@@ -173,11 +159,11 @@ $color__base: 			#888888;
 		}
 	
 		&.state__active {
-			button {
+			.ui__toggle {
 				background-color: $color__secondary;
 			}
 
-			& + dd {
+			& + .ui__pane {
 				border-color: $color__secondary;
 
 				&:after {
