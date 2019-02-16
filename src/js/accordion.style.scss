@@ -17,8 +17,23 @@
 		position: relative;
 
 		//html:not(.client__no-js) & {
-			//height: 0;
+			height: 0;
 			overflow: hidden;
 		//}
 	}
 }
+
+/*.ui__tab.state__active:not(.state__transition) {
+	outline: 2px solid yellow;
+
+	& + .ui__pane {
+		//display: none;
+	}
+}*/
+
+.ui__tab:not(.state__active):not(.state__transition) {
+	& + .ui__pane {
+		display: none;
+	}
+}
+

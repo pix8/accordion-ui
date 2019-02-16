@@ -6,7 +6,7 @@ import './accordion.style.scss'
 
 //TASK remove the css height 0 and any js assignments to height auto can be set to null instead
 //leverage the state__transition to set display: none on inactive panes
-//investigate the height claculation inconsistencies(that are visible if you click the tabs to activate panes when height is not set to 0)
+//use .state__transition to define the css transition in sass
 
 
 /**
@@ -71,8 +71,7 @@ export default function uiAccordion(_selector) {
 
 	function render(event, _$accordion) {
 		let $$tabs = $$(":scope > .ui__tab", _$accordion),
-			$target = this;//,
-			//$pane = $target.nextElementSibling;
+			$target = this;
 		
 		if(event === null) {
 
@@ -97,6 +96,9 @@ export default function uiAccordion(_selector) {
 				$tab.nextElementSibling.getBoundingClientRect(); //DEVNOTE: forced recomputation/reflow
 
 				$tab.classList.add("state__transition");
+
+				//$tab.nextElementSibling.style.height = 0 + "px";
+				//$tab.nextElementSibling.getBoundingClientRect(); //DEVNOTE: forced recomputation/reflow
 
 				//DEVNOTE: alternative method with requestAnimationFrame()
 				//ref: https://codepen.io/brundolf/pen/dvoGyw
