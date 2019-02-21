@@ -1,0 +1,78 @@
+/*
+*	Compressed and generated using grunt.js sass/compress build tools
+*
+*	@title: 	app.theme.scss (partial)
+* 	@project:	pix8 ui
+* 	@author: 	Jonathan Brincat@pix8.co.uk <jonathan@pix8.co.uk>
+*
+**/
+
+@charset "UTF-8";
+
+
+/* =============================================================================
+	UI themes
+	========================================================================== */
+.theme__primary {
+	a {
+		color: $color__primary;
+	}
+
+	.ui__tab {
+		.ui__toggle {
+			html:not(.client__no-js) & {
+				&:hover {
+					background-color: $color__primary;
+				}
+			}
+		}
+	
+		&.state__active,
+		&[aria-selected=true],
+		&[aria-expanded=true] {
+			.ui__toggle {
+				background-color: $color__primary;
+			}
+
+			& + .ui__pane {
+				border-color: $color__primary;
+
+				&:after {
+					background-color: $color__primary;
+				}
+			}
+		}
+	}
+}
+
+.theme__secondary {
+	a {
+		color: $color__secondary;
+	}
+
+	.ui__tab {
+		.ui__toggle {
+			html:not(.client__no-js) & {
+				&:hover {
+					background-color: $color__secondary;
+				}
+			}
+		}
+	
+		&.state__active,
+		&[aria-selected=true],
+		&[aria-expanded=true] {
+			.ui__toggle {
+				background-color: $color__secondary;
+			}
+
+			& + .ui__pane {
+				border-color: $color__secondary;
+
+				&:after {
+					background-color: $color__secondary;
+				}
+			}
+		}
+	}
+}

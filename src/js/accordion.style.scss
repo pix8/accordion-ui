@@ -5,35 +5,21 @@
 
 		.ui__toggle {
 			display: block;
-
-			//DEVNOTE: redundant operation; if javascript was disabled these styles simply wouldn't get loaded
-			//html:not(.client__no-js) & {
-				cursor: pointer;
-			//}
+			cursor: pointer;
 		}
 	}
 
 	.ui__pane {
 		position: relative;
+		overflow: hidden;
+	}
 
-		//html:not(.client__no-js) & {
+	//.ui__tab:not(.state__active):not(.state__transition),
+	.ui__tab:not([aria-expanded=true]):not([aria-selected=true]):not(.state__active):not(.state__transition) {
+		& + .ui__pane,
+		& + [aria-hidden=true] {
 			height: 0;
-			overflow: hidden;
-		//}
+			display: none;
+		}
 	}
 }
-
-/*.ui__tab.state__active:not(.state__transition) {
-	outline: 2px solid yellow;
-
-	& + .ui__pane {
-		//display: none;
-	}
-}*/
-
-.ui__tab:not(.state__active):not(.state__transition) {
-	& + .ui__pane {
-		display: none;
-	}
-}
-

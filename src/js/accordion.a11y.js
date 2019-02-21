@@ -1,12 +1,13 @@
 import { $, $$ } from './util'
 
 
-const LOOKUP = [
+const 	LOOKUP 		= [
 	{
-		"role": "tablist",
-		"aria-multiselectable": false
+		"role": 					"tablist",
+		"aria-multiselectable": 	false
 	}
 ]
+
 
 /**
 * @param node(element) accordion instance

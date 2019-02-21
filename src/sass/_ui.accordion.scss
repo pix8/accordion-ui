@@ -9,10 +9,6 @@
 
 @charset "UTF-8";
 
-$color__primary: 		#A7C55D;
-$color__secondary: 		#EC008C;
-$color__base: 			#888888;
-
 
 /* =============================================================================
 	UI Accordion
@@ -52,35 +48,27 @@ $color__base: 			#888888;
 			text-align: left;
 			width: 100%;
 			padding: 10px 42px 10px 10px;
-			
-			html:not(.client__no-js) & {
-				&:hover {
-					background-color: $color__primary;
-				}
-			}
 		}
 	
-		&.state__active {
+		&.state__active,
+		&[aria-selected=true],
+		&[aria-expanded=true] {
 			&:after {
 				transform: rotate(-45deg);
 			}
 
-			.ui__toggle {
-				background-color: $color__primary;
-			}
-
 			& + .ui__pane {
-				border-color: $color__primary;
-
-				&:after {
-					background-color: $color__primary;
-				}
-
 				& > div {
 					opacity: 1;
 				}
 			}
 		}
+
+		// &.state__transition {
+		// 	& + .ui__pane {
+		// 		transition: height ease 250ms;
+		// 	}
+		// }
 	}
 
 	.ui__pane {
@@ -107,70 +95,6 @@ $color__base: 			#888888;
 			padding: 0 10px 4px;
 			opacity: 0;
 			transition: opacity ease 550ms 50ms;
-		}
-	}
-}
-
-
-/* =============================================================================
-	UI themes
-	========================================================================== */
-.theme__primary {
-	a {
-		color: $color__primary;
-	}
-
-	.ui__tab {
-		.ui__toggle {
-			html:not(.client__no-js) & {
-				&:hover {
-					background-color: $color__primary;
-				}
-			}
-		}
-	
-		&.state__active {
-			.ui__toggle {
-				background-color: $color__primary;
-			}
-
-			& + .ui__pane {
-				border-color: $color__primary;
-
-				&:after {
-					background-color: $color__primary;
-				}
-			}
-		}
-	}
-}
-
-.theme__secondary {
-	a {
-		color: $color__secondary;
-	}
-
-	.ui__tab {
-		.ui__toggle {
-			html:not(.client__no-js) & {
-				&:hover {
-					background-color: $color__secondary;
-				}
-			}
-		}
-	
-		&.state__active {
-			.ui__toggle {
-				background-color: $color__secondary;
-			}
-
-			& + .ui__pane {
-				border-color: $color__secondary;
-
-				&:after {
-					background-color: $color__secondary;
-				}
-			}
 		}
 	}
 }

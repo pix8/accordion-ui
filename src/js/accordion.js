@@ -1,21 +1,43 @@
 import { $, $$ } from './util'
-import Transition from './accordion.transition'
+//import Transition from './accordion.transition'
 import A11y from './accordion.a11y'
 
 import './accordion.style.scss'
 
-//TASK remove the css height 0 and any js assignments to height auto can be set to null instead
-//leverage the state__transition to set display: none on inactive panes
-//use .state__transition to define the css transition in sass
+// TODOS:
+// Evaluate presence of active tabs
+	//checks to perform to assert an open pane
+		//1. class of .state__active is present
+		//2. aria-selected="true" is present on the tab
+		//3. aria-expanded="true" is present on the tab
+		//4. aria-hidden="false" is present on the pane
+			//if either or is true the counterparts are enforced too
+			//if multiples exist; the first occurance is honoured(the remainder are realigned)
+
+const 	NAME 			= "accordion",
+		VERSION			= "0.2.0";
+
+const 	className 		= {
+		ACTIVE: 		"state__active",
+		TRANSITION: 	"state__transition"
+}
+
+const 	selector 		= {
+		ACCORDION: 		".ui__accordion",
+		TAB: 			".ui__tab",
+		TOGGLE: 		".ui__toggle",
+		PANE: 			".ui__pane"
+}
 
 
 /**
 * @param "string" class selector
 */
-export default function uiAccordion(_selector) {
+export default function uiAccordion(_selector = selector.ACCORDION) {
 
 	// SUPPORT
 	if(!"querySelector" in document && !"addEventListener" in window && !"classList" in document.documentElement) return;
+
 
 	var $$ui = $$(_selector);
 
@@ -23,10 +45,9 @@ export default function uiAccordion(_selector) {
 	$$ui.length && $$ui.forEach( ($accordion, i) => {
 
 		// Accessibility initilisation
-		//let a11y = new A11y($accordion);
-		//let transition = new Transition($accordion);
+		let a11y = new A11y($accordion);
 		
-		let $$toggles = $$(".ui__tab > .ui__toggle", $accordion).filter( (node) => node.parentNode.parentNode === $accordion);
+		let $$toggles = $$(`${selector.TAB} > ${selector.TOGGLE}`, $accordion).filter( (node) => node.parentNode.parentNode === $accordion);
 
 		// Subscribe events
 		$$toggles.forEach( ($toggle, i) => {
@@ -34,100 +55,76 @@ export default function uiAccordion(_selector) {
 			$toggle.addEventListener("click", function(event) {
 				event.stopPropagation();
 
-				if(this.parentElement.classList.contains("state__active")) return false;
+				if(this.parentElement.classList.contains(className.ACTIVE)) return false;
 
 				render.call(this.parentElement, event, $accordion);
 			}, false);
 		});
 			
-		var $$panes = $$(".ui__pane", $accordion).filter( (node) => node.parentNode === $accordion);
+		let $$panes = $$(selector.PANE, $accordion).filter( (node) => node.parentNode === $accordion);
 		
 		$$panes.forEach(($pane) => {
 			$pane.addEventListener("transitionend", function(event) {
-				if(this.style.height && event.propertyName === "height") {
-					this.style.height = "auto"; //DEVNOTE: could be set to null if the css stylesheet derived height: 0; is binned
-				}
+				
+				let $tab = this.previousElementSibling,
+					$pane = this;
 
-				if(event.propertyName === "height") {
-					this.previousElementSibling.classList.remove("state__transition");
+				if($pane.style.height && event.propertyName === "height") {
+					$pane.style.height = null;
+					$tab.classList.remove(className.TRANSITION);
 				}
 			}, false);
 		});
-
-		// Evaluate presence of active tabs
-		//checks to perform to assert an open pane
-			//class of .state__active is present
-			//aria-selected="true" is present on the tab
-			//aria-expanded="true" is present on the tab
-			//aria-hidden="false" is present on the pane
-				//if either is true the counterpart is enforced too
-				//if multiples exist; the first occurance is honoured(the remainder are realigned)
-
-		let $active = $(":scope > .state__active", $accordion); //.filter( (node) => node.parentNode === $accordion);
-		if($active && $active.parentNode === $accordion) {
-			render.call($active, null, $accordion);
-		}
 	});
 
+	// PRIVATE METHODS
 	function render(event, _$accordion) {
-		let $$tabs = $$(":scope > .ui__tab", _$accordion),
-			$target = this;
 		
-		if(event === null) {
+		let $$tabs = $$(`:scope > ${selector.TAB}`, _$accordion),
+			$target = this;
 
-			[].forEach.call($$tabs, ($tab, i) => {
-				$tab.classList[$tab === $target ? 'add' : 'remove']("state__active");
-				
-				if($tab.classList.contains("state__active")) {
-					$tab.nextElementSibling.style.height = "auto";
-				};
-			});
+		$$tabs.forEach( ($tab, i) => {
 
-			return;
-		};
-
+			let $pane = $tab.nextElementSibling;
 			
-		[].forEach.call($$tabs, ($tab, i) => {
-			
-			if($tab.classList.contains("state__active")) {
-				console.log($tab.nextElementSibling, " :: ", $tab.nextElementSibling.offsetHeight, " :: ", $tab.nextElementSibling.clientHeight, " :: ", $tab.nextElementSibling.scrollHeight, " :: ", $tab.nextElementSibling.getBoundingClientRect().height);
-				
-				$tab.nextElementSibling.style.height = `${$tab.nextElementSibling.scrollHeight}px`;
-				$tab.nextElementSibling.getBoundingClientRect(); //DEVNOTE: forced recomputation/reflow
+			// If tab/pane IS active set height explicitly; add the state__transition class; set the height explicitly to 0;
+			if($tab.classList.contains(className.ACTIVE)) {
 
-				$tab.classList.add("state__transition");
+				$pane.style.height = `${$pane.scrollHeight}px`;
+				$pane.getBoundingClientRect(); //DEVNOTE: forced recomputation/reflow
+				$tab.classList.add(className.TRANSITION);
+				$tab.classList.remove(className.ACTIVE);
+				$pane.style.height = `${0}px`;
 
-				//$tab.nextElementSibling.style.height = 0 + "px";
-				//$tab.nextElementSibling.getBoundingClientRect(); //DEVNOTE: forced recomputation/reflow
+				// Test for presence of css transition else transitionend event will not be fired and inline heights will not get removed
+				let hasTransition = window.getComputedStyle($pane, null).getPropertyValue("transition");
+				if(hasTransition === "all 0s ease 0s") {
+					$pane.style.height = null;
+					$tab.classList.remove(className.TRANSITION);
+				}
 
-				//DEVNOTE: alternative method with requestAnimationFrame()
-				//ref: https://codepen.io/brundolf/pen/dvoGyw
-				// https://css-tricks.com/using-css-transitions-auto-dimensions/
+			// If tab/pane IS NOT active && our target; set height explicitly to 0; add the state__transition class; set the height explicitly to scrollheight; remove inline heights upon transitionends.
+			}else {
+				if($tab === $target) {
 
-				/*let elementTransition = $tab.nextElementSibling.transition;
-				$tab.nextElementSibling.transition = '';
+					$pane.style.height = `${0}px`;
+					$tab.classList.add(className.ACTIVE, className.TRANSITION);
+					$pane.style.height = `${$pane.scrollHeight}px`;
 
-				window.requestAnimationFrame(function() {
-					console.log("animation frame")
-				 	$tab.nextElementSibling.style.height = `${$tab.nextElementSibling.scrollHeight}px`;
-				 	$tab.nextElementSibling.transition = elementTransition;
-
-				 	window.requestAnimationFrame(function() {
-				 		$tab.nextElementSibling.style.height = 0 + "px";
-				 	});
-				});*/
-			};
-
-			$tab.classList[$tab === $target ? 'add' : 'remove']("state__active");
-			$tab.nextElementSibling.style.height = ($tab === $target) ? `${$tab.nextElementSibling.scrollHeight}px` : null;
-
-			if($tab === $target) $tab.classList.add("state__transition");
+					// Test for presence of css transition else transitionend event will not be fired and inline heights will not get removed
+					let hasTransition = window.getComputedStyle($pane, null).getPropertyValue("transition");
+					if(hasTransition === "all 0s ease 0s") {
+						$pane.style.height = null;
+						$tab.classList.remove(className.TRANSITION);
+					}
+				}
+			}
 		});
 
 		return false;
 	}
 
-	// Public methods
+	// PUBLIC METHODS
 	return {
 		create() {
 			console.log("create instance");
