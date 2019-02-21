@@ -14,6 +14,11 @@ import './accordion.style.scss'
 			//if either or is true the counterparts are enforced too
 			//if multiples exist; the first occurance is honoured(the remainder are realigned)
 
+// fully implement aria spec with aria-disabled="true"
+
+// auto-generate uid for aria
+	// check if id already exists first
+
 const 	NAME 			= "accordion",
 		VERSION			= "0.2.0";
 

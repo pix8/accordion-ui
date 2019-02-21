@@ -8,6 +8,43 @@ const 	LOOKUP 		= [
 	}
 ]
 
+const 	Util		= {
+
+	getUID(prefix = "_", counter = "") {
+		do {
+			//var date = Date.now(); //+new Date()
+			//var random = ~~(Math.random() * 1000000);
+			//console.log(date, " :: ", random);
+
+			prefix += Math.random().toString(36).substring(2) + counter + Date.now().toString(36);
+
+		}while(document.getElementById(prefix))
+
+		return prefix;
+	}
+}
+
+/*
+const ID_LENGTH = 36
+const START_LETTERS_ASCII = 97 // Use 64 for uppercase
+const ALPHABET_LENGTH = 26
+
+const uniqueID = () => [...new Array(ID_LENGTH)]
+  .map(() => String.fromCharCode(START_LETTERS_ASCII + Math.random() * ALPHABET_LENGTH))
+ .join('')
+ */
+
+/*
+const randomHash = function () {
+	var array = new Uint32Array(1);
+	let hash = window.crypto.getRandomValues(array);
+	if (myExistingIds.includes(hash[0])) {
+	    randomHash();
+	} else {
+	    myExistingIds.push(hash[0]);
+	}
+}
+*/
 
 /**
 * @param node(element) accordion instance
@@ -23,13 +60,19 @@ export default function A11y(_$ui) {
 	_$ui.setAttribute("role", "tablist");
 	_$ui.setAttribute("aria-multiselectable", false);
 
-	// --> child tab
 	$$tabs.forEach( ($tab, i, collection) => {
+		
+		const tabUID = Util.getUID("tab-", i);
+		const paneUID = Util.getUID("pane-", i);
+		let $pane = $tab.nextElementSibling;
+
 		$tab.setAttribute("role", "tab");
-		//TODO: UID generated for id + ARIA relationship
-		$tab.setAttribute("id", "tab-"+i);
-		$tab.setAttribute("aria-controls", "pane-" + i);
-		//$tab.setAttribute("tabindex", 0);
+		$tab.setAttribute("id", tabUID);
+		$tab.setAttribute("aria-controls", paneUID);
+
+		$pane.setAttribute("role", "tabpanel"); //$pane.setAttribute("role", "region");
+		$pane.setAttribute("id", paneUID);
+		$pane.setAttribute("aria-labelledby", tabUID);
 
 		let $toggle = $(".ui__toggle", $tab);
 
@@ -42,14 +85,6 @@ export default function A11y(_$ui) {
 			clickHandler.call(this, event, _$ui, collection);
 			//clickHandler.call(this.parentElement, event, _$ui, collection);
 		});
-	});
-
-	// --> child pane
-	$$panes.forEach( ($pane, i) => {
-		$pane.setAttribute("role", "tabpanel"); //$pane.setAttribute("role", "region");
-		$pane.setAttribute("id", "pane-"+i);
-		$pane.setAttribute("aria-labelledby", "tab-" + i);
-		//$pane.setAttribute("tabindex", 0);
 	});
 
 	//apply enhanced keyboard controls
