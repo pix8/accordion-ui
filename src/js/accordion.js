@@ -33,7 +33,7 @@ const 	selector 		= {
 
 
 /**
-* @param "string" class selector
+* @selector "string" class selector
 */
 export default function uiAccordion(_selector = selector.ACCORDION) {
 
@@ -59,7 +59,7 @@ export default function uiAccordion(_selector = selector.ACCORDION) {
 
 				if(this.parentElement.classList.contains(className.ACTIVE)) return false;
 
-				render.call(this.parentElement, event, $accordion);
+				render.call(this.parentElement, event, $accordion); //DEVNOTE: scope reasserted
 			}, false);
 		});
 			
