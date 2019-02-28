@@ -14,10 +14,7 @@ import './accordion.style.scss'
 			//if either or is true the counterparts are enforced too
 			//if multiples exist; the first occurance is honoured(the remainder are realigned)
 
-// fully implement aria spec with aria-disabled="true"
-
-// auto-generate uid for aria
-	// check if id already exists first
+//Rejig the $tab, $pane, $toggle dom parsing in both accordion.js and a11y so they are consistent
 
 const 	NAME 			= "accordion",
 		VERSION			= "0.2.0";
@@ -85,6 +82,7 @@ export default function uiAccordion(_selector = selector.ACCORDION) {
 	// PRIVATE METHODS
 	function render(event, _$accordion) {
 		
+		//DEVNOTE: TODO: replace :scope as support is not assured
 		let $$tabs = $$(`:scope > ${selector.TAB}`, _$accordion),
 			$target = this;
 
