@@ -1,0 +1,20 @@
+{
+  "name": "example-react-app",
+  "version": "0.0.0-alpha",
+  "private": true,
+  "license": "ISC",
+  "scripts": {
+    "postinstall": "npm link @pix8/pogo-example-module",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3"
+  },
+  "devDependencies": {
+    "react-scripts": "^1.1.5"
+  }
+}
