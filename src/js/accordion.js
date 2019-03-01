@@ -4,17 +4,7 @@ import A11y from './accordion.a11y'
 
 import './accordion.style.scss'
 
-// TODOS:
-// Evaluate presence of active tabs
-	//checks to perform to assert an open pane
-		//1. class of .state__active is present
-		//2. aria-selected="true" is present on the tab
-		//3. aria-expanded="true" is present on the tab
-		//4. aria-hidden="false" is present on the pane
-			//if either or is true the counterparts are enforced too
-			//if multiples exist; the first occurance is honoured(the remainder are realigned)
-
-//Rejig the $tab, $pane, $toggle dom parsing in both accordion.js and a11y so they are consistent
+//TODO: Rejig the $tab, $pane, $toggle dom parsing in both accordion.js and a11y so they are consistent
 
 const 	NAME 			= "accordion",
 		VERSION			= "0.2.0";

@@ -44,6 +44,18 @@ export default function A11y(_$ui) {
 		
 		let $pane = $tab.nextElementSibling;
 
+		//accomodate explicitly declared behaviours/states
+		/*if(
+			$tab.classList.contains(className.ACTIVE) || 
+			$tab.getAttribute("aria-selected") == "true" || 
+			$tab.getAttribute("aria-expanded") == "true" || 
+			$pane.getAttribute("aria-hidden") == "false"
+		) {
+			$tab.classList.add(className.ACTIVE);
+
+			clickHandler.call($tab, null, _$ui, collection);
+		};*/
+
 		//if ID attribute exists and assigned a value
 		let tabUID;
 		if($tab.id.length) {
@@ -82,6 +94,43 @@ export default function A11y(_$ui) {
 			clickHandler.call(this.parentElement, event, _$ui, collection); //DEVNOTE: scope reasserted
 		});
 	});
+
+	var $$active = $$([
+			`${selector.TAB}.${className.ACTIVE}`,
+			`${selector.TAB}[aria-selected=true]`,
+			`${selector.TAB}[aria-expanded=true]`,
+			`${selector.PANE}[aria-hidden=false]`
+		].join()
+	, _$ui).filter( (node) => node.parentNode === _$ui);
+	
+	//console.log($$active);
+
+	//flush out any panes and normalise to tabs only.
+	var $flushed = $$active.map( ($el, i, collection) => {
+		if($el.classList.contains("ui__pane")) return $el.previousElementSibling;
+		
+		return $el;
+	});
+
+	//console.log("$flushed >> ", $flushed);
+
+	var $purged = $flushed.filter( ($el, i, collection) => i === collection.indexOf($el) );
+
+	//console.log("$purged >> ", $purged);
+
+	if($purged.length > 1) window.console && console.warn("Malformed structure: You can not have more than one active pane declared on an accordion interface. Check the markup and any explicit classNames and ARIA properties in play. Only the first occurance will be enforced.");
+	//if($purged.length > 1) throw new Error("Malformed structure: You can not have more than one active pane declared on an accordion interface. Check the markup and any explicit classNames and ARIA properties in play. Only the first occurance will be enforced.");
+
+	//console.log("operating on ", $purged[0]);
+	
+	//enforce any state classes to match the ARIA
+	$$tabs.forEach( ($tab, i, collection) => {
+		$tab.classList[$tab === $purged[0] ? 'add' : 'remove']("state__active");
+	})
+
+	//apply ARIA
+	clickHandler.call($purged[0], null, _$ui, $$tabs);
+
 
 	//ARIA state management
 	function clickHandler(event, _$accordion, _$tabs) {

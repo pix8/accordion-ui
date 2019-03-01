@@ -10,7 +10,7 @@ block _content
 		dl.ui__accordion.theme__primary
 
 			//- 1.
-			dt.ui__tab
+			dt.ui__tab.state__active
 				button.ui__toggle Meow
 			dd.ui__pane
 				div
@@ -36,20 +36,20 @@ block _content
 						button(type="submit") Submit
 
 			//- 2.
-			//-dt.ui__tab.state__active
-			//-dt.ui__tab(aria-selected="true")
-			dt.ui__tab
+				dt.ui__tab
+				dt.ui__tab.state__active
+			dt.ui__tab(aria-selected="true", aria-expanded="true")
 				button.ui__toggle Mew mew
-			dd.ui__pane
+			dd.ui__pane(aria-hidden="false")
 				div
 					p Cat ipsum dolor sit amet, cornish rex. Norwegian forest kitty. Birman scottish fold russian blue. Devonshire rex. Sphynx. Birman american bobtail leopard birman and abyssinian for abyssinian , donskoy. Bengal panther singapura. Abyssinian ragdoll or tom maine coon, panther, kitten ocelot. Leopard siamese. Manx ocicat. Savannah siberian. Savannah russian blue yet leopard and munchkin leopard cornish rex. Turkish angora british shorthair. Devonshire rex birman so manx and kitten. Singapura ocicat so kitty so siamese so persian bobcat. American shorthair persian. Tomcat tom but ocelot. Cornish rex persian yet himalayan malkin so birman. Singapura lion so scottish fold devonshire rex but norwegian forest but donskoy puma. Puma. Persian cougar birman, donskoy and burmese.
 					p Bobcat burmese so british shorthair. Himalayan devonshire rex savannah, egyptian mau leopard. Norwegian forest devonshire rex, tiger, but maine coon. Balinese kitty persian or tabby or ocelot. Lynx burmese. Sphynx tomcat. Jaguar. Thai cheetah, but havana brown, abyssinian and bombay so ocelot. Balinese . Lion scottish fold or tabby or tiger norwegian forest yet persian. Panther grimalkin or turkish angora leopard bobcat tabby devonshire rex. Russian blue lion maine coon manx tom havana brown but turkish angora. Ocelot devonshire rex but norwegian forest. Savannah burmese egyptian mau or burmese yet manx. Malkin savannah kitty manx so american bobtail ocelot scottish fold. Siamese panther balinese and russian blue siberian.
 					p Puma savannah. Ocelot devonshire rex or munchkin for leopard and scottish fold havana brown siamese. Himalayan birman. Bengal savannah norwegian forest. Cornish rex cheetah cougar leopard. British shorthair russian blue and siamese. Balinese lynx yet siamese. Singapura. Donskoy maine coon so lynx ocicat and munchkin kitten.
 
 			//- 3.
-			dt.ui__tab
+			dt.ui__tab(aria-selected="false", aria-expanded="false")
 				button.ui__toggle Purr
-			dd.ui__pane
+			dd.ui__pane(aria-hidden="true")
 				div
 					p Cat ipsum dolor sit amet, american bobtail british shorthair. Havana brown lion kitty so british shorthair tiger. Manx. Tomcat burmese scottish fold for grimalkin for turkish angora yet abyssinian for bombay. Puma. Savannah scottish fold, or tom, tom savannah tom. Kitty tom. British shorthair persian maine coon but cougar.
 					p Malkin panther or malkin for donskoy. Ocelot ocicat tabby malkin jaguar, for jaguar british shorthair. Lynx persian cougar or ragdoll. Siamese burmese yet singapura balinese , leopard for bengal or american shorthair. American shorthair tomcat himalayan. Grimalkin havana brown or cougar or birman manx tomcat.
