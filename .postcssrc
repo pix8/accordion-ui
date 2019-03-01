@@ -1,5 +1,0 @@
-{
-	plugins: {
-		'cssnano': env === 'production' ? options.cssnano : false
-	}
-}

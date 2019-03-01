@@ -133,7 +133,7 @@ yarn-error.log*
 ### Development Tooling ###
 # Workflow
 dist
-#build
+build
 # Grunt usually preprocesses files such as coffeescript, compass... inside the .tmp directory
 .tmp
 .env
@@ -143,6 +143,10 @@ dist
 test/unit/coverage
 test/e2e/reports
 selenium-debug.log
+
+
+# Continuous integration ###
+.circleci
 
 
 ### Dropbox ###
