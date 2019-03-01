@@ -44,18 +44,6 @@ export default function A11y(_$ui) {
 		
 		let $pane = $tab.nextElementSibling;
 
-		//accomodate explicitly declared behaviours/states
-		/*if(
-			$tab.classList.contains(className.ACTIVE) || 
-			$tab.getAttribute("aria-selected") == "true" || 
-			$tab.getAttribute("aria-expanded") == "true" || 
-			$pane.getAttribute("aria-hidden") == "false"
-		) {
-			$tab.classList.add(className.ACTIVE);
-
-			clickHandler.call($tab, null, _$ui, collection);
-		};*/
-
 		//if ID attribute exists and assigned a value
 		let tabUID;
 		if($tab.id.length) {
@@ -95,7 +83,8 @@ export default function A11y(_$ui) {
 		});
 	});
 
-	var $$active = $$([
+	//accomodate explicitly declared behaviours/states
+	var $$activated = $$([
 			`${selector.TAB}.${className.ACTIVE}`,
 			`${selector.TAB}[aria-selected=true]`,
 			`${selector.TAB}[aria-expanded=true]`,
@@ -103,34 +92,30 @@ export default function A11y(_$ui) {
 		].join()
 	, _$ui).filter( (node) => node.parentNode === _$ui);
 	
-	//console.log($$active);
+	//console.log("1. $activated >> ", $$activated);
 
-	//flush out any panes and normalise to tabs only.
-	var $flushed = $$active.map( ($el, i, collection) => {
+	//Flush out any panes and normalise to tabs only.
+	var $flushed = $$activated.map( ($el, i) => {
 		if($el.classList.contains("ui__pane")) return $el.previousElementSibling;
 		
 		return $el;
 	});
 
-	//console.log("$flushed >> ", $flushed);
+	//console.log("2. $flushed >> ", $flushed);
 
-	var $purged = $flushed.filter( ($el, i, collection) => i === collection.indexOf($el) );
+	var $purged = $flushed.filter( ($el, i, nodes) => i === nodes.indexOf($el) );
 
-	//console.log("$purged >> ", $purged);
+	//console.log("3. $purged >> ", $purged);
 
 	if($purged.length > 1) window.console && console.warn("Malformed structure: You can not have more than one active pane declared on an accordion interface. Check the markup and any explicit classNames and ARIA properties in play. Only the first occurance will be enforced.");
-	//if($purged.length > 1) throw new Error("Malformed structure: You can not have more than one active pane declared on an accordion interface. Check the markup and any explicit classNames and ARIA properties in play. Only the first occurance will be enforced.");
-
-	//console.log("operating on ", $purged[0]);
 	
-	//enforce any state classes to match the ARIA
-	$$tabs.forEach( ($tab, i, collection) => {
+	//Enforce any state classes to match the ARIA
+	$$tabs.forEach( ($tab, i) => {
 		$tab.classList[$tab === $purged[0] ? 'add' : 'remove']("state__active");
 	})
 
-	//apply ARIA
+	//Apply ARIA
 	clickHandler.call($purged[0], null, _$ui, $$tabs);
-
 
 	//ARIA state management
 	function clickHandler(event, _$accordion, _$tabs) {
@@ -159,7 +144,7 @@ export default function A11y(_$ui) {
 	function focusHandler(event) {
 	}
 
-	// Public methods
+	// Public methods TBC
 	return {
 		create() {
 			console.log("create instance");

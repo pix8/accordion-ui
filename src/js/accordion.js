@@ -1,5 +1,4 @@
 import { $, $$ } from './util'
-//import Transition from './accordion.transition'
 import A11y from './accordion.a11y'
 
 import './accordion.style.scss'
@@ -7,7 +6,7 @@ import './accordion.style.scss'
 //TODO: Rejig the $tab, $pane, $toggle dom parsing in both accordion.js and a11y so they are consistent
 
 const 	NAME 			= "accordion",
-		VERSION			= "0.2.0";
+		VERSION			= "0.3.0";
 
 const 	className 		= {
 		ACTIVE: 		"state__active",
@@ -117,7 +116,7 @@ export default function uiAccordion(_selector = selector.ACCORDION) {
 		return false;
 	}
 
-	// PUBLIC METHODS
+	// PUBLIC METHODS TBC
 	return {
 		create() {
 			console.log("create instance");
