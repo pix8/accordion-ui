@@ -1,4 +1,9 @@
+# @pix8/ui-accordion
+
 # Vanilla javascript accordion
+
+[![npm (scoped)](https://img.shields.io/npm/v/@pix8/ui-accordion.svg)](https://www.npmjs.com/package/@pix8/ui-accordion)
+[![CircleCI](https://circleci.com/bb/pix8/npm.ui-accordion.svg?style=svg&circle-token=1087e02408bd932a6ad3430268cc484bd6735ba5)](https://circleci.com/bb/pix8/npm.ui-accordion)
 
 [JS Fiddle](https://jsfiddle.net/jonathanbrincat/c1h6487k/171/)
 
