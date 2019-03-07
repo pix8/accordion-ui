@@ -146,7 +146,7 @@ selenium-debug.log
 
 
 # Continuous integration ###
-.circleci
+#.circleci
 
 
 ### Dropbox ###

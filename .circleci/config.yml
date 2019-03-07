@@ -1,0 +1,120 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+
+
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:10.6
+    steps:
+      - checkout
+      - run:
+          name: The question is... does it blend??
+          command: echo "Release Master branch to staging environment"
+
+      # - run: 
+      #     name: Installing and updating environment dependencies
+      #     command: |
+      #       sudo apt-get update
+      #       sudo apt-get -y install curl build-essential libssl-dev
+
+      # Download and cache dependencies
+      # - restore_cache:
+      #     keys:
+      #     - v1-dependencies-{{ arch }}-{{ checksum "package.json" }}
+      #     # fallback to using the latest cache if no exact match is found
+      #     - v1-dependencies-{{ arch }}
+      
+      # - run:
+      #     name: Installing Node. Crunch the deployables!... Build the deployables... Deploy the deployables!!
+      #     command: |
+      #       npm test
+      #       npm run deploy
+
+      # - save_cache:
+      #     paths:
+      #       - node_modules
+      #     key: v1-dependencies-{{ arch }}-{{ checksum "package.json" }}
+
+      # - persist_to_workspace:
+      #   root: ~/repo
+      #   paths: .
+  
+  lint:
+    docker:
+      - image: circleci/node:7.10
+    steps:
+      - checkout
+      - run:
+          name: Lint source files
+          command: echo "Lint"
+
+  test:
+    docker:
+      - image: circleci/node:7.10
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: echo "Run tests"
+
+  deploy:
+    docker:
+      - image: circleci/node:7.10
+    steps:
+      - checkout
+      - run:
+          name: Deploy to staging(examples dir and storybook)
+          command: echo "Deploy!"
+
+  publish:
+    working_directory: ~/repo
+    # dependencies:
+    #   pre:
+    #     - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/repo/.npmrc
+    docker:
+      - image: circleci/node:7.10
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Authenticate with NPM registry
+          #command: |
+          #  echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+          command: |
+            echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+
+      - run:
+          name: Publish package to NPM
+          command: |
+            npm publish
+
+workflows:
+  version: 2
+  foobar:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+      - lint:
+          requires:
+            - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - lint
+            - test
+      - publish:
+          requires:
+            - lint
+            - test

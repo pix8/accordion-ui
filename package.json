@@ -8,7 +8,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@github.com:pix8/ui-accordion.git"
   },
   "files": [
     "dist"
