@@ -6,7 +6,7 @@ import './accordion.style.scss'
 //TODO: Rejig the $tab, $pane, $toggle dom parsing in both accordion.js and a11y so they are consistent
 
 const 	NAME 			= "accordion",
-		VERSION			= "0.0.2";
+		VERSION			= "0.0.4";
 
 const 	className 		= {
 		ACTIVE: 		"state__active",
