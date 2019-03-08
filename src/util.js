@@ -25,10 +25,70 @@ export const getUID = (_prefix = "_", _salt = "") => {
 /**
 * @length number; character length of the ID string to generate
 * @ASCIIorigin number; ASCII character code start boundary
-*
 */
 export const getUString = (_length = 36, _ASCIIorigin = 97 /*64 for uppercase*/) =>  [...new Array(_length)]
 		.map(
 			() => String.fromCharCode(_ASCIIorigin + Math.random() * 26) //English alphabet length
 		)
 		.join('')
+
+
+/**
+* @node DOM node; to be queried
+*/
+export function isElement(_node) {
+	// W3 DOM2
+	/*console.log("isNotUndefined ", (_node !== undefined) );
+	console.log("isNotNull ", (_node !== null) );
+	console.log("isPrototypeOf HTMLElement ", HTMLElement.prototype.isPrototypeOf(_node) );
+	
+	// Not supporting W3 DOM2
+	console.log("type of object ", (typeof _node === "object") );
+	console.log("duck test nodeName prop", (_node.nodeName) ); //not dependable
+	console.log("2: nodeType ",  (_node.nodeType === 1) );*/
+
+	return (
+		_node && typeof HTMLElement === "object" ?
+			HTMLElement.prototype.isPrototypeOf(_node) : //W3C DOM2
+
+			_node !== null && typeof _node === "object" && _node.nodeType === 1
+	);
+}
+
+
+/**
+* @node DOM node; to be queried
+*/
+export function isElement2(_node) { //including SVG
+	/*console.log("instanceof HTMLElement ", (_node instanceof HTMLElement) );
+	console.log("instanceof Element", (_node instanceof Element) );
+	console.log("instanceof HTMLDocument", (_node instanceof HTMLDocument) );
+	//console.log("prototype matches HTMLElement prototype ", (Object.getPrototypeOf(_node) == HTMLElement.prototype) );*/
+
+	// Node being evaluated could be a superset of HTMLElement
+	// Walk down the prototype hierarchy tree to evaluate the inherited prototype chain and ascertain if it is an Object of interest
+	let proto = _node;
+	while(proto && Object.getPrototypeOf(proto) !== null) {
+		proto = Object.getPrototypeOf(proto)
+		/*console.log("BOOM >> ", proto, 
+			" :isHtmlElement: ", (proto === HTMLElement.prototype), 
+			" :isElement: ", (proto === Element.prototype),
+			" :isHTMLDocument: ", (proto === HTMLDocument.prototype) );*/
+
+		if( (proto === HTMLElement.prototype) || (proto === Element.prototype) || (proto === HTMLDocument.prototype)) break;
+	};
+
+	return (
+		proto instanceof HTMLElement || proto instanceof Element || proto instanceof HTMLDocument
+	);
+}
+
+//TEST isElement routine (potential non-element nodes and entities)
+/*var nonElementArray = [1, true, "text", {}, [], 0, undefined, false, null];
+nonElementArray.forEach(function(item) {
+	console.log(item, "1 >> ", isElement(item));
+})
+
+nonElementArray.forEach(function(item) {
+	console.log(item, "2 >> ", isElement2(item));
+})*/

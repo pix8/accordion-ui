@@ -4,7 +4,13 @@
   "description": "",
   "author": "Jonathan Brincat <jb@pix8.co.uk> (http://pix8.co.uk)",
   "homepage": "",
-  "keywords": [],
+  "keywords": [
+    "accordion",
+    "ui component",
+    "javascript",
+    "accessible",
+    "aria"
+  ],
   "license": "ISC",
   "repository": {
     "type": "git",

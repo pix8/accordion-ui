@@ -29,7 +29,9 @@ Accordion component is available as a javascript module. `import`, instantiate a
 ```javascript
 import Accordion from "@pix8/ui-accordion";
 
-new Accordion(".ui__accordion");
+var $accordion = document.querySelector(".ui__accordion"); // You can use whatever selector and mechanism you so wish
+
+new Accordion($accordion); // Instantiate each accordion instance by passing the relevant HTML DOM node as a parameter 
 ```
 
 The markup should be supplemented/denoted with the following prescriptive CSS classes i.e. semantic hooks. Please note the choosen elements in this example are purely suggestive although it is strongly recommended that `ui__toggle` is allied to a `button` element to conform with the WAI-ARIA spec and to correctly attribute focus/blur natively(otherwise with the exception of an `a href`, it would be rendered unsupported).
@@ -56,8 +58,16 @@ The markup should be supplemented/denoted with the following prescriptive CSS cl
 (An example is retained in the package directory for guidance)
 
 ### Possible improvements
-* Review and improve instantiation paradigm
-* Expose public API
+* Tidy up and expand upon examples in 'examples' directory
+* Formulate and write tests
+* Closer alignment to the web component spec(custom elements) and possible translation or forking
 * Migrate event handling to event delegation
-* Expose an events API
-* Closer alignment to the web component spec(custom elements)
+* Expose lifecycle API
+* Expose events API
+* Reapply package dependent styles to inline javascript injection on the elements concered as oppose to internal stylesheet injection
+
+### Future extensions
+* Concertina UI variant (from same codebase)
+* Tabular UI variant (from same codebase)
+* Toggle functionality/behaviours ringfenced and encapsulated into distinct reusable UI component and retrofitted back in
+* Collection of UI components migrated into @pix8/ui-js (possibly as a monorepo)

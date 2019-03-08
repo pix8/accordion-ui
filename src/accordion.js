@@ -1,4 +1,4 @@
-import { $, $$ } from './util'
+import { $, $$, isElement, isElement2 } from './util'
 import A11y from './accordion.a11y'
 
 import './accordion.style.scss'
@@ -6,7 +6,7 @@ import './accordion.style.scss'
 //TODO: Rejig the $tab, $pane, $toggle dom parsing in both accordion.js and a11y so they are consistent
 
 const 	NAME 			= "accordion",
-		VERSION			= "0.0.4";
+		VERSION			= "0.1.4";
 
 const 	className 		= {
 		ACTIVE: 		"state__active",
@@ -20,52 +20,55 @@ const 	selector 		= {
 		PANE: 			".ui__pane"
 }
 
-
 /**
-* @selector "string" class selector
+* @node DOM Element node
 */
-export default function uiAccordion(_selector = selector.ACCORDION) {
+//export default function uiAccordion(_selector = selector.ACCORDION) {
+export default function uiAccordion(_node) {
 
-	// SUPPORT
+	// DOM SUPPORT
 	if(!"querySelector" in document && !"addEventListener" in window && !"classList" in document.documentElement) return;
 
+	// VALIDATE DOM node and HTML element
+	if(!isElement(_node)) return;
+	/*console.log("\n=============")
+	//console.log("accordion :: ", _node, " :: ", _node.__proto__, " :: ", Object.getPrototypeOf(_node));
+	console.log("isElement >>> ", isElement(_node) );
+	console.log("isElement2 >>> ", isElement2(_node) );*/
 
-	var $$ui = $$(_selector);
+	var $accordion = _node;
 
-	// Appraise and initialise each individual accordion nominated element found within the document
-	$$ui.length && $$ui.forEach( ($accordion, i) => {
+	// Different css class utilised as selector add `selector.ACCORDION` to the nominated root node so that dependent styles can be extrapolated
+	if( !$accordion.classList.contains(selector.ACCORDION.slice(1)) ) $accordion.classList.add(selector.ACCORDION.slice(1));
 
-		// Accessibility initilisation
-		let a11y = new A11y($accordion);
+	// WAI ARIA accessibility support initilisation
+	let a11y = new A11y($accordion);
+
+	// Subscribe events
+	let $$toggles = $$(`${selector.TAB} > ${selector.TOGGLE}`, $accordion).filter( (node) => node.parentNode.parentNode === $accordion);
+	$$toggles.forEach( ($toggle, i) => {
+
+		$toggle.addEventListener("click", function(event) {
+			event.stopPropagation();
+
+			if(this.parentElement.classList.contains(className.ACTIVE)) return false;
+
+			render.call(this.parentElement, event, $accordion); //DEVNOTE: scope reasserted
+		}, false);
+	});
 		
-		let $$toggles = $$(`${selector.TAB} > ${selector.TOGGLE}`, $accordion).filter( (node) => node.parentNode.parentNode === $accordion);
-
-		// Subscribe events
-		$$toggles.forEach( ($toggle, i) => {
-
-			$toggle.addEventListener("click", function(event) {
-				event.stopPropagation();
-
-				if(this.parentElement.classList.contains(className.ACTIVE)) return false;
-
-				render.call(this.parentElement, event, $accordion); //DEVNOTE: scope reasserted
-			}, false);
-		});
+	let $$panes = $$(selector.PANE, $accordion).filter( (node) => node.parentNode === $accordion);
+	$$panes.forEach(($pane) => {
+		$pane.addEventListener("transitionend", function(event) {
 			
-		let $$panes = $$(selector.PANE, $accordion).filter( (node) => node.parentNode === $accordion);
-		
-		$$panes.forEach(($pane) => {
-			$pane.addEventListener("transitionend", function(event) {
-				
-				let $tab = this.previousElementSibling,
-					$pane = this;
+			let $tab = this.previousElementSibling,
+				$pane = this;
 
-				if($pane.style.height && event.propertyName === "height") {
-					$pane.style.height = null;
-					$tab.classList.remove(className.TRANSITION);
-				}
-			}, false);
-		});
+			if($pane.style.height && event.propertyName === "height") {
+				$pane.style.height = null;
+				$tab.classList.remove(className.TRANSITION);
+			}
+		}, false);
 	});
 
 	// PRIVATE METHODS
@@ -116,7 +119,7 @@ export default function uiAccordion(_selector = selector.ACCORDION) {
 		return false;
 	}
 
-	// PUBLIC METHODS TBC
+	// PUBLIC LIFECYCLE METHODS
 	return {
 		create() {
 			console.log("create instance");
