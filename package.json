@@ -1,7 +1,7 @@
 {
   "name": "@pix8/ui-accordion",
   "version": "0.0.5",
-  "description": "",
+  "description": "Dependency-free JavaScript UI accordion component(a11y compliant)",
   "author": "Jonathan Brincat <jb@pix8.co.uk> (http://pix8.co.uk)",
   "homepage": "",
   "keywords": [
@@ -9,6 +9,7 @@
     "ui component",
     "javascript",
     "accessible",
+    "a11y",
     "aria"
   ],
   "license": "ISC",

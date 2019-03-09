@@ -1,12 +1,13 @@
-import { $, $$, isElement, isElement2 } from './util'
+import { $, $$, isElement } from './util'
 import A11y from './accordion.a11y'
 
 import './accordion.style.scss'
 
 //TODO: Rejig the $tab, $pane, $toggle dom parsing in both accordion.js and a11y so they are consistent
+//TODO: mock DOM with virtual-DOMesqe representation? use DOM node reference arrays?
 
 const 	NAME 			= "accordion",
-		VERSION			= "0.1.4";
+		VERSION			= "0.0.6";
 
 const 	className 		= {
 		ACTIVE: 		"state__active",
@@ -21,9 +22,8 @@ const 	selector 		= {
 }
 
 /**
-* @node DOM Element node
+* @node {HTMLElement} DOM Element node 
 */
-//export default function uiAccordion(_selector = selector.ACCORDION) {
 export default function uiAccordion(_node) {
 
 	// DOM SUPPORT
@@ -31,10 +31,6 @@ export default function uiAccordion(_node) {
 
 	// VALIDATE DOM node and HTML element
 	if(!isElement(_node)) return;
-	/*console.log("\n=============")
-	//console.log("accordion :: ", _node, " :: ", _node.__proto__, " :: ", Object.getPrototypeOf(_node));
-	console.log("isElement >>> ", isElement(_node) );
-	console.log("isElement2 >>> ", isElement2(_node) );*/
 
 	var $accordion = _node;
 
@@ -48,7 +44,7 @@ export default function uiAccordion(_node) {
 	let $$toggles = $$(`${selector.TAB} > ${selector.TOGGLE}`, $accordion).filter( (node) => node.parentNode.parentNode === $accordion);
 	$$toggles.forEach( ($toggle, i) => {
 
-		$toggle.addEventListener("click", function(event) {
+		$toggle.addEventListener("click", function(event) { //touchEnabled ? "touchend" : "click";
 			event.stopPropagation();
 
 			if(this.parentElement.classList.contains(className.ACTIVE)) return false;
@@ -119,18 +115,24 @@ export default function uiAccordion(_node) {
 		return false;
 	}
 
-	// PUBLIC LIFECYCLE METHODS
+	// PUBLIC METHODS
 	return {
+		// EVENT API
+		addEventListener(_eventType) {
+			console.log("TBC");
+		},
+		
+		// LIFECYCLE API
 		create() {
-			console.log("create instance");
+			console.log("TBC create instance");
 		},
 
 		refresh() {
-			console.log("refresh instance");
+			console.log("TBC refresh instance");
 		},
 
 		destroy() {
-			console.log("destroy instance");
+			console.log("TBC destroy instance");
 		}
 	}
 }

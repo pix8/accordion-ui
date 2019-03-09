@@ -83,6 +83,8 @@ export function isElement2(_node) { //including SVG
 	);
 }
 
+//console.log("accordion :: ", _node, " :: ", _node.__proto__, " :: ", Object.getPrototypeOf(_node)); //DEVNOTE: use of __proto__ superseded by getPrototypeOf
+
 //TEST isElement routine (potential non-element nodes and entities)
 /*var nonElementArray = [1, true, "text", {}, [], 0, undefined, false, null];
 nonElementArray.forEach(function(item) {
