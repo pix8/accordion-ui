@@ -6,7 +6,7 @@
 
 ## About
 
-A no-thrills no-spills no-frills accordion UI implemented with plain vanilla JavaScript.
+A no-thrills no-spills no-frills accordion UI implemented with plain vanilla JavaScript and fat-free; no external dependencies.
 
 No embellishments. No configuration. This is not a plugin. Think more shim for the HTML equivalent of an accordion element - if such a thing existed. Non-intrusive. Unopinionated and standards compliant - specifically strictly abides by standard browser behaviours and complies with the [WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#accordion). WAI-ARIA compliance has been implemented as a separate ES6(ES2015) module and can be removed if so desired without breaking core UI functionality. Similarly the transition mechanics are encapsulated, supported by signposting and intended to be orchestrated exclusively from the donor CSS stylesheets.
 
@@ -56,6 +56,14 @@ The markup should be supplemented/denoted with the following prescriptive CSS cl
 ```
 
 (An example is retained in the package directory for guidance)
+
+Styling bundled with this package are discreetly and quite deliberately limited to what is strictly necessary to make an accordion component work and to compliment driven behaviour. Any stylistic overtures should be implemented by the author at the consumption layer i.e. at application/projec level - yes this includes any desired transitions and animated effects.
+
+The footprint is kept intentionally minimal to relieve the cognitive investment in consuming this component. There is no configuration object or customisation available or on offer. And I intend to keep it this way. Consuming the accordion component is inspired by conventional and established wisdoms, simultaneous embracing both the KISS and DRY ethos. Why attempt to reinvent the wheel when you should just embrace standard web authoring practise? Makes no sense. Therefore if you want to selectively activate an accordion pane do so on the markup. Either add the enabling class or alternatively the presence of any of the applicable ARIA states will trigger a role of applied intention, and do this for you automagically with javascript. Of course I acknowledge there are limitations to this "Stalinist" approach - most pressing being the inflexibility in prescriptive css class declarations - however I will try to weed out any shortcomings over time.
+
+## Browser support
+Quite frankly I'm not following any mantra here other than following best practise, using my initiative to research specific areas if there is doubt and applying my cool old wise developer's head. There is no bar set other than it should be compatible with most modern web browsers and devices. Such formalities will kill my buzz and bring back haunting memories of ie6/7/8 conformity from my development youth. Please feel free to chip in by launching an ticket on [Github](https://github.com/pix8/ui-accordion/issues) if you encounter an issue. Thanks.
+
 
 ### Possible improvements
 * Tidy up and expand upon examples in 'examples' directory
