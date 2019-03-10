@@ -4,6 +4,7 @@
 #
 version: 2
 
+#TODO: set up deploy task to release to CDN + versioned -> cdn.pix8.co.uk
 
 jobs:
   build:

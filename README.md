@@ -42,7 +42,7 @@ var $accordion = document.querySelector(".ui__accordion"); // You can use whatev
 new Accordion($accordion); // Instantiate each accordion instance by passing the relevant HTML DOM node as a parameter 
 ```
 
-The markup should structured and furnished with the following descriptive CSS classes i.e. semantic hooks. Please note the choosen elements in this example are purely suggestive although it is strongly recommended that `ui__toggle` is allied to a `button` element to conform with the WAI-ARIA spec and to correctly attribute focus/blur natively(otherwise with the exception of an `a href`, it would be rendered unsupported).
+The markup should be structured and furnished with the following descriptive CSS classes i.e. semantic hooks. Please note the choosen elements in this example are purely arbitrary although it is strongly recommended that `ui__toggle` is allied to a `button` element to conform with the WAI-ARIA spec and to correctly attribute focus/blur natively(otherwise with the exception of an `a href`, it would be rendered unsupported).
 ```html
 <dl class="ui__accordion">
 	<dt class="ui__tab">
@@ -83,7 +83,7 @@ Quite frankly I'm not following any mantra here other than following best practi
 * Expose lifecycle API
 * Expose events API
 * Persistant active pane for hard refresh or bookmarking(hash url? local storage?)
-* Reapply package dependent styles to inline javascript injection on the elements concered as oppose to internal stylesheet injection
+* Reapply package dependent styles to inline javascript injection on the elements concerned as oppose to internal stylesheet injection
 * Seamless integration with MV* libraries - react, vue - removing the need to compose specialised derivatives of the same darn thing
 
 ### Future extensions
