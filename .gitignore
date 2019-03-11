@@ -132,7 +132,7 @@ yarn-error.log*
 
 ### Development Tooling ###
 # Workflow
-dist
+#dist
 build
 # Grunt usually preprocesses files such as coffeescript, compass... inside the .tmp directory
 .tmp
