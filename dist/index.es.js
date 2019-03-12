@@ -1,8 +1,6 @@
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-var _typeof_1 = createCommonjsModule(function (module) {
+}var _typeof_1 = createCommonjsModule(function (module) {
 function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 function _typeof(obj) {
@@ -20,9 +18,7 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
-});
-
-var $ = function $(_selector) {
+});var $ = function $(_selector) {
   var _el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
 
   return _el.querySelector(_selector);
@@ -79,9 +75,7 @@ nonElementArray.forEach(function(item) {
 
 nonElementArray.forEach(function(item) {
 	console.log(item, "2 >> ", isElement2(item));
-})*/
-
-var className = {
+})*/var className = {
   ACTIVE: "state__active",
   TRANSITION: "state__transition"
 };
@@ -195,9 +189,7 @@ function A11y(_$ui) {
       console.log("destroy instance");
     }
   };
-}
-
-function styleInject(css, ref) {
+}function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
 
@@ -222,12 +214,8 @@ function styleInject(css, ref) {
   } else {
     style.appendChild(document.createTextNode(css));
   }
-}
-
-var css = ".ui__accordion .ui__tab {\n  position: relative; }\n  .ui__accordion .ui__tab .ui__toggle {\n    display: block;\n    cursor: pointer; }\n\n.ui__accordion .ui__pane {\n  position: relative;\n  overflow: hidden; }\n\n.ui__accordion .ui__tab:not([aria-expanded=true]):not([aria-selected=true]):not(.state__active):not(.state__transition) + .ui__pane,\n.ui__accordion .ui__tab:not([aria-expanded=true]):not([aria-selected=true]):not(.state__active):not(.state__transition) + [aria-hidden=true] {\n  height: 0;\n  display: none; }\n";
-styleInject(css);
-
-var className$1 = {
+}var css = ".ui__accordion .ui__tab {\n  position: relative; }\n  .ui__accordion .ui__tab .ui__toggle {\n    display: block;\n    cursor: pointer; }\n\n.ui__accordion .ui__pane {\n  position: relative;\n  overflow: hidden; }\n\n.ui__accordion .ui__tab:not([aria-expanded=true]):not([aria-selected=true]):not(.state__active):not(.state__transition) + .ui__pane,\n.ui__accordion .ui__tab:not([aria-expanded=true]):not([aria-selected=true]):not(.state__active):not(.state__transition) + [aria-hidden=true] {\n  height: 0;\n  display: none; }\n";
+styleInject(css);var className$1 = {
   ACTIVE: "state__active",
   TRANSITION: "state__transition"
 };
@@ -335,6 +323,4 @@ function uiAccordion(_node) {
       console.log("TBC destroy instance");
     }
   };
-}
-
-export default uiAccordion;
+}export default uiAccordion;

@@ -1,3 +1,6 @@
+/* eslint-disable */
+'use strict';
+
 import alias from 'rollup-plugin-alias'
 import paths from 'rollup-plugin-includepaths'
 import resolve from 'rollup-plugin-node-resolve'
@@ -10,21 +13,23 @@ import url from 'rollup-plugin-url' 							//https://github.com/rollup/rollup-pl
 //import image from 'rollup-plugin-image'						//https://github.com/rollup/rollup-plugin-image [official but seems unsupported]
 //import svg from 'rollup-plugin-svg'							//https://github.com/antony/rollup-plugin-svg#readme
 import json from 'rollup-plugin-json'							//https://github.com/rollup/rollup-plugin-json
-
-
+//import { uglify } from "rollup-plugin-uglify"
 
 import pkg from './package.json'
+
+
+const 	ENV = process.env.NODE_ENV;
 
 export default {
 	input: 'src/index.js',
 	
 	output: [
 		{
-			file: pkg.main,
+			file: 'dist/'+pkg.main,
 			format: 'cjs'
 		},
 		{
-			file: pkg.module,
+			file: 'dist/'+pkg.module,
 			format: 'es'
 		}
 	],
@@ -64,6 +69,7 @@ export default {
 		//image(),
 		//svg(),
 		json(),
+		//uglify(),
 
 		paths({
 			paths: ['src'],

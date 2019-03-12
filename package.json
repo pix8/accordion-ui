@@ -20,14 +20,14 @@
   "files": [
     "dist"
   ],
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "jsnext:main": "dist/index.es.js",
+  "main": "index.js",
+  "module": "index.es.js",
+  "jsnext:main": "index.es.js",
   "scripts": {
     "start": "rollup -c -w ",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "jest --env=jsdom",
-    "build": "rollup -c",
+    "build": "rollup -c --compact",
     "release:patch": "npm run version:patch && git push --follow-tags origin develop",
     "release:minor": "npm run version:minor && git push --follow-tags origin develop",
     "release:major": "npm run version:major && git push --follow-tags origin develop"
@@ -60,6 +60,7 @@
     "rollup-plugin-postcss": "^1.6.2",
     "rollup-plugin-pug": "^1.1.0",
     "rollup-plugin-scss": "^0.4.0",
+    "rollup-plugin-uglify": "^6.0.2",
     "rollup-plugin-url": "^2.1.0",
     "rollup-plugin-vue": "^4.3.2",
     "vue-loader": "^15.4.2",
