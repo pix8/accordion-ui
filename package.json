@@ -31,7 +31,9 @@
     "release:minor": "npm run version:minor && git push --follow-tags origin develop",
     "release:major": "npm run version:major && git push --follow-tags origin develop"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@babel/runtime": "^7.3.4"
+  },
   "devDependencies": {
     "@babel/core": "^7.1.6",
     "@babel/plugin-external-helpers": "^7.0.0",
