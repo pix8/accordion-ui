@@ -1,0 +1,81 @@
+{
+  "name": "@pix8/ui-accordion",
+  "version": "0.0.7",
+  "description": "Dependency-free JavaScript UI accordion component(a11y compliant)",
+  "author": "Jonathan Brincat <jb@pix8.co.uk> (http://pix8.co.uk)",
+  "homepage": "",
+  "keywords": [
+    "accordion",
+    "ui component",
+    "javascript",
+    "accessible",
+    "a11y",
+    "aria"
+  ],
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:pix8/ui-accordion.git"
+  },
+  "files": [],
+  "main": "index.js",
+  "module": "index.es.js",
+  "jsnext:main": "index.es.js",
+  "scripts": {
+    "start": "rollup -c -w & JEKYLL_ENV=development bundle exec jekyll serve",
+    "start2": "webpack -w --mode 'development' & JEKYLL_ENV=development bundle exec jekyll serve",
+    "rollup": "rollup -c -w",
+    "webpack": "webpack -c -w",
+    "test": "jest --env=jsdom",
+    "build": "rollup -c --compact && JEKYLL_ENV=production bundle exec jekyll build",
+    "build2": "webpack -c && JEKYLL_ENV=production bundle exec jekyll build",
+    "release:patch": "npm run version:patch && git push --follow-tags origin develop",
+    "release:minor": "npm run version:minor && git push --follow-tags origin develop",
+    "release:major": "npm run version:major && git push --follow-tags origin develop"
+  },
+  "dependencies": {
+    "normalize.css": "^8.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-external-helpers": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/plugin-proposal-decorators": "^7.1.6",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.1.0",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "babel-preset-vue": "^2.0.2",
+    "chokidar": "^2.0.4",
+    "pug": "^2.0.3",
+    "pug-plain-loader": "^1.0.0",
+    "rollup": "^0.67.3",
+    "rollup-plugin-alias": "^1.4.0",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-includepaths": "^0.2.3",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-postcss": "^1.6.2",
+    "rollup-plugin-pug": "^1.1.0",
+    "rollup-plugin-scss": "^0.4.0",
+    "rollup-plugin-uglify": "^6.0.2",
+    "rollup-plugin-url": "^2.1.0",
+    "rollup-plugin-vue": "^4.3.2",
+    "vue-loader": "^15.4.2",
+    "vue-template-compiler": "^2.5.17",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3"
+  },
+  "peerDependencies": {},
+  "engines": {
+    "node": ">= 8.0.0",
+    "npm": ">= 5.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
