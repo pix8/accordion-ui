@@ -65,7 +65,7 @@ The markup should be structured and furnished with the following descriptive CSS
 
 (An example is retained in the package directory for guidance)
 
-Styling bundled with this package are discreetly and quite deliberately limited to what is strictly necessary to make an accordion component work and to compliment driven behaviour. Any stylistic overtures should be implemented by the author at the consumption layer i.e. at application/projec level - yes this includes any desired transitions and animated effects.
+Styling bundled with this package are discreetly and quite deliberately limited to what is strictly necessary to make an accordion component work and to compliment driven behaviour. Any stylistic overtures should be implemented by the author at the consumption layer i.e. at application/project level - yes this includes any desired transitions and animated effects.
 
 The footprint is kept intentionally minimal to relieve the cognitive investment in consuming this component. There is no configuration object or customisation available or on offer. And I intend to keep it this way. Consuming the accordion component is inspired by conventional and established wisdoms, simultaneous embracing both the KISS and DRY ethos. Why attempt to reinvent the wheel when you should just embrace standard web authoring practise? Makes no sense. Therefore if you want to selectively activate an accordion pane do so on the markup. Either add the enabling class or alternatively the presence of any of the applicable ARIA states will trigger a role of applied intention, and do this for you automagically with javascript. Of course I acknowledge there are limitations to this "Stalinist" approach - most pressing being the inflexibility in prescriptive css class declarations - however I will try to weed out any shortcomings over time.
 
@@ -75,8 +75,8 @@ Quite frankly I'm not following any mantra here other than following best practi
 
 ### Possible improvements
 * Tidy up and expand upon examples in 'examples' directory
-* Dedicated demo page
-* Dispense on CDN
+* Dedicated demo/Github page
+* Distribute on CDN
 * Formulate and write tests
 * Closer alignment to the web component spec(custom elements) and possible translation or forking
 * Migrate event handling to event delegation
@@ -91,3 +91,7 @@ Quite frankly I'm not following any mantra here other than following best practi
 * Tabular UI variant (shared from same codebase)
 * Toggle functionality/behaviours ringfenced and encapsulated into distinct reusable UI component and retrofitted back in
 * Collection of UI components migrated into @pix8/ui-js (possibly as a monorepo)
+
+## License
+
+All I ask in return for publishing and maintaining this module is kudos and respect. 🤘 Peace out.
