@@ -1,0 +1,94 @@
+/*
+*	Compressed and generated using grunt.js sass/compress build tools
+*
+*	@title: 	styles.main.scss (partial)
+* 	@project: 	
+* 	@author: 	Jonathan Brincat@pix8.co.uk, <jonathan@pix8.co.uk>
+**/
+@charset "UTF-8";
+
+
+/* =============================================================================
+	Core
+	========================================================================== */
+html, body {
+	background: #FFF none;
+}
+
+html {
+	font: 62.5%/1 helvetica, arial, sans-serif;
+	color: #333;
+}
+
+body{
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+/* =============================================================================
+	Masthead
+	========================================================================== */
+#app--masthead {
+	padding: 10px;
+}
+
+/* =============================================================================
+	Footer(Site/app)
+	========================================================================== */
+#app--footer{
+	background-color: #000;
+	color: #FFF;
+	padding: 10px;
+}
+
+/* ========================================= Page > content */
+#app--content{
+}
+	main {
+		width: 60%;
+  		margin: 0 auto;
+  		flex: 1;
+
+  		display: flex;
+		flex-direction: column;
+  		//justify-content: center;
+	}
+
+	#app--main {
+	}
+
+/* ========================================= <project> */
+h2 {
+	font-size: 1.1rem;
+	font-weight: 300;
+	text-transform: uppercase;
+	color: #CCC;
+}
+
+p {
+	margin: 1em 0;
+}
+
+p, li, dt, dd {
+	font-size: 1.4rem;
+	margin: 1em 0;
+}
+
+a {
+	color: #A7C55D;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;;
+	}
+}
+
+@mixin list-unstyled {
+	list-style: none;
+	padding-left: 0;
+}
+
+.list-unstyled {
+	@include list-unstyled;
+}

@@ -1,0 +1,33 @@
+---
+---
+//DEVNOTE: imports are relative to "sass_dir"("_sass" directory as default) in project root
+
+/*
+*
+*	@title: 	
+* 	@project: 	github pages - minimal theme
+* 	@author:	github
+**/
+
+@import "jekyll-theme-minimal";
+
+/*
+*
+*	@title: 	main.scss
+* 	@project: 	accordion-ui
+* 	@author:	pix8
+**/
+
+//@import '../node_modules/normalize.css/normalize.css';
+
+$color__primary: 		#A7C55D;
+$color__secondary: 		#EC008C;
+$color__base: 			#888888;
+
+@import 'styles.main';
+@import 'ui.accordion';
+@import 'app.theme';
+
+.current {
+	color: green;
+}
