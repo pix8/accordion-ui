@@ -4,16 +4,16 @@
 import alias from 'rollup-plugin-alias'
 import paths from 'rollup-plugin-includepaths'
 import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
+// import commonjs from 'rollup-plugin-commonjs'
 import babel from 'rollup-plugin-babel'							//https://github.com/rollup/rollup-plugin-babel
-import vue from 'rollup-plugin-vue'								//https://github.com/vuejs/rollup-plugin-vue
-//import sass from 'rollup-plugin-scss'							//https://github.com/thgh/rollup-plugin-scss
+// import vue from 'rollup-plugin-vue'							//https://github.com/vuejs/rollup-plugin-vue
+// import sass from 'rollup-plugin-scss'						//https://github.com/thgh/rollup-plugin-scss
 import postcss from 'rollup-plugin-postcss'						//https://github.com/egoist/rollup-plugin-postcss //DEVNOTE: postcss can use preprocessors i.e. node-sass
 import url from 'rollup-plugin-url' 							//https://github.com/rollup/rollup-plugin-url
-//import image from 'rollup-plugin-image'						//https://github.com/rollup/rollup-plugin-image [official but seems unsupported]
-//import svg from 'rollup-plugin-svg'							//https://github.com/antony/rollup-plugin-svg#readme
+// import image from 'rollup-plugin-image'						//https://github.com/rollup/rollup-plugin-image [official but seems unsupported]
+// import svg from 'rollup-plugin-svg'							//https://github.com/antony/rollup-plugin-svg#readme
 import json from 'rollup-plugin-json'							//https://github.com/rollup/rollup-plugin-json
-//import { uglify } from "rollup-plugin-uglify"
+// import { uglify } from "rollup-plugin-uglify"
 
 import pkg from './package.json'
 
@@ -42,11 +42,11 @@ export default {
 	},
 
 	external: [					//treat as external dependencies and do not bundled with module
-		'react',
-		'react-dom',
-		'prop-types',
-		'styled-components',
-		'vue'
+		// 'react',
+		// 'react-dom',
+		// 'prop-types',
+		// 'styled-components',
+		// 'vue'
 	],
 
 	plugins: [
@@ -56,8 +56,8 @@ export default {
 			runtimeHelpers: true,
 			externalHelpers: true
 		}),
-		commonjs(),
-		vue(),
+		// commonjs(),
+		// vue(),
 		postcss(),
 		// sass({
 		// 	output: false
@@ -66,10 +66,10 @@ export default {
 			limit: 10 * 1024//, 	//convert(base64/data-uri) and inline files that are  < 10k, copy files > 10k; else copied to destination folder and hashed filename generated + inserted
 			//include: [] 			//default .svg, .png, .jpg and .gif
 		}),
-		//image(),
-		//svg(),
+		// image(),
+		// svg(),
 		json(),
-		//uglify(),
+		// uglify(),
 
 		paths({
 			paths: ['src'],
