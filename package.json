@@ -1,6 +1,6 @@
 {
   "name": "@pix8/ui-accordion_gh-pages",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Dependency-free JavaScript UI accordion component(a11y compliant)",
   "author": "Jonathan Brincat <jb@pix8.co.uk> (http://pix8.co.uk)",
   "homepage": "https://pix8.github.io/ui-accordion/",
@@ -34,7 +34,7 @@
     "release:major": "npm run version:major && git push --follow-tags origin develop"
   },
   "dependencies": {
-    "@pix8/ui-accordion": "0.0.9",
+    "@pix8/ui-accordion": "0.0.10",
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {
