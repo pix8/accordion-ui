@@ -1,1 +1,0 @@
-!function(n){"use strict";n=n&&n.hasOwnProperty("default")?n.default:n,document.documentElement.classList.remove("client__no-js");var e=document.querySelectorAll(".ui__accordion");[].forEach.call(e,function(e,c){new n(e)})}(Accordion);

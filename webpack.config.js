@@ -8,11 +8,11 @@ const 	path 						= require('path');
 
 module.exports = {
 	entry: {
-		'scripts/app.bundle': path.resolve(__dirname, './src/assets/_js/index')
+		'scripts/app.bundle': path.resolve(__dirname, './assets/_js/index')
 	},
 
 	output: {
-		path: path.resolve(__dirname, './src/assets'),
+		path: path.resolve(__dirname, './assets'),
 		filename: '[name].js'
 	},
 

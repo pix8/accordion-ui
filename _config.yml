@@ -18,7 +18,7 @@ defaults:
     values:
       layout: "default"
 
-source: ./src
+#source: ./src
 
 #destination: ./public
 
@@ -44,7 +44,6 @@ logo: /assets/img/logo.png
 description: Minimal is a theme for GitHub Pages.
 show_downloads: true
 google_analytics:
-#theme: jekyll-theme-minimal
 
 repository: pix8/ui-accordion
-theme: jekyll-theme-minimal
+#theme: jekyll-theme-minimal

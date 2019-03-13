@@ -21,11 +21,11 @@ import pkg from './package.json'
 const 	ENV = process.env.NODE_ENV;
 
 export default {
-	input: 'src/assets/_js/index.js', //'src/index.js',
+	input: 'assets/_js/index.js',
 	
 	output: [
 		{
-			file: 'src/assets/scripts/roll.app.bundle.js', //'dist/'+pkg.main,
+			file: 'assets/scripts/roll.app.bundle.js', //'dist/'+pkg.main,
 			format: 'iife',
 			compact: true
 		}
@@ -33,7 +33,7 @@ export default {
 
 	watch:{
 		chokidar: {
-			paths: 'src/**'
+			paths: 'assets/_js/**'
 		},
 		exclude: 'node_modules/**'
 	},
