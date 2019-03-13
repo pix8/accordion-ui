@@ -1,26 +1,16 @@
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-var _typeof_1 = createCommonjsModule(function (module) {
-function _typeof2(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
-
 function _typeof(obj) {
-  if (typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol") {
-    module.exports = _typeof = function _typeof(obj) {
-      return _typeof2(obj);
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function (obj) {
+      return typeof obj;
     };
   } else {
-    module.exports = _typeof = function _typeof(obj) {
-      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : _typeof2(obj);
+    _typeof = function (obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
     };
   }
 
   return _typeof(obj);
 }
-
-module.exports = _typeof;
-});
 
 var $ = function $(_selector) {
   var _el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
@@ -67,8 +57,8 @@ function isElement(_node) {
   console.log("type of object ", (typeof _node === "object") );
   console.log("duck test nodeName prop", (_node.nodeName) ); //not dependable
   console.log("2: nodeType ",  (_node.nodeType === 1) );*/
-  return _node && (typeof HTMLElement === "undefined" ? "undefined" : _typeof_1(HTMLElement)) === "object" ? HTMLElement.prototype.isPrototypeOf(_node) : //W3C DOM2
-  _node !== null && _typeof_1(_node) === "object" && _node.nodeType === 1;
+  return _node && (typeof HTMLElement === "undefined" ? "undefined" : _typeof(HTMLElement)) === "object" ? HTMLElement.prototype.isPrototypeOf(_node) : //W3C DOM2
+  _node !== null && _typeof(_node) === "object" && _node.nodeType === 1;
 }
 //TEST isElement routine (potential non-element nodes and entities)
 
@@ -169,9 +159,11 @@ function A11y(_$ui) {
   clickHandler.call($purged[0], null, _$ui, $$tabs); //ARIA state management
 
   function clickHandler(event, _$accordion, _$tabs) {
-    //DEVNOTE: TODO: replace :scope as support is not assured
-    var $$tabs = $$(":scope > ".concat(selector.TAB), _$accordion),
-        $target = this;
+    var $$tabs = $$("".concat(selector.TAB), _$accordion).filter(function (node, i) {
+      return node.parentNode === _$accordion;
+    }),
+        //$$(`:scope > ${selector.TAB}`, _$accordion),
+    $target = this;
 
     _$tabs.forEach(function ($tab, i) {
       $tab.setAttribute("aria-selected", $tab === $target);
@@ -279,9 +271,11 @@ function uiAccordion(_node) {
   }); // PRIVATE METHODS
 
   function render(event, _$accordion) {
-    //DEVNOTE: TODO: replace :scope as support is not assured
-    var $$tabs = $$(":scope > ".concat(selector$1.TAB), _$accordion),
-        $target = this;
+    var $$tabs = $$("".concat(selector$1.TAB), _$accordion).filter(function (node, i) {
+      return node.parentNode === _$accordion;
+    }),
+        //$$(`:scope > ${selector.TAB}`, _$accordion),
+    $target = this;
     $$tabs.forEach(function ($tab, i) {
       var $pane = $tab.nextElementSibling; // If tab/pane IS active set height explicitly; add the state__transition class; set the height explicitly to 0;
 

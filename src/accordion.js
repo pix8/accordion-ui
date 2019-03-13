@@ -70,8 +70,7 @@ export default function uiAccordion(_node) {
 	// PRIVATE METHODS
 	function render(event, _$accordion) {
 		
-		//DEVNOTE: TODO: replace :scope as support is not assured
-		let $$tabs = $$(`:scope > ${selector.TAB}`, _$accordion),
+		let $$tabs = $$(`${selector.TAB}`, _$accordion).filter( (node, i) => node.parentNode === _$accordion), //$$(`:scope > ${selector.TAB}`, _$accordion),
 			$target = this;
 
 		$$tabs.forEach( ($tab, i) => {
