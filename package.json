@@ -22,6 +22,7 @@
   "module": "index.es.js",
   "jsnext:main": "index.es.js",
   "scripts": {
+    "postinstall": "npm install @pix8/ui-accordion --save-dev",
     "start": "rollup -c -w & JEKYLL_ENV=development bundle exec jekyll serve",
     "start2": "webpack -w --mode 'development' & JEKYLL_ENV=development bundle exec jekyll serve",
     "jekyll": "JEKYLL_ENV=development bundle exec jekyll serve",
@@ -35,7 +36,6 @@
     "release:major": "npm run version:major && git push --follow-tags origin develop"
   },
   "dependencies": {
-    "@pix8/ui-accordion": "0.0.10",
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {
