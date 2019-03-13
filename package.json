@@ -43,13 +43,8 @@
     "@babel/plugin-proposal-export-default-from": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.6",
-    "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.4",
-    "babel-preset-vue": "^2.0.2",
     "chokidar": "^2.0.4",
     "node-sass": "^4.10.0",
-    "pug": "^2.0.3",
-    "pug-plain-loader": "^1.0.0",
     "rollup": "^0.67.3",
     "rollup-plugin-alias": "^1.4.0",
     "rollup-plugin-babel": "^4.0.3",
@@ -58,13 +53,10 @@
     "rollup-plugin-json": "^3.1.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-postcss": "^1.6.2",
-    "rollup-plugin-pug": "^1.1.0",
     "rollup-plugin-scss": "^0.4.0",
     "rollup-plugin-uglify": "^6.0.2",
     "rollup-plugin-url": "^2.1.0",
-    "rollup-plugin-vue": "^4.3.2",
-    "vue-loader": "^15.4.2",
-    "vue-template-compiler": "^2.5.17"
+    "rollup-plugin-vue": "^4.3.2"
   },
   "peerDependencies": {},
   "engines": {
