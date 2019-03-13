@@ -144,7 +144,7 @@ test/unit/coverage
 test/e2e/reports
 selenium-debug.log
 #jekyll
-#_site
+_site
 
 
 # Continuous integration ###
