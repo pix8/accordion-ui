@@ -2,6 +2,12 @@
 ---
 //DEVNOTE: imports are relative to "sass_dir"("_sass" directory as default) in project root
 
+$color__primary: 		#A7C55D;
+$color__secondary: 		#EC008C;
+$color__base: 			#888888;
+
+$color__white: 			#FFF;
+
 /*
 *
 *	@title: 	
@@ -19,10 +25,6 @@
 **/
 
 //@import '../node_modules/normalize.css/normalize.css';
-
-$color__primary: 		#A7C55D;
-$color__secondary: 		#EC008C;
-$color__base: 			#888888;
 
 @import 'styles.main';
 @import 'ui.accordion';

@@ -24,6 +24,7 @@
   "scripts": {
     "start": "rollup -c -w & JEKYLL_ENV=development bundle exec jekyll serve",
     "start2": "webpack -w --mode 'development' & JEKYLL_ENV=development bundle exec jekyll serve",
+    "jekyll": "JEKYLL_ENV=development bundle exec jekyll serve",
     "rollup": "rollup -c -w",
     "webpack": "webpack -c -w",
     "test": "jest --env=jsdom",
