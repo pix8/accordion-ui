@@ -41,6 +41,7 @@ exclude: [
 
 title: '@pix8/UI Accordion'
 #logo: /assets/img/logo.png
+logo: /assets/img/pixie-dust.gif
 description: Minimal is a theme for GitHub Pages.
 show_downloads: true
 google_analytics:
