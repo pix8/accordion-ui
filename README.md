@@ -33,7 +33,7 @@ yarn add @pix8/ui-accordion
 
 #### CDN
 ```html
-	https://unpkg.com/@pix8/ui-accordion@0.0.13/dist/index.umd.js
+https://unpkg.com/@pix8/ui-accordion@0.0.13/dist/index.umd.js
 ```
 Note: package will be available off the global(window) namespace as `uiAccordion`.
 
