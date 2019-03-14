@@ -132,7 +132,10 @@ yarn-error.log*
 
 ### Development Tooling ###
 # Workflow
-#dist
+#dist #dist is release for CDN deployment
+#ignore es modules and commonjs in dist folder(NOTE: if .npmignore file exists NPM will override .gitignore)
+*.esm.js
+*.cjs.js
 build
 # Grunt usually preprocesses files such as coffeescript, compass... inside the .tmp directory
 .tmp

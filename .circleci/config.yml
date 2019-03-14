@@ -97,7 +97,7 @@ jobs:
 
 workflows:
   version: 2
-  foobar:
+  goBabyGo:
     jobs:
       - build:
           filters:

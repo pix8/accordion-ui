@@ -7,7 +7,7 @@ import './accordion.style.scss'
 //TODO: mock DOM with virtual-DOMesqe representation? use DOM node reference arrays?
 
 const 	NAME 			= "accordion",
-		VERSION			= "0.0.11";
+		VERSION			= "0.0.12";
 
 const 	className 		= {
 		ACTIVE: 		"state__active",

@@ -75,6 +75,7 @@ Quite frankly I'm not following any mantra here other than following best practi
 
 ### Possible improvements
 * Distribute on CDN
+* Lint routines
 * Formulate and write tests
 * Closer alignment to the web component spec(custom elements) and possible translation or forking
 * Migrate event handling to event delegation
