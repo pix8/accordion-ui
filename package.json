@@ -33,7 +33,7 @@
     "build2": "webpack -c && JEKYLL_ENV=production bundle exec jekyll build"
   },
   "dependencies": {
-    "@pix8/ui-accordion": "0.0.12",
+    "@pix8/ui-accordion": "0.0.13",
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {
