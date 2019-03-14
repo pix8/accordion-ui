@@ -17,6 +17,19 @@ function _typeof(obj) {
 var $ = function $(_selector) {
   var _el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
 
+  var regex = /:scope(?![\w-])/gi;
+
+  if (_selector && regex.test(_selector)) {
+    //using :scope so test for support and polyfill if necessary
+    try {
+      // check browser for :scope support
+      document.querySelector(':scope body');
+    } catch (error) {
+      // unsupported => polyfill
+      return POLYFILL.scope.call(_el, _selector, "querySelector");
+    }
+  }
+
   return _el.querySelector(_selector);
 }; // DOM selection helper methods; Nodelist is an array-like object - this will return a shallow copy as an array type.
 
@@ -28,11 +41,11 @@ var $$ = function $$(_selector) {
   if (_selector && regex.test(_selector)) {
     //using :scope so test for support and polyfill if necessary
     try {
-      // test for :scope support
+      // check browser for :scope support
       document.querySelector(':scope body');
     } catch (error) {
       // unsupported => polyfill
-      return POLYFILL.scope.call(_el, _selector, "querySelectorAll");
+      return [].slice.call(POLYFILL.scope.call(_el, _selector, "querySelectorAll"));
     }
   }
 
@@ -48,17 +61,16 @@ var POLYFILL = {
     var nodeList = this[_method].call(this, _query);
 
     this.removeAttribute(attr);
-    return [].slice.call(nodeList);
+    return nodeList;
   }
+  /**
+  * @prefix "string"
+  * @salt "string"/number
+  * return unique-like(high entropy) identifier; random number and timedatestamp converted to base36(represents full alphanumeric spectrum for encoding for minimal bit footprint) and concatenated;
+  * an optional 'salt' can also be thrown into the mixing pot to help enforce entropy.
+  */
+
 };
-/**
-* @prefix "string"
-* @salt "string"/number
-* return unique-like(high entropy) identifier; random number and timedatestamp converted to base36(represents full alphanumeric spectrum for encoding for minimal bit footprint) and concatenated;
-* an optional 'salt' can also be thrown into the mixing pot to help enforce entropy.
-*/
-
-
 var getUID = function getUID() {
   var _prefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "_";
 
@@ -114,12 +126,10 @@ var selector = {
 
 };
 function A11y(_$ui) {
-  var $$tabs = $$(selector.TAB, _$ui).filter(function (node) {
-    return node.parentNode === _$ui;
-  }),
-      $$panes = $$(selector.PANE, _$ui).filter(function (node) {
-    return node.parentNode === _$ui;
-  }); // declare ARIA attributes/metadata
+  //var 	$$tabs = $$(selector.TAB, _$ui).filter( (node) => node.parentNode === _$ui),
+  //		$$panes = $$(selector.PANE, _$ui).filter( (node) => node.parentNode === _$ui);
+  var $$tabs = $$(":scope > ".concat(selector.TAB), _$ui),
+      $$panes = $$(":scope > ".concat(selector.PANE), _$ui); // declare ARIA attributes/metadata
 
   _$ui.setAttribute("role", "tablist");
 
@@ -164,34 +174,32 @@ function A11y(_$ui) {
     });
   }); //accomodate explicitly declared behaviours/states
 
-  var $$activated = $$(["".concat(selector.TAB, ".").concat(className.ACTIVE), "".concat(selector.TAB, "[aria-selected=true]"), "".concat(selector.TAB, "[aria-expanded=true]"), "".concat(selector.PANE, "[aria-hidden=false]")].join(), _$ui).filter(function (node) {
+  var $$activatedCollection = $$(["".concat(selector.TAB, ".").concat(className.ACTIVE), "".concat(selector.TAB, "[aria-selected=true]"), "".concat(selector.TAB, "[aria-expanded=true]"), "".concat(selector.PANE, "[aria-hidden=false]")].join(), _$ui).filter(function (node) {
     return node.parentNode === _$ui;
-  }); //console.log("1. $activated >> ", $$activated);
+  }); //console.log("1. $activated >> ", $$activatedCollection);
   //Flush out any panes and normalise to tabs only.
 
-  var $flushed = $$activated.map(function ($el, i) {
+  var $activatedTabs = $$activatedCollection.map(function ($el, i) {
     if ($el.classList.contains("ui__pane")) return $el.previousElementSibling;
     return $el;
-  }); //console.log("2. $flushed >> ", $flushed);
+  }); //console.log("2. $activatedTabs >> ", $activatedTabs);
 
-  var $purged = $flushed.filter(function ($el, i, nodes) {
+  var $targetTab = $activatedTabs.filter(function ($el, i, nodes) {
     return i === nodes.indexOf($el);
-  }); //console.log("3. $purged >> ", $purged);
+  }); //console.log("3. $targetTab >> ", $targetTab);
 
-  if ($purged.length > 1) window.console && console.warn("Malformed structure: You can not have more than one active pane declared on an accordion interface. Check the markup and any explicit classNames and ARIA properties in play. Only the first occurance will be enforced."); //Enforce any state classes to match the ARIA
+  if ($targetTab.length > 1) window.console && console.warn("Malformed structure: You can not have more than one active pane declared on a singular accordion interface. Check the markup and any explicit classNames and ARIA properties in play. Only the first occurance will be enforced."); //Enforce any state classes to match the ARIA
 
   $$tabs.forEach(function ($tab, i) {
-    $tab.classList[$tab === $purged[0] ? 'add' : 'remove']("state__active");
+    $tab.classList[$tab === $targetTab[0] ? 'add' : 'remove']("state__active");
   }); //Apply ARIA
 
-  clickHandler.call($purged[0], null, _$ui, $$tabs); //ARIA state management
+  clickHandler.call($targetTab[0], null, _$ui, $$tabs); //ARIA state management
 
   function clickHandler(event, _$accordion, _$tabs) {
-    var $$tabs = $$(selector.TAB, _$accordion).filter(function (node, i) {
-      return node.parentNode === _$accordion;
-    }),
-        //$$(`:scope > ${selector.TAB}`, _$accordion),
-    $target = this;
+    //let $$tabs = $$(selector.TAB, _$accordion).filter( (node, i) => node.parentNode === _$accordion),
+    var $$tabs = $$(":scope > ".concat(selector.TAB), _$accordion),
+        $target = this;
 
     _$tabs.forEach(function ($tab, i) {
       $tab.setAttribute("aria-selected", $tab === $target);
@@ -271,10 +279,9 @@ function uiAccordion(_node) {
   if (!$accordion.classList.contains(selector$1.ACCORDION.slice(1))) $accordion.classList.add(selector$1.ACCORDION.slice(1)); // WAI ARIA accessibility support initilisation
 
   var a11y = new A11y($accordion); // Subscribe events
+  //let $$toggles = $$(`${selector.TAB} > ${selector.TOGGLE}`, $accordion).filter( (node) => node.parentNode.parentNode === $accordion);
 
-  var $$toggles = $$("".concat(selector$1.TAB, " > ").concat(selector$1.TOGGLE), $accordion).filter(function (node) {
-    return node.parentNode.parentNode === $accordion;
-  });
+  var $$toggles = $$(":scope > ".concat(selector$1.TAB, " > ").concat(selector$1.TOGGLE), $accordion);
   $$toggles.forEach(function ($toggle, i) {
     $toggle.addEventListener("click", function (event) {
       //touchEnabled ? "touchend" : "click";
@@ -284,10 +291,7 @@ function uiAccordion(_node) {
     }, false);
   }); //let $$panes = $$(selector.PANE, $accordion).filter( (node) => node.parentNode === $accordion);
 
-  var $$panes = $$(":scope > ".concat(selector$1.PANE), $accordion).filter(function (node) {
-    return node.parentNode === $accordion;
-  });
-  console.log("$$panes >> ", $$panes);
+  var $$panes = $$(":scope > ".concat(selector$1.PANE), $accordion);
   $$panes.forEach(function ($pane) {
     $pane.addEventListener("transitionend", function (event) {
       var $tab = this.previousElementSibling,
@@ -301,11 +305,9 @@ function uiAccordion(_node) {
   }); // PRIVATE METHODS
 
   function render(event, _$accordion) {
-    var $$tabs = $$(selector$1.TAB, _$accordion).filter(function (node, i) {
-      return node.parentNode === _$accordion;
-    }),
-        //$$(`:scope > ${selector.TAB}`, _$accordion),
-    $target = this;
+    //let $$tabs = $$(selector.TAB, _$accordion).filter( (node, i) => node.parentNode === _$accordion),
+    var $$tabs = $$(":scope > ".concat(selector$1.TAB), _$accordion),
+        $target = this;
     $$tabs.forEach(function ($tab, i) {
       var $pane = $tab.nextElementSibling; // If tab/pane IS active set height explicitly; add the state__transition class; set the height explicitly to 0;
 

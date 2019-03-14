@@ -7,7 +7,7 @@ import './accordion.style.scss'
 //TODO: mock DOM with virtual-DOMesqe representation? use DOM node reference arrays?
 
 const 	NAME 			= "accordion",
-		VERSION			= "0.0.10";
+		VERSION			= "0.0.11";
 
 const 	className 		= {
 		ACTIVE: 		"state__active",
@@ -41,7 +41,8 @@ export default function uiAccordion(_node) {
 	let a11y = new A11y($accordion);
 
 	// Subscribe events
-	let $$toggles = $$(`${selector.TAB} > ${selector.TOGGLE}`, $accordion).filter( (node) => node.parentNode.parentNode === $accordion);
+	//let $$toggles = $$(`${selector.TAB} > ${selector.TOGGLE}`, $accordion).filter( (node) => node.parentNode.parentNode === $accordion);
+	let $$toggles = $$(`:scope > ${selector.TAB} > ${selector.TOGGLE}`, $accordion);
 	$$toggles.forEach( ($toggle, i) => {
 
 		$toggle.addEventListener("click", function(event) { //touchEnabled ? "touchend" : "click";
@@ -54,8 +55,7 @@ export default function uiAccordion(_node) {
 	});
 		
 	//let $$panes = $$(selector.PANE, $accordion).filter( (node) => node.parentNode === $accordion);
-	let $$panes = $$(`:scope > ${selector.PANE}`, $accordion).filter( (node) => node.parentNode === $accordion);
-	console.log("$$panes >> ", $$panes);
+	let $$panes = $$(`:scope > ${selector.PANE}`, $accordion);
 
 	$$panes.forEach(($pane) => {
 		$pane.addEventListener("transitionend", function(event) {
@@ -73,7 +73,8 @@ export default function uiAccordion(_node) {
 	// PRIVATE METHODS
 	function render(event, _$accordion) {
 		
-		let $$tabs = $$(selector.TAB, _$accordion).filter( (node, i) => node.parentNode === _$accordion), //$$(`:scope > ${selector.TAB}`, _$accordion),
+		//let $$tabs = $$(selector.TAB, _$accordion).filter( (node, i) => node.parentNode === _$accordion),
+		let $$tabs = $$(`:scope > ${selector.TAB}`, _$accordion),
 			$target = this;
 
 		$$tabs.forEach( ($tab, i) => {

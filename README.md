@@ -74,12 +74,11 @@ Quite frankly I'm not following any mantra here other than following best practi
 
 
 ### Possible improvements
-* Tidy up and expand upon examples in 'examples' directory
-* Dedicated demo/Github page
 * Distribute on CDN
 * Formulate and write tests
 * Closer alignment to the web component spec(custom elements) and possible translation or forking
 * Migrate event handling to event delegation
+* Improve transition performance with transform3d
 * Expose lifecycle API
 * Expose events API
 * Persistant active pane for hard refresh or bookmarking(hash url? local storage?)

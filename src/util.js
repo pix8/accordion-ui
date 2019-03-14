@@ -1,6 +1,20 @@
 
 
-export const $ = (_selector, _el = document) => _el.querySelector(_selector);
+export const $ = (_selector, _el = document) => {
+	
+	const regex = /:scope(?![\w-])/gi;
+
+	if(_selector && regex.test(_selector)) { //using :scope so test for support and polyfill if necessary
+
+		try { // check browser for :scope support
+			document.querySelector(':scope body');
+		}catch(error) { // unsupported => polyfill
+			return POLYFILL.scope.call(_el, _selector, "querySelector");
+		}
+	}
+
+	return _el.querySelector(_selector);
+}
 
 // DOM selection helper methods; Nodelist is an array-like object - this will return a shallow copy as an array type.
 export const $$ = (_selector, _el = document) => {
@@ -9,12 +23,13 @@ export const $$ = (_selector, _el = document) => {
 
 	if(_selector && regex.test(_selector)) { //using :scope so test for support and polyfill if necessary
 
-		try { // test for :scope support
+		try { // check browser for :scope support
 			document.querySelector(':scope body');
 		}catch(error) { // unsupported => polyfill
-			return POLYFILL.scope.call(_el, _selector, "querySelectorAll");
+			return [].slice.call( POLYFILL.scope.call(_el, _selector, "querySelectorAll") );
 		}
 	}
+
 	return [].slice.call(_el.querySelectorAll(_selector)); //[].from(_el.querySelectorAll(_selector))
 }
 
@@ -31,128 +46,10 @@ const POLYFILL = {
 
 		this.removeAttribute(attr);
 
-		return [].slice.call(nodeList);
+		return nodeList;
 	}
 }
 
-function temp() {
-
-	// Assumes queryselector support
-	//1. stackoverflow
-	['querySelector', 'querySelectorAll'].forEach(function(method) {
-
-		var native = Element.prototype[method];
-
-		Element.prototype[method] = function(query) {
-
-			var regex = /((^|,)\s*):scope/g;
-
-			if(query && regex.test(query)) {
-				
-				var id = this.id; // remember current element id
-				
-				this.id = 'ID_' + Date.now(); // assign new unique id
-
-				query = query.replace(regex, '$1#' + this.id); // replace :scope with #ID
-				
-				var nodeList = document[method](query);
-				
-				this.id = id; // restore previous id
-
-				return nodeList;
-			}else {
-				return native.call(this, query); // use native code for other selectors
-			}
-		}
-	});
-
-	//2.element-qsa-scope
-	['querySelector', 'querySelectorAll'].forEach(function(method) {
-
-		var native = HTMLElement.prototype[method];
-
-		Element.prototype[method] = function(query) {
-
-			var regex = /:scope(?![\w-])/gi;
-
-			if(query && regex.test(query)) {
-
-				var attr = 'q' + Math.floor(Math.random() * 9000000) + 1000000;
-
-				// replace :scope with the fallback attribute
-				arguments[0] = query.replace(regex, '[' + attr + ']');
-
-				this.setAttribute(attr, '');
-
-				var nodeList = native.apply(this, arguments);
-
-				this.removeAttribute(attr);
-
-				return nodeList;
-			
-			}else {
-				return native.apply(this, query);
-			}
-		};
-	})
-
-	//3.
-	['querySelector', 'querySelectorAll'].forEach(function(method) {
-
-		var native = HTMLElement.prototype[method];
-
-		// Override the method
-		HTMLElement.prototype[method] = function(query) {
-
-			var regex = /^\s*:scope/gi;
-
-			var nodeList,
-				gaveId = false,
-				gaveContainer = false;
-
-			if(query && query.match(regex)) {
-
-				var container = document.createElement('div');
-
-				if(!this.parentNode) {
-					// Add to temporary container
-					container.appendChild(this);
-					gaveContainer = true;
-				}
-
-				var parentNode = this.parentNode;
-
-				// Remove :scope
-				query = query.replace(regex, '');
-
-				if(!this.id) {
-					// Give temporary ID
-					this.id = 'rootedQuerySelector_id_'+(new Date()).getTime();
-					gaveId = true;
-				}
-
-				// Find elements against parent node
-				nodeList = native.call(parentNode, '#' + this.id + ' ' + query);
-
-				// Reset the ID
-				if(gaveId) {
-					this.id = '';
-				}
-
-				// Remove from temporary container
-				if(gaveContainer) {
-					container.removeChild(this);
-				}
-
-				return nodeList;
-			
-			}else {
-				return native.call(this, query);
-			}
-		};
-	})
-
-}
 
 /**
 * @prefix "string"
