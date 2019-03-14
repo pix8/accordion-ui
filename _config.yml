@@ -36,7 +36,8 @@ exclude: [
   Gemfile,
   Gemfile.lock,
   assets/_sass,
-  assets/_js
+  assets/_js,
+  example
 ]
 
 title: '@pix8/UI Accordion'

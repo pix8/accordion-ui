@@ -4,10 +4,8 @@
 import alias from 'rollup-plugin-alias'
 import paths from 'rollup-plugin-includepaths'
 import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
 import babel from 'rollup-plugin-babel'							//https://github.com/rollup/rollup-plugin-babel
 import vue from 'rollup-plugin-vue'								//https://github.com/vuejs/rollup-plugin-vue
-//import sass from 'rollup-plugin-scss'							//https://github.com/thgh/rollup-plugin-scss
 import postcss from 'rollup-plugin-postcss'						//https://github.com/egoist/rollup-plugin-postcss //DEVNOTE: postcss can use preprocessors i.e. node-sass
 import url from 'rollup-plugin-url' 							//https://github.com/rollup/rollup-plugin-url
 //import image from 'rollup-plugin-image'						//https://github.com/rollup/rollup-plugin-image [official but seems unsupported]
@@ -50,15 +48,11 @@ export default {
 		resolve(),
 		babel({
 			exclude: 'node_modules/**',
-			runtimeHelpers: true,
+			runtimeHelpers: false,
 			externalHelpers: true
 		}),
-		commonjs(),
 		vue(),
 		postcss(),
-		// sass({
-		// 	output: false
-		// }),
 		url({
 			limit: 10 * 1024//, 	//convert(base64/data-uri) and inline files that are  < 10k, copy files > 10k; else copied to destination folder and hashed filename generated + inserted
 			//include: [] 			//default .svg, .png, .jpg and .gif
