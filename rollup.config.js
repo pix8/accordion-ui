@@ -26,7 +26,7 @@ export default {
 		{
 			file: 'assets/scripts/roll.app.bundle.js', //'dist/'+pkg.main,
 			format: 'iife',
-			name: "uiAccordion"
+			name: "bundle"
 		}
 	],
 
@@ -46,7 +46,11 @@ export default {
 	],
 
 	plugins: [
-		resolve(),
+		resolve({
+			module: true,
+			main: false,
+			browser: false
+		}),
 		babel({
 			exclude: 'node_modules/**',
 			runtimeHelpers: false,

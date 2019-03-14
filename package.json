@@ -22,7 +22,7 @@
   "module": "index.es.js",
   "jsnext:main": "index.es.js",
   "scripts": {
-    "postinstall": "npm install @pix8/ui-accordion --save-dev",
+    "postinstall": "npm install @pix8/ui-accordion --save",
     "start": "rollup -c -w & JEKYLL_ENV=development bundle exec jekyll serve",
     "start2": "webpack -w --mode 'development' & JEKYLL_ENV=development bundle exec jekyll serve",
     "jekyll": "JEKYLL_ENV=development bundle exec jekyll serve",
@@ -49,6 +49,7 @@
     "chokidar": "^2.0.4",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
+    "rollup": "^1.6.0",
     "rollup-plugin-alias": "^1.5.1",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-includepaths": "^0.2.3",
