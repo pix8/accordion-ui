@@ -1,6 +1,6 @@
 {
   "name": "@pix8/ui-accordion",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Dependency-free JavaScript UI accordion component(a11y compliant)",
   "author": "Jonathan Brincat <jb@pix8.co.uk> (http://pix8.co.uk)",
   "homepage": "",
