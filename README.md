@@ -21,17 +21,17 @@ Please note: keyboard interactivity involving the up/down arrow and home/end key
 ## Install
 Install package from NPM into your project dependencies.
 
-### NPM
+#### NPM
 ```bash
 npm install @pix8/ui-accordion --save
 ```
 
-### Yarn
+#### Yarn
 ```bash
 yarn add @pix8/ui-accordion
 ```
 
-## CDN
+#### CDN
 ```html
 	https://unpkg.com/@pix8/ui-accordion@0.0.13/dist/index.umd.js
 ```
