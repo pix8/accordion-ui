@@ -27,9 +27,23 @@
 				<img src="{{site.logo | relative_url}}" alt="Logo" />
 				{% endif %}
 
-				<!-- <p>{{ site.description | default: site.github.project_tagline }}</p> -->
+				<p>{{ site.description | default: site.github.project_tagline }}</p>
 
 				{% include navigation.html %}
+
+				<!-- 
+				<pre>
+					<p><code>npm install @pix8/ui-accordion</code></p>
+					<p><code>yarn install @pix8/ui-accordion</code></p>
+				</pre>
+
+				<pre>
+					<p><code>import Accordion from '@pix8/ui-accordion'</code></p>
+
+					<p><code>const $accordion = document.querySelector("#pimpMyRide");</code></p>
+					<p><code>new Accordion($accordion)</code></p>
+				</pre>
+				-->
 
 				{% if site.github.is_project_page %}
 				<p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub <small>{{ site.github.repository_nwo }}</small></a></p>
