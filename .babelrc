@@ -1,6 +1,12 @@
 {
   "presets": [
-    "@babel/preset-env",
+    ["@babel/preset-env", {
+      "modules": false,
+      "targets": {
+        "browsers": "> 0.25%, ie 9, not op_mini all, not dead",
+        "node": 8
+      }
+    }],
     "@babel/preset-react"
   ],
   
