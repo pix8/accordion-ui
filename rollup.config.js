@@ -4,6 +4,7 @@
 import alias from 'rollup-plugin-alias'
 import paths from 'rollup-plugin-includepaths'
 import resolve from 'rollup-plugin-node-resolve'
+import commonjs from 'rollup-plugin-commonjs'
 import babel from 'rollup-plugin-babel'							//https://github.com/rollup/rollup-plugin-babel
 import vue from 'rollup-plugin-vue'								//https://github.com/vuejs/rollup-plugin-vue
 import postcss from 'rollup-plugin-postcss'						//https://github.com/egoist/rollup-plugin-postcss //DEVNOTE: postcss can use preprocessors i.e. node-sass
@@ -51,6 +52,7 @@ export default {
 			main: false,
 			browser: false
 		}),
+		commonjs(),
 		babel({
 			exclude: 'node_modules/**',
 			runtimeHelpers: false,
