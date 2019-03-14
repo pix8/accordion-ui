@@ -120,7 +120,7 @@ export default function A11y(_$ui) {
 	//ARIA state management
 	function clickHandler(event, _$accordion, _$tabs) {
 		
-		let $$tabs = $$(`${selector.TAB}`, _$accordion).filter( (node, i) => node.parentNode === _$accordion), //$$(`:scope > ${selector.TAB}`, _$accordion),
+		let $$tabs = $$(selector.TAB, _$accordion).filter( (node, i) => node.parentNode === _$accordion), //$$(`:scope > ${selector.TAB}`, _$accordion),
 			$target = this;
 			
 		_$tabs.forEach( ($tab, i) => {

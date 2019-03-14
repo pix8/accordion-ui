@@ -23,15 +23,41 @@ var $ = function $(_selector) {
 var $$ = function $$(_selector) {
   var _el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
 
-  return [].slice.call(_el.querySelectorAll(_selector));
-}; //[].from(_el.querySelectorAll(_selector))
+  var regex = /:scope(?![\w-])/gi;
 
+  if (_selector && regex.test(_selector)) {
+    //using :scope so test for support and polyfill if necessary
+    try {
+      // test for :scope support
+      document.querySelector(':scope body');
+    } catch (error) {
+      // unsupported => polyfill
+      return POLYFILL.scope.call(_el, _selector, "querySelectorAll");
+    }
+  }
+
+  return [].slice.call(_el.querySelectorAll(_selector)); //[].from(_el.querySelectorAll(_selector))
+};
+var POLYFILL = {
+  scope: function scope(_query, _method) {
+    var regex = /:scope(?![\w-])/gi;
+    var attr = getUID();
+    this.setAttribute(attr, '');
+    _query = _query.replace(regex, "[".concat(attr, "]"));
+
+    var nodeList = this[_method].call(this, _query);
+
+    this.removeAttribute(attr);
+    return [].slice.call(nodeList);
+  }
+};
 /**
 * @prefix "string"
 * @salt "string"/number
 * return unique-like(high entropy) identifier; random number and timedatestamp converted to base36(represents full alphanumeric spectrum for encoding for minimal bit footprint) and concatenated;
 * an optional 'salt' can also be thrown into the mixing pot to help enforce entropy.
 */
+
 
 var getUID = function getUID() {
   var _prefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "_";
@@ -161,7 +187,7 @@ function A11y(_$ui) {
   clickHandler.call($purged[0], null, _$ui, $$tabs); //ARIA state management
 
   function clickHandler(event, _$accordion, _$tabs) {
-    var $$tabs = $$("".concat(selector.TAB), _$accordion).filter(function (node, i) {
+    var $$tabs = $$(selector.TAB, _$accordion).filter(function (node, i) {
       return node.parentNode === _$accordion;
     }),
         //$$(`:scope > ${selector.TAB}`, _$accordion),
@@ -256,10 +282,12 @@ function uiAccordion(_node) {
       if (this.parentElement.classList.contains(className$1.ACTIVE)) return false;
       render.call(this.parentElement, event, $accordion); //DEVNOTE: scope reasserted
     }, false);
-  });
-  var $$panes = $$(selector$1.PANE, $accordion).filter(function (node) {
+  }); //let $$panes = $$(selector.PANE, $accordion).filter( (node) => node.parentNode === $accordion);
+
+  var $$panes = $$(":scope > ".concat(selector$1.PANE), $accordion).filter(function (node) {
     return node.parentNode === $accordion;
   });
+  console.log("$$panes >> ", $$panes);
   $$panes.forEach(function ($pane) {
     $pane.addEventListener("transitionend", function (event) {
       var $tab = this.previousElementSibling,
@@ -273,7 +301,7 @@ function uiAccordion(_node) {
   }); // PRIVATE METHODS
 
   function render(event, _$accordion) {
-    var $$tabs = $$("".concat(selector$1.TAB), _$accordion).filter(function (node, i) {
+    var $$tabs = $$(selector$1.TAB, _$accordion).filter(function (node, i) {
       return node.parentNode === _$accordion;
     }),
         //$$(`:scope > ${selector.TAB}`, _$accordion),

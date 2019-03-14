@@ -53,7 +53,10 @@ export default function uiAccordion(_node) {
 		}, false);
 	});
 		
-	let $$panes = $$(selector.PANE, $accordion).filter( (node) => node.parentNode === $accordion);
+	//let $$panes = $$(selector.PANE, $accordion).filter( (node) => node.parentNode === $accordion);
+	let $$panes = $$(`:scope > ${selector.PANE}`, $accordion).filter( (node) => node.parentNode === $accordion);
+	console.log("$$panes >> ", $$panes);
+
 	$$panes.forEach(($pane) => {
 		$pane.addEventListener("transitionend", function(event) {
 			
@@ -70,7 +73,7 @@ export default function uiAccordion(_node) {
 	// PRIVATE METHODS
 	function render(event, _$accordion) {
 		
-		let $$tabs = $$(`${selector.TAB}`, _$accordion).filter( (node, i) => node.parentNode === _$accordion), //$$(`:scope > ${selector.TAB}`, _$accordion),
+		let $$tabs = $$(selector.TAB, _$accordion).filter( (node, i) => node.parentNode === _$accordion), //$$(`:scope > ${selector.TAB}`, _$accordion),
 			$target = this;
 
 		$$tabs.forEach( ($tab, i) => {
