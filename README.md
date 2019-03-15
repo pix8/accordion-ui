@@ -77,34 +77,43 @@ Styling bundled with this package are discreetly and quite deliberately limited 
 
 The footprint is kept intentionally minimal to relieve the cognitive investment in consuming this component. There is no configuration object or customisation available or on offer. And I intend to keep it this way. Consuming the accordion component is inspired by conventional and established wisdoms, simultaneous embracing both the KISS and DRY ethos. Why attempt to reinvent the wheel when you should just embrace standard web authoring practise? Makes no sense. Therefore if you want to selectively activate an accordion pane do so on the markup. Either add the enabling class or alternatively the presence of any of the applicable ARIA states will trigger a role of applied intention, and do this for you automagically with javascript. Of course I acknowledge there are limitations to this "Stalinist" approach - most pressing being the inflexibility in prescriptive css class declarations - however I will try to weed out any shortcomings over time.
 
+
 ## API
 ### Events
-======= pix8.click
-CRITERIA: when any toggle is clicked
-- provided it isn't disabled
-======= pix8.transitionStart
-CRITERIA: when any pane begins a css transition
-- provided the css transition property is present; compensate for transition-delay property if present
-======= pix8.transitionEnd
+##### pix8.click
+CRITERIA: when any toggle is clicked(provided it isn't disabled)
+##### ~pix8.transitionstart~
+~CRITERIA: when any pane begins a css transition(provided the css transition property is present; compensate for transition-delay property if present)~
+##### pix8.transitionend
 CRITERIA: when any pane ends a css transition
 
-======= pix8.toggle
-CRITERIA: when any pane is activated or deactivate. non-discriminatory
-======= pix8.show
-CRITERIA: when a pane is activated and becomes visible
-======= pix8.hide
-CRITERIA: when a pane is deactivated and becomes invisible
+##### ~pix8.toggle~
+~CRITERIA: when any pane is activated or deactivate. non-discriminatory~
+##### ~pix8.show~
+CRITERIA: ~when a pane is activated and becomes visible~
+##### ~pix8.hide~
+~CRITERIA: when a pane is deactivated and becomes invisible~
 
-======= pix8.initialised
-CRITERIA: when script is primed and ready to accept component invocation
-======= pix8.create
-CRITERIA: when a new component has been invocated
-======= pix8.render (soft reset)
-CRITERIA: when a component has redrawn itself
-======= pix8.refresh (hard reset)
-CRITERIA: when a component has been re-initialised and re-invocated
-======= pix8.destroy
-CRITERIA: when a component has been destroyed
+##### ~pix8.initialised~
+~CRITERIA: when script is primed and ready to accept component invocation~
+##### ~pix8.create~
+~CRITERIA: when a new component has been invocated~
+##### ~pix8.render (soft reset)~
+~CRITERIA: when a component has redrawn itself~
+##### ~pix8.refresh (hard reset)~
+~CRITERIA: when a component has been re-initialised and re-invocated~
+##### ~pix8.destroy~
+~CRITERIA: when a component has been destroyed~
+
+#### Subscribe/Register event
+```javascript
+on(/* event type "String" */, /* callback function { Function }*/)
+```
+
+#### Unsubscribe/Unregister event
+```javascript
+off(/* event type "String" */, /* callback function { Function }*/)
+```
 
 
 ## Support

@@ -62,7 +62,7 @@ export default function uiAccordion(_node) {
 
 			if(this.parentElement.classList.contains(className.ACTIVE)) return false;
 
-			pubSub.publish("pix8.click", [this]);
+			pubSub.publish("pix8.click", this);
 
 			render.call(this.parentElement, event, $accordion); //DEVNOTE: scope reasserted
 		}, false);
@@ -82,7 +82,7 @@ export default function uiAccordion(_node) {
 				$tab.classList.remove(className.TRANSITION);
 			}
 
-			pubSub.publish("pix8.transitionend", [this]);
+			pubSub.publish("pix8.transitionend", this);
 
 		}, false);
 	});
@@ -189,6 +189,7 @@ export default function uiAccordion(_node) {
 		create() { //mount
 			console.log("TBC create instance");
 			//ACTION: programmatically create a new instance of the component
+			pubSub.publish("pix8.create", this);
 
 			return this; // Permit function chaining
 		},
@@ -196,6 +197,7 @@ export default function uiAccordion(_node) {
 		render() {
 			console.log("TBC render instance");
 			//ACTION: issue instructions to re-draw/render the interface(component) - soft reset
+			pubSub.publish("pix8.render", this);
 
 			return this; // Permit function chaining
 		},
@@ -203,6 +205,7 @@ export default function uiAccordion(_node) {
 		refresh() {
 			console.log("TBC refresh instance");
 			//ACTION: issue instructions to reinitialise and reinstantiate the component - hard reset
+			pubSub.publish("pix8.refresh", this);
 
 			return this; // Permit function chaining
 		},
@@ -210,6 +213,7 @@ export default function uiAccordion(_node) {
 		destroy() {
 			console.log("TBC destroy instance");
 			//ACTION: destroy the component instance; undo/remove all DOM side-effects and event listeners
+			pubSub.publish("pix8.destroy", this);
 
 			return this; // Permit function chaining
 		}
