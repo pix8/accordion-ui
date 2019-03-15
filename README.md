@@ -16,20 +16,28 @@ Please note: keyboard interactivity involving the up/down arrow and home/end key
 
 ## Example
 
-[Demo - JS Fiddle](https://jsfiddle.net/jonathanbrincat/c1h6487k/195/) @v0.0.4
+[Demo - JS Fiddle](https://jsfiddle.net/jonathanbrincat/c1h6487k/199/) @v0.0.13
 
 ## Install
 Install package from NPM into your project dependencies.
 
+#### NPM
 ```bash
 npm install @pix8/ui-accordion --save
 ```
 
-or
-
+#### Yarn
 ```bash
 yarn add @pix8/ui-accordion
 ```
+
+#### CDN
+```html
+https://unpkg.com/@pix8/ui-accordion@0.0.13/dist/index.umd.js
+```
+Note: package will be available off the global(window) namespace as `uiAccordion`.
+
+All sources are obfuscated and minified.
 
 ## Usage
 Accordion component is available as a javascript module. `import`, instantiate and consume.
@@ -74,7 +82,6 @@ Quite frankly I'm not following any mantra here other than following best practi
 
 
 ### Possible improvements
-* ~Distribute on CDN~
 * Lint routines
 * Formulate and write tests
 * Closer alignment to the web component spec(custom elements) and possible translation or forking
