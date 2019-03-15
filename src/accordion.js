@@ -1,12 +1,16 @@
 import { $, $$, isElement } from './util'
+import PubSub from './pubsub'
 import A11y from './accordion.a11y'
 
 import './accordion.style.scss'
 
+//THE GREAT LIST OF PROCRASTINATION i.e. tech debt
 //TODO: Rejig the $tab, $pane, $toggle dom parsing in both accordion.js and a11y so they are consistent
 //TODO: mock DOM with virtual-DOMesqe representation? use DOM node reference arrays?
+//TODO: ability to programatically open and close a pane - alternatively by reacting suitably if a relevant property is modified - class selector or ARIA
 
 const 	NAME 			= "accordion",
+		AUTHOR			= "j.brincat",
 		VERSION			= "0.0.13";
 
 const 	className 		= {
@@ -36,19 +40,14 @@ export default function uiAccordion(_node) {
 
 	var _self = this;
 
-	const api = {
-		events: ["pix8.click", "pix8.transitionstart", "pix8.transitionend"],
-		actions: ["pix8.toggle", "pix8.hide", "pix8.show"],
-		lifecyle: ["pix8.initialised", "pix8.create", "pix8.refresh", "pix8.destroy"]
-	}
-
 	//fire INIT event handler if present
 	//check events register and fire any relevent callbacks
 	//1.
-	const callbackEvents = ["pix8.click", "pix8.transitionstart", "pix8.transitionend", "pix8.toggle", "pix8.hide", "pix8.show", "pix8.initialised", "pix8.create", "pix8.refresh", "pix8.destroy"];
-	this.callbacks = [];
+	const pubsub = new PubSub();
+	var manifest = [];
+	const eventsAPI = "pix8.click,pix8.transitionstart,pix8.transitionend,pix8.toggle,pix8.hide,pix8.show,pix8.initialised,pix8.create,pix8.refresh,pix8.destroy".split(",");
 	//2.
-	//const clickEvent = new Event("pix8.click"); //not supported in IE
+	/*//const clickEvent = new Event("pix8.click"); //not supported in IE
 	const clickEvent = document.createEvent('Event');
 	clickEvent.initEvent('pix8.click', true, true);
 
@@ -65,7 +64,7 @@ export default function uiAccordion(_node) {
 		//TODO: needs to be API derived callback
 		//alert("Method 2 :: createEvent :: pix8.transitionend");
 		console.log("Method 2 :: createEvent", this, " :pix8.transitionend: ", event);
-	});
+	});*/
 
 	// Different css class utilised as selector add `selector.ACCORDION` to the nominated root node so that dependent styles can be extrapolated
 	if( !$accordion.classList.contains(selector.ACCORDION.slice(1)) ) $accordion.classList.add(selector.ACCORDION.slice(1));
@@ -86,10 +85,14 @@ export default function uiAccordion(_node) {
 			//fire pix8.CLICK event handler if present
 			console.log("fire pix8.click >> ", _self, " :: ", this);			
 			//1.
-			dispatch("pix8.click", this);
+			dispatch("pix8.click", [this]);
+			pubsub.publish("pix8.click", [this]);
 			//2.
-			$accordion.dispatchEvent(clickEvent);
+			//$accordion.dispatchEvent(clickEvent);
 			//$accordion.dispatchEvent.call(this, clickEvent);
+
+			// unsubscribe("pix8.click");
+			// pubsub.unsubscribe("pix8.click");
 
 			render.call(this.parentElement, event, $accordion); //DEVNOTE: scope reasserted
 		}, false);
@@ -110,11 +113,12 @@ export default function uiAccordion(_node) {
 			}
 
 			//fire pix8.TRANSITIONEND event handler if present
-			console.log("fire pix8.transitionend >> ", _self, " :: ", this);			
+			//console.log("fire pix8.transitionend >> ", _self, " :: ", this);			
 			//1.
-			dispatch("pix8.transitionend", this);
+			dispatch("pix8.transitionend", [this]);
+			pubsub.publish("pix8.transitionend", [this]);
 			//2.
-			$accordion.dispatchEvent(transitionendEvent);
+			//$accordion.dispatchEvent(transitionendEvent);
 			//$accordion.dispatchEvent.call(this, transitionendEvent);
 
 		}, false);
@@ -171,82 +175,59 @@ export default function uiAccordion(_node) {
 		return false;
 	}
 
-	function dispatch(_eventType, _args) {
+	const subscribe = (/* String */ _identifier, /* Function */ _callback) => { //register
+		console.log("--2. subscribe--");
+		if(!manifest[_identifier]) manifest[_identifier] = [];
+		
+		manifest[_identifier].push(_callback);
 
-		if(!_self.callbacks[_eventType]) return;
+		return [_identifier, _callback];
+	}
 
-		_self.callbacks[_eventType].forEach( callback => {
-			callback.apply(_self, [_args]);
+	const unsubscribe = (/* String */ _identifier, /* Function? */ _callback) => {
+		console.log("--2. unsubscribe--");
+		if(!manifest[_identifier]) return;
+
+		var callbackIndex = manifest[_identifier].indexOf(_callback);
+
+		if(callbackIndex < 0) return;
+		
+		manifest[_identifier].splice(callbackIndex, 1);
+	}
+
+	const dispatch = (/* String */ _identifier, /* Array? */ _args = []) => { //publish
+		
+		if(!manifest[_identifier]) return;
+		
+		manifest[_identifier].forEach( callback => {
+			callback.apply(this, _args);
 		});
+	}
+
+	function getPosition(_identifier) {
+		return eventsAPI.indexOf(_identifier.toLowerCase());
 	}
 
 	// PUBLIC METHODS
 	return {
-		//USAGE SIGNATURES
-		//accordion.on("toggle");
-		//accordion.addEventListener("toggle");
-
-		//accordion.off("toggle");
-		//accordion.removeEventListener("toggle");
 
 		// EVENT API
-		//addEventListener(_eventType, _callback) {
 		on(_eventType, _callback) {
-			console.log("addEventListener() = ", _eventType);
+			//console.log("on() = ", _eventType);
 
-			//1.
-			var index = callbackEvents.indexOf(_eventType.toLowerCase());
-			// event type not recognised
-			if( index < 0 ) return this; // Permit function chaining
-
-			const eventType = callbackEvents[index];
-			if( !_self.callbacks[eventType] ) _self.callbacks[eventType] = [];
-			_self.callbacks[eventType].push(_callback);
-
-			//======= pix8.click
-			/*CRITERIA: when any toggle is clicked
-			- provided it isn't disabled*/
-			//======= pix8.transitionStart
-			/*CRITERIA: when any pane begins a css transition
-			- provided the css transition property is present; compensate for transition-delay property if present*/
-			//======= pix8.transitionEnd
-			/*CRITERIA: when any pane ends a css transition*/
-
-			//======= pix8.toggle
-			/*CRITERIA: when any pane is activated or deactivate. non-discriminatory*/
-			//======= pix8.show
-			/*CRITERIA: when a pane is activated and becomes visible*/
-			//======= pix8.hide
-			/*CRITERIA: when a pane is deactivated and becomes invisible*/
-
-			//======= pix8.initialised
-			/*CRITERIA: when script is primed and ready to accept component invocation*/
-			//======= pix8.create
-			/*CRITERIA: when a new component has been invocated*/
-			//======= pix8.render (soft reset)
-			/*CRITERIA: when a component has redrawn itself*/
-			//======= pix8.refresh (hard reset)
-			/*CRITERIA: when a component has been re-initialised and re-invocated*/
-			//======= pix8.destroy
-			/*CRITERIA: when a component has been destroyed*/
+			var index = getPosition(_eventType);
+			!(index < 0) && subscribe(eventsAPI[index], _callback);
+			!(index < 0) && pubsub.subscribe(eventsAPI[index], _callback);
 
 			return this; // Permit function chaining
 		},
 
-		//removeEventListener(_eventType, _callback) {
-		off(_eventType, _callback) {
-			console.log("removeEventListener() = ", _eventType);
+		off(_eventType, _callback = null) {
+			console.log("off() = ", _eventType);
 
-			var index = callbackEvents.indexOf(_eventType.toLowerCase());
-			const eventType = callbackEvents[index];
-
-			if(!_self.callbacks[eventType]) return this; // Permit function chaining
-
-			var callbackIndex = _self.callbacks[eventType].indexOf(_callback);
-
-			if(callbackIndex < 0) return;
-
-			_self.callbacks[eventType].splice(callbackIndex, 1);
+			var index = getPosition(_eventType);
+			//!(index < 0) && unsubscribe(eventsAPI[index], _callback);
+			!(index < 0) && pubsub.unsubscribe(eventsAPI[index], _callback);
 
 			return this; // Permit function chaining
 		},
@@ -258,20 +239,20 @@ export default function uiAccordion(_node) {
 			return this; // Permit function chaining
 		},
 
-		show() {
+		show() { //activate //enable //open
 			console.log("TBC pane activated");
 
 			return this; // Permit function chaining
 		},
 
-		hide() {
+		hide() { //deactivate //disable //close
 			console.log("TBC pane deactivated");
 
 			return this; // Permit function chaining
 		},
 		
 		// LIFECYCLE API
-		create() {
+		create() { //mount
 			console.log("TBC create instance");
 			//ACTION: programmatically create a new instance of the component
 

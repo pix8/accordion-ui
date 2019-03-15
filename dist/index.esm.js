@@ -109,6 +109,72 @@ nonElementArray.forEach(function(item) {
 	console.log(item, "2 >> ", isElement2(item));
 })*/
 
+function PubSub() {
+  // Subscription lookup
+  var manifest = {};
+  return {
+    /*
+    * example: 
+    *	subscribe("myIdentifier", () => { //do some things });
+    *
+    ************************/
+    subscribe: function subscribe(
+    /* String */
+    _id,
+    /* Function */
+    _callback) {
+      console.log("--1. subscribe-- ", _id);
+      if (!manifest[_id]) manifest[_id] = [];
+
+      manifest[_id].push(_callback);
+
+      return [_id, _callback]; // 'signature'
+    },
+
+    /*
+    * example: 
+    *	var foobar = subscribe("myIdentifier", () => { //do some things });
+    *	unsubscribe(foobar);
+    *
+    ************************/
+    unsubscribe: function unsubscribe(
+    /* Array */
+    _signature,
+    /* Function? */
+    _callback) {
+      console.log("--1. unsubscribe-- ", Array.isArray(_signature));
+      if (!Array.isArray(_signature)) return;
+      var subs = manifest[_callback ? _signature : _signature[0]];
+      console.log("jb :: ", subs, " :: ", _callback ? _signature : _signature[0]);
+
+      var _callback = _callback || _signature[1],
+          l = subs ? subs.length : 0;
+
+      while (l--) {
+        if (subs[l] === _callback) subs.splice(l, 1);
+      }
+    },
+
+    /*
+    * example: 
+    *	publish("myIdentifier", [//params]);
+    *
+    ************************/
+    publish: function publish(
+    /* String */
+    _id) {
+      var _args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+      var subs = manifest[_id] && manifest[_id].slice().reverse(),
+          l = subs ? subs.length : 0;
+
+      while (l--) {
+        subs[l].apply(this, _args);
+      }
+    }
+  };
+}
+
 var className = {
   ACTIVE: "state__active",
   TRANSITION: "state__transition"
@@ -268,31 +334,39 @@ var selector$1 = {
 
 };
 function uiAccordion(_node) {
+  var _this = this;
+
   // DOM SUPPORT
   if (!"querySelector" in document && !"addEventListener" in window && !"classList" in document.documentElement) return; // VALIDATE DOM node and HTML element
 
   if (!isElement(_node)) return;
   var $accordion = _node;
 
-  var _self = this;
-  var callbackEvents = ["pix8.click", "pix8.transitionstart", "pix8.transitionend", "pix8.toggle", "pix8.hide", "pix8.show", "pix8.initialised", "pix8.create", "pix8.refresh", "pix8.destroy"];
-  this.callbacks = []; //2.
-  //const clickEvent = new Event("pix8.click"); //not supported in IE
+  var _self = this; //fire INIT event handler if present
+  //check events register and fire any relevent callbacks
+  //1.
 
-  var clickEvent = document.createEvent('Event');
+
+  var pubsub = new PubSub();
+  var manifest = [];
+  var eventsAPI = "pix8.click,pix8.transitionstart,pix8.transitionend,pix8.toggle,pix8.hide,pix8.show,pix8.initialised,pix8.create,pix8.refresh,pix8.destroy".split(","); //2.
+
+  /*//const clickEvent = new Event("pix8.click"); //not supported in IE
+  const clickEvent = document.createEvent('Event');
   clickEvent.initEvent('pix8.click', true, true);
-  $accordion.addEventListener("pix8.click", function (event) {
-    //TODO: needs to be API derived callback
-    //alert("Method 2 :: createEvent :: pix8.click");
-    console.log("Method 2 :: createEvent", this, " :pix8.click: ", event);
+  	$accordion.addEventListener("pix8.click", function(event) {
+  	//TODO: needs to be API derived callback
+  	//alert("Method 2 :: createEvent :: pix8.click");
+  	console.log("Method 2 :: createEvent", this, " :pix8.click: ", event);
   });
-  var transitionendEvent = document.createEvent('Event');
+  	const transitionendEvent = document.createEvent('Event');
   transitionendEvent.initEvent('pix8.transitionend', true, true);
-  $accordion.addEventListener("pix8.transitionend", function (event) {
-    //TODO: needs to be API derived callback
-    //alert("Method 2 :: createEvent :: pix8.transitionend");
-    console.log("Method 2 :: createEvent", this, " :pix8.transitionend: ", event);
-  }); // Different css class utilised as selector add `selector.ACCORDION` to the nominated root node so that dependent styles can be extrapolated
+  	$accordion.addEventListener("pix8.transitionend", function(event) {
+  	//TODO: needs to be API derived callback
+  	//alert("Method 2 :: createEvent :: pix8.transitionend");
+  	console.log("Method 2 :: createEvent", this, " :pix8.transitionend: ", event);
+  });*/
+  // Different css class utilised as selector add `selector.ACCORDION` to the nominated root node so that dependent styles can be extrapolated
 
   if (!$accordion.classList.contains(selector$1.ACCORDION.slice(1))) $accordion.classList.add(selector$1.ACCORDION.slice(1)); // WAI ARIA accessibility support initilisation
 
@@ -308,9 +382,12 @@ function uiAccordion(_node) {
 
       console.log("fire pix8.click >> ", _self, " :: ", this); //1.
 
-      dispatch("pix8.click", this); //2.
-
-      $accordion.dispatchEvent(clickEvent); //$accordion.dispatchEvent.call(this, clickEvent);
+      dispatch("pix8.click", [this]);
+      pubsub.publish("pix8.click", [this]); //2.
+      //$accordion.dispatchEvent(clickEvent);
+      //$accordion.dispatchEvent.call(this, clickEvent);
+      // unsubscribe("pix8.click");
+      // pubsub.unsubscribe("pix8.click");
 
       render.call(this.parentElement, event, $accordion); //DEVNOTE: scope reasserted
     }, false);
@@ -326,13 +403,14 @@ function uiAccordion(_node) {
         $pane.style.height = null;
         $tab.classList.remove(className$1.TRANSITION);
       } //fire pix8.TRANSITIONEND event handler if present
+      //console.log("fire pix8.transitionend >> ", _self, " :: ", this);			
+      //1.
 
 
-      console.log("fire pix8.transitionend >> ", _self, " :: ", this); //1.
-
-      dispatch("pix8.transitionend", this); //2.
-
-      $accordion.dispatchEvent(transitionendEvent); //$accordion.dispatchEvent.call(this, transitionendEvent);
+      dispatch("pix8.transitionend", [this]);
+      pubsub.publish("pix8.transitionend", [this]); //2.
+      //$accordion.dispatchEvent(transitionendEvent);
+      //$accordion.dispatchEvent.call(this, transitionendEvent);
     }, false);
   }); // transitionstart still in Draft - would have to invoke in render() method; check for presence of transition style prop; check for presence of transition delay prop-if so compensate with setTimeout; fire event.
   // transitionstart would need to apply to both panes. the activated. and the one deactivate.
@@ -378,85 +456,54 @@ function uiAccordion(_node) {
     return false;
   }
 
-  function dispatch(_eventType, _args) {
-    if (!_self.callbacks[_eventType]) return;
+  var subscribe = function subscribe(
+  /* String */
+  _identifier,
+  /* Function */
+  _callback) {
+    //register
+    console.log("--2. subscribe--");
+    if (!manifest[_identifier]) manifest[_identifier] = [];
 
-    _self.callbacks[_eventType].forEach(function (callback) {
-      callback.apply(_self, [_args]);
+    manifest[_identifier].push(_callback);
+
+    return [_identifier, _callback];
+  };
+
+  var dispatch = function dispatch(
+  /* String */
+  _identifier) {
+    var _args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+
+    //publish
+    if (!manifest[_identifier]) return;
+
+    manifest[_identifier].forEach(function (callback) {
+      callback.apply(_this, _args);
     });
+  };
+
+  function getPosition(_identifier) {
+    return eventsAPI.indexOf(_identifier.toLowerCase());
   } // PUBLIC METHODS
 
 
   return {
-    //USAGE SIGNATURES
-    //accordion.on("toggle");
-    //accordion.addEventListener("toggle");
-    //accordion.off("toggle");
-    //accordion.removeEventListener("toggle");
     // EVENT API
-    //addEventListener(_eventType, _callback) {
     on: function on(_eventType, _callback) {
-      console.log("addEventListener() = ", _eventType); //1.
-
-      var index = callbackEvents.indexOf(_eventType.toLowerCase()); // event type not recognised
-
-      if (index < 0) return this; // Permit function chaining
-
-      var eventType = callbackEvents[index];
-      if (!_self.callbacks[eventType]) _self.callbacks[eventType] = [];
-
-      _self.callbacks[eventType].push(_callback); //======= pix8.click
-
-      /*CRITERIA: when any toggle is clicked
-      - provided it isn't disabled*/
-      //======= pix8.transitionStart
-
-      /*CRITERIA: when any pane begins a css transition
-      - provided the css transition property is present; compensate for transition-delay property if present*/
-      //======= pix8.transitionEnd
-
-      /*CRITERIA: when any pane ends a css transition*/
-      //======= pix8.toggle
-
-      /*CRITERIA: when any pane is activated or deactivate. non-discriminatory*/
-      //======= pix8.show
-
-      /*CRITERIA: when a pane is activated and becomes visible*/
-      //======= pix8.hide
-
-      /*CRITERIA: when a pane is deactivated and becomes invisible*/
-      //======= pix8.initialised
-
-      /*CRITERIA: when script is primed and ready to accept component invocation*/
-      //======= pix8.create
-
-      /*CRITERIA: when a new component has been invocated*/
-      //======= pix8.render (soft reset)
-
-      /*CRITERIA: when a component has redrawn itself*/
-      //======= pix8.refresh (hard reset)
-
-      /*CRITERIA: when a component has been re-initialised and re-invocated*/
-      //======= pix8.destroy
-
-      /*CRITERIA: when a component has been destroyed*/
-
-
+      //console.log("on() = ", _eventType);
+      var index = getPosition(_eventType);
+      !(index < 0) && subscribe(eventsAPI[index], _callback);
+      !(index < 0) && pubsub.subscribe(eventsAPI[index], _callback);
       return this; // Permit function chaining
     },
-    //removeEventListener(_eventType, _callback) {
-    off: function off(_eventType, _callback) {
-      console.log("removeEventListener() = ", _eventType);
-      var index = callbackEvents.indexOf(_eventType.toLowerCase());
-      var eventType = callbackEvents[index];
-      if (!_self.callbacks[eventType]) return this; // Permit function chaining
+    off: function off(_eventType) {
+      var _callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-      var callbackIndex = _self.callbacks[eventType].indexOf(_callback);
+      console.log("off() = ", _eventType);
+      var index = getPosition(_eventType); //!(index < 0) && unsubscribe(eventsAPI[index], _callback);
 
-      if (callbackIndex < 0) return;
-
-      _self.callbacks[eventType].splice(callbackIndex, 1);
-
+      !(index < 0) && pubsub.unsubscribe(eventsAPI[index], _callback);
       return this; // Permit function chaining
     },
     // ACTIONS API
@@ -465,15 +512,18 @@ function uiAccordion(_node) {
       return this; // Permit function chaining
     },
     show: function show() {
+      //activate //enable //open
       console.log("TBC pane activated");
       return this; // Permit function chaining
     },
     hide: function hide() {
+      //deactivate //disable //close
       console.log("TBC pane deactivated");
       return this; // Permit function chaining
     },
     // LIFECYCLE API
     create: function create() {
+      //mount
       console.log("TBC create instance"); //ACTION: programmatically create a new instance of the component
 
       return this; // Permit function chaining
