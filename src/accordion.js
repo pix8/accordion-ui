@@ -63,7 +63,7 @@ export default function uiAccordion(_node) {
 			if(this.parentElement.classList.contains(className.ACTIVE)) return false;
 
 			//fire pix8.CLICK event handler if present
-			console.log("fire pix8.click >> ", _self, " :: ", this);			
+			//console.log("fire pix8.click >> ", _self, " :: ", this);			
 			pubsub.publish("pix8.click", [this]);
 
 			render.call(this.parentElement, event, $accordion); //DEVNOTE: scope reasserted
@@ -156,23 +156,16 @@ export default function uiAccordion(_node) {
 			var index = getPosition(_eventType);
 			return !(index < 0) && pubsub.subscribe(eventsAPI[index], _callback);
 
-			//console.log("SIGNATURE :: ", test);
-
 			//return this; // Permit function chaining
 		},
 
-		off(_eventTypeOrsignature, _callback) {
-		//off(_eventType, _callback = null) {
-			//console.log("off() = ", _eventType);
+		off(_eventTypeOrsignature, _callback = null) {
+			//console.log("off() = ", _eventTypeOrsignature);
 
 			pubsub.unsubscribe(...arguments)
 
 			/*var index = getPosition(_signature[0]);
 			!(index < 0) && pubsub.unsubscribe(_signature);*/
-			
-			//var index = getPosition(_eventType);
-			//!(index < 0) && pubsub.unsubscribe(eventsAPI[index], _callback);
-			//!(index < 0) && pubsub.unsubscribe2(eventsAPI[index], _callback);
 
 			return this; // Permit function chaining
 		},

@@ -125,16 +125,14 @@ function PubSub() {
     _id,
     /* Function */
     _callback) {
-      console.log("--1. subscribe-- ", _id);
+      //console.log("--1. subscribe-- ", _id);
       if (!manifest[_id]) manifest[_id] = [];
 
       manifest[_id].push(_callback);
 
-      console.log(manifest);
       return [_id, _callback]; // 'signature'
     },
     // const subscribe = (/* String */ _identifier, /* Function */ _callback) => { //register
-    // 	console.log("--2. subscribe--");
     // 	if(!manifest[_identifier]) manifest[_identifier] = [];
     // 	manifest[_identifier].push(_callback);
     // 	return [_identifier, _callback];
@@ -146,28 +144,6 @@ function PubSub() {
     *	unsubscribe(foobar);
     *
     ************************/
-    // unsubscribe( /* Array */ _signature, /* Function? */ _callback) {
-    // 	console.log("--1. unsubscribe--> ", _signature, " :: ", _callback);
-    // 	//if(!Array.isArray(_signature)) return;
-    // 	var subs = manifest[_callback ? _signature : _signature[0]],
-    // 		_callback = _callback || _signature[1],
-    // 		l = subs ? subs.length : 0;
-    // 	while(l--) {
-    // 		if(subs[l] === _callback) {
-    // 			subs.splice(l, 1);
-    // 		}
-    // 	}
-    // },
-    // unsubscribe( /* Array */ _signature) {
-    // 	var subs = manifest[_signature[0]],
-    // 		_callback = _signature[1],
-    // 		l = subs ? subs.length : 0;
-    // 	while(l--) {
-    // 		if(subs[l] === _callback) {
-    // 			subs.splice(l, 1);
-    // 		}
-    // 	}
-    // },
     unsubscribe: function unsubscribe(
     /* Array/String */
     _eventTypeOrsignature,
@@ -175,9 +151,9 @@ function PubSub() {
     _callback) {
       var _ref;
 
-      var signature = (_ref = []).concat.apply(_ref, arguments);
+      var signature = (_ref = []).concat.apply(_ref, arguments); //console.log("CHECK >> ", signature);
 
-      console.log("CHECK >> ", signature);
+
       var subs = manifest[signature[0]],
           callback = signature[1],
           l = subs ? subs.length : 0;
@@ -187,29 +163,6 @@ function PubSub() {
           subs.splice(l, 1);
         }
       }
-    },
-    unsubscribe2: function unsubscribe2(
-    /* String */
-    _identifier,
-    /* Function? */
-    _callback) {
-      console.log("--2. unsubscribe-- ", _identifier);
-      if (!manifest[_identifier]) return;
-
-      var callbackIndex = manifest[_identifier].indexOf(_callback[1]);
-
-      console.log("index :: ", manifest[_identifier], " :: ", callbackIndex);
-
-      if (callbackIndex < 0) {
-        console.log("not found"); //what to do?
-        //remove last registered entry?
-        //remove all entries?
-        //remove first entry?
-
-        return;
-      }
-
-      manifest[_identifier].splice(callbackIndex, 1);
     },
 
     /*
@@ -402,8 +355,6 @@ function uiAccordion(_node) {
 
   if (!isElement(_node)) return;
   var $accordion = _node;
-
-  var _self = this; //fire INIT event handler if present
   //check events register and fire any relevent callbacks
 
 
@@ -422,8 +373,8 @@ function uiAccordion(_node) {
       //touchEnabled ? "touchend" : "click";
       event.stopPropagation();
       if (this.parentElement.classList.contains(className$1.ACTIVE)) return false; //fire pix8.CLICK event handler if present
+      //console.log("fire pix8.click >> ", _self, " :: ", this);			
 
-      console.log("fire pix8.click >> ", _self, " :: ", this);
       pubsub.publish("pix8.click", [this]);
       render.call(this.parentElement, event, $accordion); //DEVNOTE: scope reasserted
     }, false);
@@ -498,18 +449,14 @@ function uiAccordion(_node) {
     on: function on(_eventType, _callback) {
       //console.log("on() = ", _eventType);
       var index = getPosition(_eventType);
-      return !(index < 0) && pubsub.subscribe(eventsAPI[index], _callback); //console.log("SIGNATURE :: ", test);
-      //return this; // Permit function chaining
+      return !(index < 0) && pubsub.subscribe(eventsAPI[index], _callback); //return this; // Permit function chaining
     },
-    off: function off(_eventTypeOrsignature, _callback) {
-      //off(_eventType, _callback = null) {
-      //console.log("off() = ", _eventType);
+    off: function off(_eventTypeOrsignature) {
+
+      //console.log("off() = ", _eventTypeOrsignature);
       pubsub.unsubscribe.apply(pubsub, arguments);
       /*var index = getPosition(_signature[0]);
       !(index < 0) && pubsub.unsubscribe(_signature);*/
-      //var index = getPosition(_eventType);
-      //!(index < 0) && pubsub.unsubscribe(eventsAPI[index], _callback);
-      //!(index < 0) && pubsub.unsubscribe2(eventsAPI[index], _callback);
 
       return this; // Permit function chaining
     },
