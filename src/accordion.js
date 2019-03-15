@@ -42,29 +42,9 @@ export default function uiAccordion(_node) {
 
 	//fire INIT event handler if present
 	//check events register and fire any relevent callbacks
-	//1.
-	const pubsub = new PubSub();
-	var manifest = [];
-	const eventsAPI = "pix8.click,pix8.transitionstart,pix8.transitionend,pix8.toggle,pix8.hide,pix8.show,pix8.initialised,pix8.create,pix8.refresh,pix8.destroy".split(",");
-	//2.
-	/*//const clickEvent = new Event("pix8.click"); //not supported in IE
-	const clickEvent = document.createEvent('Event');
-	clickEvent.initEvent('pix8.click', true, true);
-
-	$accordion.addEventListener("pix8.click", function(event) {
-		//TODO: needs to be API derived callback
-		//alert("Method 2 :: createEvent :: pix8.click");
-		console.log("Method 2 :: createEvent", this, " :pix8.click: ", event);
-	});
-
-	const transitionendEvent = document.createEvent('Event');
-	transitionendEvent.initEvent('pix8.transitionend', true, true);
-
-	$accordion.addEventListener("pix8.transitionend", function(event) {
-		//TODO: needs to be API derived callback
-		//alert("Method 2 :: createEvent :: pix8.transitionend");
-		console.log("Method 2 :: createEvent", this, " :pix8.transitionend: ", event);
-	});*/
+	const eventsAPI = "pix8.click,pix8.transitionstart,pix8.transitionend,pix8.toggle,pix8.hide,pix8.show,pix8.initialised,pix8.create,pix8.refresh,pix8.destroy".split(","),
+		pubsub = new PubSub(),
+		manifest = [];
 
 	// Different css class utilised as selector add `selector.ACCORDION` to the nominated root node so that dependent styles can be extrapolated
 	if( !$accordion.classList.contains(selector.ACCORDION.slice(1)) ) $accordion.classList.add(selector.ACCORDION.slice(1));
@@ -84,15 +64,7 @@ export default function uiAccordion(_node) {
 
 			//fire pix8.CLICK event handler if present
 			console.log("fire pix8.click >> ", _self, " :: ", this);			
-			//1.
-			dispatch("pix8.click", [this]);
 			pubsub.publish("pix8.click", [this]);
-			//2.
-			//$accordion.dispatchEvent(clickEvent);
-			//$accordion.dispatchEvent.call(this, clickEvent);
-
-			// unsubscribe("pix8.click");
-			// pubsub.unsubscribe("pix8.click");
 
 			render.call(this.parentElement, event, $accordion); //DEVNOTE: scope reasserted
 		}, false);
@@ -114,12 +86,7 @@ export default function uiAccordion(_node) {
 
 			//fire pix8.TRANSITIONEND event handler if present
 			//console.log("fire pix8.transitionend >> ", _self, " :: ", this);			
-			//1.
-			dispatch("pix8.transitionend", [this]);
 			pubsub.publish("pix8.transitionend", [this]);
-			//2.
-			//$accordion.dispatchEvent(transitionendEvent);
-			//$accordion.dispatchEvent.call(this, transitionendEvent);
 
 		}, false);
 	});
@@ -175,35 +142,6 @@ export default function uiAccordion(_node) {
 		return false;
 	}
 
-	const subscribe = (/* String */ _identifier, /* Function */ _callback) => { //register
-		console.log("--2. subscribe--");
-		if(!manifest[_identifier]) manifest[_identifier] = [];
-		
-		manifest[_identifier].push(_callback);
-
-		return [_identifier, _callback];
-	}
-
-	const unsubscribe = (/* String */ _identifier, /* Function? */ _callback) => {
-		console.log("--2. unsubscribe--");
-		if(!manifest[_identifier]) return;
-
-		var callbackIndex = manifest[_identifier].indexOf(_callback);
-
-		if(callbackIndex < 0) return;
-		
-		manifest[_identifier].splice(callbackIndex, 1);
-	}
-
-	const dispatch = (/* String */ _identifier, /* Array? */ _args = []) => { //publish
-		
-		if(!manifest[_identifier]) return;
-		
-		manifest[_identifier].forEach( callback => {
-			callback.apply(this, _args);
-		});
-	}
-
 	function getPosition(_identifier) {
 		return eventsAPI.indexOf(_identifier.toLowerCase());
 	}
@@ -216,7 +154,6 @@ export default function uiAccordion(_node) {
 			//console.log("on() = ", _eventType);
 
 			var index = getPosition(_eventType);
-			!(index < 0) && subscribe(eventsAPI[index], _callback);
 			!(index < 0) && pubsub.subscribe(eventsAPI[index], _callback);
 
 			return this; // Permit function chaining
@@ -226,7 +163,6 @@ export default function uiAccordion(_node) {
 			console.log("off() = ", _eventType);
 
 			var index = getPosition(_eventType);
-			//!(index < 0) && unsubscribe(eventsAPI[index], _callback);
 			!(index < 0) && pubsub.unsubscribe(eventsAPI[index], _callback);
 
 			return this; // Permit function chaining
