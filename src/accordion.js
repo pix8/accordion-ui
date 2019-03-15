@@ -1,5 +1,5 @@
 import { $, $$, isElement } from './util'
-import PubSub from './pubsub'
+import { PubSub } from './pattern'
 import A11y from './accordion.a11y'
 
 import './accordion.style.scss'
@@ -43,7 +43,7 @@ export default function uiAccordion(_node) {
 	//fire INIT event handler if present
 	//check events register and fire any relevent callbacks
 	const eventsAPI = "pix8.click,pix8.transitionstart,pix8.transitionend,pix8.toggle,pix8.hide,pix8.show,pix8.initialised,pix8.create,pix8.refresh,pix8.destroy".split(","),
-		pubsub = new PubSub(),
+		pubSub = new PubSub(),
 		manifest = [];
 
 	// Different css class utilised as selector add `selector.ACCORDION` to the nominated root node so that dependent styles can be extrapolated
@@ -62,9 +62,7 @@ export default function uiAccordion(_node) {
 
 			if(this.parentElement.classList.contains(className.ACTIVE)) return false;
 
-			//fire pix8.CLICK event handler if present
-			//console.log("fire pix8.click >> ", _self, " :: ", this);			
-			pubsub.publish("pix8.click", [this]);
+			pubSub.publish("pix8.click", [this]);
 
 			render.call(this.parentElement, event, $accordion); //DEVNOTE: scope reasserted
 		}, false);
@@ -84,9 +82,7 @@ export default function uiAccordion(_node) {
 				$tab.classList.remove(className.TRANSITION);
 			}
 
-			//fire pix8.TRANSITIONEND event handler if present
-			//console.log("fire pix8.transitionend >> ", _self, " :: ", this);			
-			pubsub.publish("pix8.transitionend", [this]);
+			pubSub.publish("pix8.transitionend", [this]);
 
 		}, false);
 	});
@@ -151,21 +147,21 @@ export default function uiAccordion(_node) {
 
 		// EVENT API
 		on(_eventType, _callback) {
-			//console.log("on() = ", _eventType);
+			//console.log("on()");
 
 			var index = getPosition(_eventType);
-			return !(index < 0) && pubsub.subscribe(eventsAPI[index], _callback);
+			return !(index < 0) && pubSub.subscribe(eventsAPI[index], _callback);
 
 			//return this; // Permit function chaining
 		},
 
-		off(_eventTypeOrsignature, _callback = null) {
-			//console.log("off() = ", _eventTypeOrsignature);
+		off(_signatureOrEventType, _callback = null) {
+			//console.log("off()");
 
-			pubsub.unsubscribe(...arguments)
+			pubSub.unsubscribe(...arguments)
 
 			/*var index = getPosition(_signature[0]);
-			!(index < 0) && pubsub.unsubscribe(_signature);*/
+			!(index < 0) && pubSub.unsubscribe(_signature);*/
 
 			return this; // Permit function chaining
 		},

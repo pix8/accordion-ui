@@ -118,7 +118,7 @@ Quite frankly I'm not following any mantra here other than following best practi
 * Migrate event handling to event delegation
 * Improve transition performance with transform3d
 * Expose lifecycle API
-* Expose events API
+* ~Expose events API~
 * Persistant active pane for hard refresh or bookmarking(hash url? local storage?)
 * Reapply package dependent styles to inline javascript injection on the elements concerned as oppose to internal stylesheet injection
 * Seamless integration with MV* libraries - react, vue - removing the need to compose specialised derivatives of the same darn thing

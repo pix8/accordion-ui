@@ -1,4 +1,6 @@
-export default function PubSub() {
+
+
+export function PubSub() {
 	
 	// Subscription lookup
 	var manifest = {};
@@ -10,7 +12,6 @@ export default function PubSub() {
 		*
 		************************/
 		subscribe( /* String */ _id, /* Function */ _callback) {
-			//console.log("--1. subscribe-- ", _id);
 
 			if(!manifest[_id]) manifest[_id] = [];
 
@@ -19,19 +20,18 @@ export default function PubSub() {
 			return [_id, _callback]; // 'signature'
 		},
 
-		// const subscribe = (/* String */ _identifier, /* Function */ _callback) => { //register
-		// 	if(!manifest[_identifier]) manifest[_identifier] = [];
-		// 	manifest[_identifier].push(_callback);
-		// 	return [_identifier, _callback];
-		// }
-
 		/*
 		* example: 
-		*	var foobar = subscribe("myIdentifier", () => { //do some things });
-		*	unsubscribe(foobar);
+		*	var signature = subscribe("myIdentifier", { //do some things });
+		*	...
+		*	unsubscribe(signature);
+		*
+		*	OR
+		*
+		*	unsubscribe("myIdentifier", //named function reference);
 		*
 		************************/
-		unsubscribe( /* Array/String */ _eventTypeOrsignature, /* Function? */ _callback) {
+		unsubscribe( /* Array/String */ _signatureOrEventType, /* Function? */ _callback) {
 
 			var signature = [].concat(...arguments);
 
@@ -60,12 +60,5 @@ export default function PubSub() {
 				subs[l].apply(this, _args);
 			}
 		}
-
-		// const dispatch = (/* String */ _identifier, /* Array? */ _args = []) => { //publish
-		// 	if(!manifest[_identifier]) return;
-		// 	manifest[_identifier].forEach( callback => {
-		// 		callback.apply(this, _args);
-		// 	});
-		// }
 	}
 }
