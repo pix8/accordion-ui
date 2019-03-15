@@ -1,1 +1,507 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):(t=t||self).uiAccordion=e()}(this,function(){"use strict";function t(e){return(t="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t})(e)}var e=function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:document;if(t&&/:scope(?![\w-])/gi.test(t))try{document.querySelector(":scope body")}catch(n){return i.scope.call(e,t,"querySelector")}return e.querySelector(t)},n=function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:document;if(t&&/:scope(?![\w-])/gi.test(t))try{document.querySelector(":scope body")}catch(n){return[].slice.call(i.scope.call(e,t,"querySelectorAll"))}return[].slice.call(e.querySelectorAll(t))},i={scope:function(t,e){var n=o();this.setAttribute(n,""),t=t.replace(/:scope(?![\w-])/gi,"[".concat(n,"]"));var i=this[e].call(this,t);return this.removeAttribute(n),i}},o=function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"_",e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"";do{t+=Math.random().toString(36).substring(2)+e+Date.now().toString(36)}while(document.getElementById(t));return t};var a={ACTIVE:"state__active",TRANSITION:"state__transition"},c={ACCORDION:".ui__accordion",TAB:".ui__tab",TOGGLE:".ui__toggle",PANE:".ui__pane"};function r(t){var i=n(":scope > ".concat(c.TAB),t);n(":scope > ".concat(c.PANE),t);t.setAttribute("role","tablist"),t.setAttribute("aria-multiselectable",!1),i.forEach(function(n,i,r){var l,u,d=n.nextElementSibling;n.id.length?l=n.id:(l=o("tab-",i),n.setAttribute("id",l)),d.id.length?u=d.id:(u=o("pane-",i),d.setAttribute("id",u)),n.setAttribute("role","tab"),n.setAttribute("aria-controls",u),d.setAttribute("role","tabpanel"),d.setAttribute("aria-labelledby",l),e(c.TOGGLE,n).addEventListener("click",function(e){if(e.stopPropagation(),this.parentElement.classList.contains(a.ACTIVE))return!1;s.call(this.parentElement,e,t,r)})});var r=n(["".concat(c.TAB,".").concat(a.ACTIVE),"".concat(c.TAB,"[aria-selected=true]"),"".concat(c.TAB,"[aria-expanded=true]"),"".concat(c.PANE,"[aria-hidden=false]")].join(),t).filter(function(e){return e.parentNode===t}).map(function(t,e){return t.classList.contains("ui__pane")?t.previousElementSibling:t}).filter(function(t,e,n){return e===n.indexOf(t)});function s(t,e,i){n(":scope > ".concat(c.TAB),e);var o=this;return i.forEach(function(t,e){t.setAttribute("aria-selected",t===o),t.setAttribute("aria-expanded",t===o),t.setAttribute("aria-disabled",t===o),t.nextElementSibling.setAttribute("aria-hidden",t!==o)}),!1}return r.length>1&&window.console&&console.warn("Malformed structure: You can not have more than one active pane declared on a singular accordion interface. Check the markup and any explicit classNames and ARIA properties in play. Only the first occurance will be enforced."),i.forEach(function(t,e){t.classList[t===r[0]?"add":"remove"]("state__active")}),s.call(r[0],null,t,i),{create:function(){console.log("create instance")},refresh:function(){console.log("refresh instance")},destroy:function(){console.log("destroy instance")}}}!function(t,e){void 0===e&&(e={});var n=e.insertAt;if(t&&"undefined"!=typeof document){var i=document.head||document.getElementsByTagName("head")[0],o=document.createElement("style");o.type="text/css","top"===n&&i.firstChild?i.insertBefore(o,i.firstChild):i.appendChild(o),o.styleSheet?o.styleSheet.cssText=t:o.appendChild(document.createTextNode(t))}}(".ui__accordion .ui__tab {\n  position: relative; }\n  .ui__accordion .ui__tab .ui__toggle {\n    display: block;\n    cursor: pointer; }\n\n.ui__accordion .ui__pane {\n  position: relative;\n  overflow: hidden; }\n\n.ui__accordion .ui__tab:not([aria-expanded=true]):not([aria-selected=true]):not(.state__active):not(.state__transition) + .ui__pane,\n.ui__accordion .ui__tab:not([aria-expanded=true]):not([aria-selected=true]):not(.state__active):not(.state__transition) + [aria-hidden=true] {\n  height: 0;\n  display: none; }\n");var s={ACTIVE:"state__active",TRANSITION:"state__transition"},l={ACCORDION:".ui__accordion",TAB:".ui__tab",TOGGLE:".ui__toggle",PANE:".ui__pane"};return function(e){if(!(!1 in document&&!1 in window&&!1 in document.documentElement)&&function(e){return e&&"object"===("undefined"==typeof HTMLElement?"undefined":t(HTMLElement))?HTMLElement.prototype.isPrototypeOf(e):null!==e&&"object"===t(e)&&1===e.nodeType}(e)){var i=e;return i.classList.contains(l.ACCORDION.slice(1))||i.classList.add(l.ACCORDION.slice(1)),new r(i),n(":scope > ".concat(l.TAB," > ").concat(l.TOGGLE),i).forEach(function(t,e){t.addEventListener("click",function(t){if(t.stopPropagation(),this.parentElement.classList.contains(s.ACTIVE))return!1;(function(t,e){var i=n(":scope > ".concat(l.TAB),e),o=this;return i.forEach(function(t,e){var n=t.nextElementSibling;t.classList.contains(s.ACTIVE)?(n.style.height="".concat(n.scrollHeight,"px"),n.getBoundingClientRect(),t.classList.add(s.TRANSITION),t.classList.remove(s.ACTIVE),n.style.height="".concat(0,"px"),"all 0s ease 0s"===window.getComputedStyle(n,null).getPropertyValue("transition")&&(n.style.height=null,t.classList.remove(s.TRANSITION))):t===o&&(n.style.height="".concat(0,"px"),t.classList.add(s.ACTIVE,s.TRANSITION),n.style.height="".concat(n.scrollHeight,"px"),"all 0s ease 0s"===window.getComputedStyle(n,null).getPropertyValue("transition")&&(n.style.height=null,t.classList.remove(s.TRANSITION)))}),!1}).call(this.parentElement,t,i)},!1)}),n(":scope > ".concat(l.PANE),i).forEach(function(t){t.addEventListener("transitionend",function(t){var e=this.previousElementSibling;this.style.height&&"height"===t.propertyName&&(this.style.height=null,e.classList.remove(s.TRANSITION))},!1)}),{addEventListener:function(t){console.log("TBC")},create:function(){console.log("TBC create instance")},refresh:function(){console.log("TBC refresh instance")},destroy:function(){console.log("TBC destroy instance")}}}}});
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global = global || self, global.uiAccordion = factory());
+}(this, function () { 'use strict';
+
+  function _typeof(obj) {
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+      _typeof = function (obj) {
+        return typeof obj;
+      };
+    } else {
+      _typeof = function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      };
+    }
+
+    return _typeof(obj);
+  }
+
+  var $ = function $(_selector) {
+    var _el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
+
+    var regex = /:scope(?![\w-])/gi;
+
+    if (_selector && regex.test(_selector)) {
+      //using :scope so test for support and polyfill if necessary
+      try {
+        // check browser for :scope support
+        document.querySelector(':scope body');
+      } catch (error) {
+        // unsupported => polyfill
+        return POLYFILL.scope.call(_el, _selector, "querySelector");
+      }
+    }
+
+    return _el.querySelector(_selector);
+  }; // DOM selection helper methods; Nodelist is an array-like object - this will return a shallow copy as an array type.
+
+  var $$ = function $$(_selector) {
+    var _el = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
+
+    var regex = /:scope(?![\w-])/gi;
+
+    if (_selector && regex.test(_selector)) {
+      //using :scope so test for support and polyfill if necessary
+      try {
+        // check browser for :scope support
+        document.querySelector(':scope body');
+      } catch (error) {
+        // unsupported => polyfill
+        return [].slice.call(POLYFILL.scope.call(_el, _selector, "querySelectorAll"));
+      }
+    }
+
+    return [].slice.call(_el.querySelectorAll(_selector)); //[].from(_el.querySelectorAll(_selector))
+  };
+  var POLYFILL = {
+    scope: function scope(_query, _method) {
+      var regex = /:scope(?![\w-])/gi;
+      var attr = getUID();
+      this.setAttribute(attr, '');
+      _query = _query.replace(regex, "[".concat(attr, "]"));
+
+      var nodeList = this[_method].call(this, _query);
+
+      this.removeAttribute(attr);
+      return nodeList;
+    }
+    /**
+    * @prefix "string"
+    * @salt "string"/number
+    * return unique-like(high entropy) identifier; random number and timedatestamp converted to base36(represents full alphanumeric spectrum for encoding for minimal bit footprint) and concatenated;
+    * an optional 'salt' can also be thrown into the mixing pot to help enforce entropy.
+    */
+
+  };
+  var getUID = function getUID() {
+    var _prefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "_";
+
+    var _salt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+
+    do {
+      _prefix += Math.random().toString(36).substring(2) + _salt + Date.now().toString(36);
+    } while (document.getElementById(_prefix));
+
+    return _prefix;
+  };
+  /**
+  * @node DOM node; to be queried
+  */
+
+  function isElement(_node) {
+    // W3 DOM2
+
+    /*console.log("isNotUndefined ", (_node !== undefined) );
+    console.log("isNotNull ", (_node !== null) );
+    console.log("isPrototypeOf HTMLElement ", HTMLElement.prototype.isPrototypeOf(_node) );
+    
+    // Not supporting W3 DOM2
+    console.log("type of object ", (typeof _node === "object") );
+    console.log("duck test nodeName prop", (_node.nodeName) ); //not dependable
+    console.log("2: nodeType ",  (_node.nodeType === 1) );*/
+    return _node && (typeof HTMLElement === "undefined" ? "undefined" : _typeof(HTMLElement)) === "object" ? HTMLElement.prototype.isPrototypeOf(_node) : //W3C DOM2
+    _node !== null && _typeof(_node) === "object" && _node.nodeType === 1;
+  }
+  //TEST isElement routine (potential non-element nodes and entities)
+
+  /*var nonElementArray = [1, true, "text", {}, [], 0, undefined, false, null];
+  nonElementArray.forEach(function(item) {
+  	console.log(item, "1 >> ", isElement(item));
+  })
+
+  nonElementArray.forEach(function(item) {
+  	console.log(item, "2 >> ", isElement2(item));
+  })*/
+
+  var className = {
+    ACTIVE: "state__active",
+    TRANSITION: "state__transition"
+  };
+  var selector = {
+    ACCORDION: ".ui__accordion",
+    TAB: ".ui__tab",
+    TOGGLE: ".ui__toggle",
+    PANE: ".ui__pane"
+    /**
+    * @param node(element) accordion instance
+    */
+
+  };
+  function A11y(_$ui) {
+    //var 	$$tabs = $$(selector.TAB, _$ui).filter( (node) => node.parentNode === _$ui),
+    //		$$panes = $$(selector.PANE, _$ui).filter( (node) => node.parentNode === _$ui);
+    var $$tabs = $$(":scope > ".concat(selector.TAB), _$ui),
+        $$panes = $$(":scope > ".concat(selector.PANE), _$ui); // declare ARIA attributes/metadata
+
+    _$ui.setAttribute("role", "tablist");
+
+    _$ui.setAttribute("aria-multiselectable", false);
+
+    $$tabs.forEach(function ($tab, i, collection) {
+      var $pane = $tab.nextElementSibling; //if ID attribute exists and assigned a value
+
+      var tabUID;
+
+      if ($tab.id.length) {
+        tabUID = $tab.id;
+      } else {
+        tabUID = getUID("tab-", i);
+        $tab.setAttribute("id", tabUID);
+      } //if ID attribute exists and assigned a value
+
+
+      var paneUID;
+
+      if ($pane.id.length) {
+        paneUID = $pane.id;
+      } else {
+        paneUID = getUID("pane-", i);
+        $pane.setAttribute("id", paneUID);
+      }
+
+      $tab.setAttribute("role", "tab");
+      $tab.setAttribute("aria-controls", paneUID);
+      $pane.setAttribute("role", "tabpanel");
+      $pane.setAttribute("aria-labelledby", tabUID);
+      var $toggle = $(selector.TOGGLE, $tab);
+      $toggle.addEventListener("click", function (event) {
+        event.stopPropagation(); //if(!!this.parentElement.getAttribute('aria-selected')) {
+
+        if (this.parentElement.classList.contains(className.ACTIVE)) {
+          return false;
+        } //clickHandler.call(this, event, _$ui, collection);
+
+
+        clickHandler.call(this.parentElement, event, _$ui, collection); //DEVNOTE: scope reasserted
+      });
+    }); //accomodate explicitly declared behaviours/states
+
+    var $$activatedCollection = $$(["".concat(selector.TAB, ".").concat(className.ACTIVE), "".concat(selector.TAB, "[aria-selected=true]"), "".concat(selector.TAB, "[aria-expanded=true]"), "".concat(selector.PANE, "[aria-hidden=false]")].join(), _$ui).filter(function (node) {
+      return node.parentNode === _$ui;
+    }); //console.log("1. $activated >> ", $$activatedCollection);
+    //Flush out any panes and normalise to tabs only.
+
+    var $activatedTabs = $$activatedCollection.map(function ($el, i) {
+      if ($el.classList.contains("ui__pane")) return $el.previousElementSibling;
+      return $el;
+    }); //console.log("2. $activatedTabs >> ", $activatedTabs);
+
+    var $targetTab = $activatedTabs.filter(function ($el, i, nodes) {
+      return i === nodes.indexOf($el);
+    }); //console.log("3. $targetTab >> ", $targetTab);
+
+    if ($targetTab.length > 1) window.console && console.warn("Malformed structure: You can not have more than one active pane declared on a singular accordion interface. Check the markup and any explicit classNames and ARIA properties in play. Only the first occurance will be enforced."); //Enforce any state classes to match the ARIA
+
+    $$tabs.forEach(function ($tab, i) {
+      $tab.classList[$tab === $targetTab[0] ? 'add' : 'remove']("state__active");
+    }); //Apply ARIA
+
+    clickHandler.call($targetTab[0], null, _$ui, $$tabs); //ARIA state management
+
+    function clickHandler(event, _$accordion, _$tabs) {
+      //let $$tabs = $$(selector.TAB, _$accordion).filter( (node, i) => node.parentNode === _$accordion),
+      var $$tabs = $$(":scope > ".concat(selector.TAB), _$accordion),
+          $target = this;
+
+      _$tabs.forEach(function ($tab, i) {
+        $tab.setAttribute("aria-selected", $tab === $target);
+        $tab.setAttribute("aria-expanded", $tab === $target);
+        $tab.setAttribute("aria-disabled", $tab === $target);
+        $tab.nextElementSibling.setAttribute("aria-hidden", $tab !== $target);
+      });
+
+      return false;
+    }
+
+
+    return {
+      create: function create() {
+        console.log("create instance");
+      },
+      refresh: function refresh() {
+        console.log("refresh instance");
+      },
+      destroy: function destroy() {
+        console.log("destroy instance");
+      }
+    };
+  }
+
+  function styleInject(css, ref) {
+    if ( ref === void 0 ) ref = {};
+    var insertAt = ref.insertAt;
+
+    if (!css || typeof document === 'undefined') { return; }
+
+    var head = document.head || document.getElementsByTagName('head')[0];
+    var style = document.createElement('style');
+    style.type = 'text/css';
+
+    if (insertAt === 'top') {
+      if (head.firstChild) {
+        head.insertBefore(style, head.firstChild);
+      } else {
+        head.appendChild(style);
+      }
+    } else {
+      head.appendChild(style);
+    }
+
+    if (style.styleSheet) {
+      style.styleSheet.cssText = css;
+    } else {
+      style.appendChild(document.createTextNode(css));
+    }
+  }
+
+  var css = ".ui__accordion .ui__tab {\n  position: relative; }\n  .ui__accordion .ui__tab .ui__toggle {\n    display: block;\n    cursor: pointer; }\n\n.ui__accordion .ui__pane {\n  position: relative;\n  overflow: hidden; }\n\n.ui__accordion .ui__tab:not([aria-expanded=true]):not([aria-selected=true]):not(.state__active):not(.state__transition) + .ui__pane,\n.ui__accordion .ui__tab:not([aria-expanded=true]):not([aria-selected=true]):not(.state__active):not(.state__transition) + [aria-hidden=true] {\n  height: 0;\n  display: none; }\n";
+  styleInject(css);
+
+  var className$1 = {
+    ACTIVE: "state__active",
+    TRANSITION: "state__transition"
+  };
+  var selector$1 = {
+    ACCORDION: ".ui__accordion",
+    TAB: ".ui__tab",
+    TOGGLE: ".ui__toggle",
+    PANE: ".ui__pane"
+    /**
+    * @node {HTMLElement} DOM Element node 
+    */
+
+  };
+  function uiAccordion(_node) {
+    // DOM SUPPORT
+    if (!"querySelector" in document && !"addEventListener" in window && !"classList" in document.documentElement) return; // VALIDATE DOM node and HTML element
+
+    if (!isElement(_node)) return;
+    var $accordion = _node;
+
+    var _self = this;
+    var callbackEvents = ["pix8.click", "pix8.transitionstart", "pix8.transitionend", "pix8.toggle", "pix8.hide", "pix8.show", "pix8.initialised", "pix8.create", "pix8.refresh", "pix8.destroy"];
+    this.callbacks = []; //2.
+    //const clickEvent = new Event("pix8.click"); //not supported in IE
+
+    var clickEvent = document.createEvent('Event');
+    clickEvent.initEvent('pix8.click', true, true);
+    $accordion.addEventListener("pix8.click", function (event) {
+      //TODO: needs to be API derived callback
+      //alert("Method 2 :: createEvent :: pix8.click");
+      console.log("Method 2 :: createEvent", this, " :pix8.click: ", event);
+    });
+    var transitionendEvent = document.createEvent('Event');
+    transitionendEvent.initEvent('pix8.transitionend', true, true);
+    $accordion.addEventListener("pix8.transitionend", function (event) {
+      //TODO: needs to be API derived callback
+      //alert("Method 2 :: createEvent :: pix8.transitionend");
+      console.log("Method 2 :: createEvent", this, " :pix8.transitionend: ", event);
+    }); // Different css class utilised as selector add `selector.ACCORDION` to the nominated root node so that dependent styles can be extrapolated
+
+    if (!$accordion.classList.contains(selector$1.ACCORDION.slice(1))) $accordion.classList.add(selector$1.ACCORDION.slice(1)); // WAI ARIA accessibility support initilisation
+
+    var a11y = new A11y($accordion); // Subscribe events
+    //let $$toggles = $$(`${selector.TAB} > ${selector.TOGGLE}`, $accordion).filter( (node) => node.parentNode.parentNode === $accordion);
+
+    var $$toggles = $$(":scope > ".concat(selector$1.TAB, " > ").concat(selector$1.TOGGLE), $accordion);
+    $$toggles.forEach(function ($toggle, i) {
+      $toggle.addEventListener("click", function (event) {
+        //touchEnabled ? "touchend" : "click";
+        event.stopPropagation();
+        if (this.parentElement.classList.contains(className$1.ACTIVE)) return false; //fire pix8.CLICK event handler if present
+
+        console.log("fire pix8.click >> ", _self, " :: ", this); //1.
+
+        dispatch("pix8.click", this); //2.
+
+        $accordion.dispatchEvent(clickEvent); //$accordion.dispatchEvent.call(this, clickEvent);
+
+        render.call(this.parentElement, event, $accordion); //DEVNOTE: scope reasserted
+      }, false);
+    }); //let $$panes = $$(selector.PANE, $accordion).filter( (node) => node.parentNode === $accordion);
+
+    var $$panes = $$(":scope > ".concat(selector$1.PANE), $accordion);
+    $$panes.forEach(function ($pane) {
+      $pane.addEventListener("transitionend", function (event) {
+        var $tab = this.previousElementSibling,
+            $pane = this;
+
+        if ($pane.style.height && event.propertyName === "height") {
+          $pane.style.height = null;
+          $tab.classList.remove(className$1.TRANSITION);
+        } //fire pix8.TRANSITIONEND event handler if present
+
+
+        console.log("fire pix8.transitionend >> ", _self, " :: ", this); //1.
+
+        dispatch("pix8.transitionend", this); //2.
+
+        $accordion.dispatchEvent(transitionendEvent); //$accordion.dispatchEvent.call(this, transitionendEvent);
+      }, false);
+    }); // transitionstart still in Draft - would have to invoke in render() method; check for presence of transition style prop; check for presence of transition delay prop-if so compensate with setTimeout; fire event.
+    // transitionstart would need to apply to both panes. the activated. and the one deactivate.
+    // PRIVATE METHODS
+
+    function render(event, _$accordion) {
+      //let $$tabs = $$(selector.TAB, _$accordion).filter( (node, i) => node.parentNode === _$accordion),
+      var $$tabs = $$(":scope > ".concat(selector$1.TAB), _$accordion),
+          $target = this;
+      $$tabs.forEach(function ($tab, i) {
+        var $pane = $tab.nextElementSibling; // If tab/pane IS active set height explicitly; add the state__transition class; set the height explicitly to 0;
+
+        if ($tab.classList.contains(className$1.ACTIVE)) {
+          $pane.style.height = "".concat($pane.scrollHeight, "px");
+          $pane.getBoundingClientRect(); //DEVNOTE: forced recomputation/reflow
+
+          $tab.classList.add(className$1.TRANSITION);
+          $tab.classList.remove(className$1.ACTIVE);
+          $pane.style.height = "".concat(0, "px"); // Test for presence of css transition else transitionend event will not be fired and inline heights will not get removed
+
+          var hasTransition = window.getComputedStyle($pane, null).getPropertyValue("transition");
+
+          if (hasTransition === "all 0s ease 0s") {
+            $pane.style.height = null;
+            $tab.classList.remove(className$1.TRANSITION);
+          } // If tab/pane IS NOT active && our target; set height explicitly to 0; add the state__transition class; set the height explicitly to scrollheight; remove inline heights upon transitionends.
+
+        } else {
+          if ($tab === $target) {
+            $pane.style.height = "".concat(0, "px");
+            $tab.classList.add(className$1.ACTIVE, className$1.TRANSITION);
+            $pane.style.height = "".concat($pane.scrollHeight, "px"); // Test for presence of css transition else transitionend event will not be fired and inline heights will not get removed
+
+            var _hasTransition = window.getComputedStyle($pane, null).getPropertyValue("transition");
+
+            if (_hasTransition === "all 0s ease 0s") {
+              $pane.style.height = null;
+              $tab.classList.remove(className$1.TRANSITION);
+            }
+          }
+        }
+      });
+      return false;
+    }
+
+    function dispatch(_eventType, _args) {
+      if (!_self.callbacks[_eventType]) return;
+
+      _self.callbacks[_eventType].forEach(function (callback) {
+        callback.apply(_self, [_args]);
+      });
+    } // PUBLIC METHODS
+
+
+    return {
+      //USAGE SIGNATURES
+      //accordion.on("toggle");
+      //accordion.addEventListener("toggle");
+      //accordion.off("toggle");
+      //accordion.removeEventListener("toggle");
+      // EVENT API
+      //addEventListener(_eventType, _callback) {
+      on: function on(_eventType, _callback) {
+        console.log("addEventListener() = ", _eventType); //1.
+
+        var index = callbackEvents.indexOf(_eventType.toLowerCase()); // event type not recognised
+
+        if (index < 0) return this; // Permit function chaining
+
+        var eventType = callbackEvents[index];
+        if (!_self.callbacks[eventType]) _self.callbacks[eventType] = [];
+
+        _self.callbacks[eventType].push(_callback); //======= pix8.click
+
+        /*CRITERIA: when any toggle is clicked
+        - provided it isn't disabled*/
+        //======= pix8.transitionStart
+
+        /*CRITERIA: when any pane begins a css transition
+        - provided the css transition property is present; compensate for transition-delay property if present*/
+        //======= pix8.transitionEnd
+
+        /*CRITERIA: when any pane ends a css transition*/
+        //======= pix8.toggle
+
+        /*CRITERIA: when any pane is activated or deactivate. non-discriminatory*/
+        //======= pix8.show
+
+        /*CRITERIA: when a pane is activated and becomes visible*/
+        //======= pix8.hide
+
+        /*CRITERIA: when a pane is deactivated and becomes invisible*/
+        //======= pix8.initialised
+
+        /*CRITERIA: when script is primed and ready to accept component invocation*/
+        //======= pix8.create
+
+        /*CRITERIA: when a new component has been invocated*/
+        //======= pix8.render (soft reset)
+
+        /*CRITERIA: when a component has redrawn itself*/
+        //======= pix8.refresh (hard reset)
+
+        /*CRITERIA: when a component has been re-initialised and re-invocated*/
+        //======= pix8.destroy
+
+        /*CRITERIA: when a component has been destroyed*/
+
+
+        return this; // Permit function chaining
+      },
+      //removeEventListener(_eventType, _callback) {
+      off: function off(_eventType, _callback) {
+        console.log("removeEventListener() = ", _eventType);
+        var index = callbackEvents.indexOf(_eventType.toLowerCase());
+        var eventType = callbackEvents[index];
+        if (!_self.callbacks[eventType]) return this; // Permit function chaining
+
+        var callbackIndex = _self.callbacks[eventType].indexOf(_callback);
+
+        if (callbackIndex < 0) return;
+
+        _self.callbacks[eventType].splice(callbackIndex, 1);
+
+        return this; // Permit function chaining
+      },
+      // ACTIONS API
+      toggle: function toggle() {
+        console.log("TBC pane toggle");
+        return this; // Permit function chaining
+      },
+      show: function show() {
+        console.log("TBC pane activated");
+        return this; // Permit function chaining
+      },
+      hide: function hide() {
+        console.log("TBC pane deactivated");
+        return this; // Permit function chaining
+      },
+      // LIFECYCLE API
+      create: function create() {
+        console.log("TBC create instance"); //ACTION: programmatically create a new instance of the component
+
+        return this; // Permit function chaining
+      },
+      render: function render() {
+        console.log("TBC render instance"); //ACTION: issue instructions to re-draw/render the interface(component) - soft reset
+
+        return this; // Permit function chaining
+      },
+      refresh: function refresh() {
+        console.log("TBC refresh instance"); //ACTION: issue instructions to reinitialise and reinstantiate the component - hard reset
+
+        return this; // Permit function chaining
+      },
+      destroy: function destroy() {
+        console.log("TBC destroy instance"); //ACTION: destroy the component instance; undo/remove all DOM side-effects and event listeners
+
+        return this; // Permit function chaining
+      }
+    };
+  }
+
+  return uiAccordion;
+
+}));
