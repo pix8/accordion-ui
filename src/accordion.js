@@ -154,16 +154,25 @@ export default function uiAccordion(_node) {
 			//console.log("on() = ", _eventType);
 
 			var index = getPosition(_eventType);
-			!(index < 0) && pubsub.subscribe(eventsAPI[index], _callback);
+			return !(index < 0) && pubsub.subscribe(eventsAPI[index], _callback);
 
-			return this; // Permit function chaining
+			//console.log("SIGNATURE :: ", test);
+
+			//return this; // Permit function chaining
 		},
 
-		off(_eventType, _callback = null) {
-			console.log("off() = ", _eventType);
+		off(_eventTypeOrsignature, _callback) {
+		//off(_eventType, _callback = null) {
+			//console.log("off() = ", _eventType);
 
-			var index = getPosition(_eventType);
-			!(index < 0) && pubsub.unsubscribe(eventsAPI[index], _callback);
+			pubsub.unsubscribe(...arguments)
+
+			/*var index = getPosition(_signature[0]);
+			!(index < 0) && pubsub.unsubscribe(_signature);*/
+			
+			//var index = getPosition(_eventType);
+			//!(index < 0) && pubsub.unsubscribe(eventsAPI[index], _callback);
+			//!(index < 0) && pubsub.unsubscribe2(eventsAPI[index], _callback);
 
 			return this; // Permit function chaining
 		},

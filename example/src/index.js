@@ -3,30 +3,38 @@ import Accordion from "@pix8/ui-accordion";
 
 document.documentElement.classList.remove("client__no-js");
 
-var $$accordion = document.querySelectorAll(".ui__accordion");
+var $$accordion = [].slice.call(document.querySelectorAll(".ui__accordion"));
 
-[].forEach.call($$accordion, ($accordion, i) => {
-	var instance = new Accordion($accordion);
+var instance;
+var test1;
+[].forEach.call($$accordion.slice(0,1), ($accordion, i) => {
+	instance = new Accordion($accordion);
 	
 	//TEST
 	//instance.create().toggle();
 
 	//TEST
-	instance
+	test1 = instance
+		.on("pix8.click", clickhandler)
+	
+	var test2 = instance
 		.on("pix8.click", function(event) {
 			//alert("Method 1 :: callback :: pix8.click");
-			console.log("Method 1 :1: callback", this, " :pix8.click: ", event);
+			console.log("METHOD :2: callback", this, " :pix8.click: ", event);
 
-			instance.off("pix8.click");
-		})
-		.on("pix8.click", function(event) {
-			//alert("Method 1 :: callback :: pix8.click");
-			console.log("Method 1 :2: callback", this, " :pix8.click: ", event);
-
-			instance.off("pix8.click");
+			instance.off(test2);
 		})
 		// .on("pix8.transitionend", function(event) {
 		// 	//alert("Method 1 :: callback :: pix8.transitionend");
 		// 	console.log("Method 1 :: callback", this, " :pix8.transitionend: ", event);
 		// })
 });
+
+
+function clickhandler(event) {
+	//alert("Method 1 :: callback :: pix8.click");
+	console.log("METHOD :1: callback", this, " :pix8.click: ", event);
+
+	//instance.off(test1); //with entity signature
+	//instance.off("pix8.click", clickhandler); //with identifier + named function reference
+}

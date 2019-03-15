@@ -130,8 +130,15 @@ function PubSub() {
 
       manifest[_id].push(_callback);
 
+      console.log(manifest);
       return [_id, _callback]; // 'signature'
     },
+    // const subscribe = (/* String */ _identifier, /* Function */ _callback) => { //register
+    // 	console.log("--2. subscribe--");
+    // 	if(!manifest[_identifier]) manifest[_identifier] = [];
+    // 	manifest[_identifier].push(_callback);
+    // 	return [_identifier, _callback];
+    // }
 
     /*
     * example: 
@@ -139,22 +146,70 @@ function PubSub() {
     *	unsubscribe(foobar);
     *
     ************************/
+    // unsubscribe( /* Array */ _signature, /* Function? */ _callback) {
+    // 	console.log("--1. unsubscribe--> ", _signature, " :: ", _callback);
+    // 	//if(!Array.isArray(_signature)) return;
+    // 	var subs = manifest[_callback ? _signature : _signature[0]],
+    // 		_callback = _callback || _signature[1],
+    // 		l = subs ? subs.length : 0;
+    // 	while(l--) {
+    // 		if(subs[l] === _callback) {
+    // 			subs.splice(l, 1);
+    // 		}
+    // 	}
+    // },
+    // unsubscribe( /* Array */ _signature) {
+    // 	var subs = manifest[_signature[0]],
+    // 		_callback = _signature[1],
+    // 		l = subs ? subs.length : 0;
+    // 	while(l--) {
+    // 		if(subs[l] === _callback) {
+    // 			subs.splice(l, 1);
+    // 		}
+    // 	}
+    // },
     unsubscribe: function unsubscribe(
-    /* Array */
-    _signature,
+    /* Array/String */
+    _eventTypeOrsignature,
     /* Function? */
     _callback) {
-      console.log("--1. unsubscribe-- ", Array.isArray(_signature));
-      if (!Array.isArray(_signature)) return;
-      var subs = manifest[_callback ? _signature : _signature[0]];
-      console.log("jb :: ", subs, " :: ", _callback ? _signature : _signature[0]);
+      var _ref;
 
-      var _callback = _callback || _signature[1],
+      var signature = (_ref = []).concat.apply(_ref, arguments);
+
+      console.log("CHECK >> ", signature);
+      var subs = manifest[signature[0]],
+          callback = signature[1],
           l = subs ? subs.length : 0;
 
       while (l--) {
-        if (subs[l] === _callback) subs.splice(l, 1);
+        if (subs[l] === callback) {
+          subs.splice(l, 1);
+        }
       }
+    },
+    unsubscribe2: function unsubscribe2(
+    /* String */
+    _identifier,
+    /* Function? */
+    _callback) {
+      console.log("--2. unsubscribe-- ", _identifier);
+      if (!manifest[_identifier]) return;
+
+      var callbackIndex = manifest[_identifier].indexOf(_callback[1]);
+
+      console.log("index :: ", manifest[_identifier], " :: ", callbackIndex);
+
+      if (callbackIndex < 0) {
+        console.log("not found"); //what to do?
+        //remove last registered entry?
+        //remove all entries?
+        //remove first entry?
+
+        return;
+      }
+
+      manifest[_identifier].splice(callbackIndex, 1);
     },
 
     /*
@@ -173,7 +228,13 @@ function PubSub() {
       while (l--) {
         subs[l].apply(this, _args);
       }
-    }
+    } // const dispatch = (/* String */ _identifier, /* Array? */ _args = []) => { //publish
+    // 	if(!manifest[_identifier]) return;
+    // 	manifest[_identifier].forEach( callback => {
+    // 		callback.apply(this, _args);
+    // 	});
+    // }
+
   };
 }
 
@@ -336,8 +397,6 @@ var selector$1 = {
 
 };
 function uiAccordion(_node) {
-  var _this = this;
-
   // DOM SUPPORT
   if (!"querySelector" in document && !"addEventListener" in window && !"classList" in document.documentElement) return; // VALIDATE DOM node and HTML element
 
@@ -346,29 +405,11 @@ function uiAccordion(_node) {
 
   var _self = this; //fire INIT event handler if present
   //check events register and fire any relevent callbacks
-  //1.
 
 
-  var pubsub = new PubSub();
-  var manifest = [];
-  var eventsAPI = "pix8.click,pix8.transitionstart,pix8.transitionend,pix8.toggle,pix8.hide,pix8.show,pix8.initialised,pix8.create,pix8.refresh,pix8.destroy".split(","); //2.
-
-  /*//const clickEvent = new Event("pix8.click"); //not supported in IE
-  const clickEvent = document.createEvent('Event');
-  clickEvent.initEvent('pix8.click', true, true);
-  	$accordion.addEventListener("pix8.click", function(event) {
-  	//TODO: needs to be API derived callback
-  	//alert("Method 2 :: createEvent :: pix8.click");
-  	console.log("Method 2 :: createEvent", this, " :pix8.click: ", event);
-  });
-  	const transitionendEvent = document.createEvent('Event');
-  transitionendEvent.initEvent('pix8.transitionend', true, true);
-  	$accordion.addEventListener("pix8.transitionend", function(event) {
-  	//TODO: needs to be API derived callback
-  	//alert("Method 2 :: createEvent :: pix8.transitionend");
-  	console.log("Method 2 :: createEvent", this, " :pix8.transitionend: ", event);
-  });*/
-  // Different css class utilised as selector add `selector.ACCORDION` to the nominated root node so that dependent styles can be extrapolated
+  var eventsAPI = "pix8.click,pix8.transitionstart,pix8.transitionend,pix8.toggle,pix8.hide,pix8.show,pix8.initialised,pix8.create,pix8.refresh,pix8.destroy".split(","),
+      pubsub = new PubSub();
+ // Different css class utilised as selector add `selector.ACCORDION` to the nominated root node so that dependent styles can be extrapolated
 
   if (!$accordion.classList.contains(selector$1.ACCORDION.slice(1))) $accordion.classList.add(selector$1.ACCORDION.slice(1)); // WAI ARIA accessibility support initilisation
 
@@ -382,15 +423,8 @@ function uiAccordion(_node) {
       event.stopPropagation();
       if (this.parentElement.classList.contains(className$1.ACTIVE)) return false; //fire pix8.CLICK event handler if present
 
-      console.log("fire pix8.click >> ", _self, " :: ", this); //1.
-
-      dispatch("pix8.click", [this]);
-      pubsub.publish("pix8.click", [this]); //2.
-      //$accordion.dispatchEvent(clickEvent);
-      //$accordion.dispatchEvent.call(this, clickEvent);
-      // unsubscribe("pix8.click");
-      // pubsub.unsubscribe("pix8.click");
-
+      console.log("fire pix8.click >> ", _self, " :: ", this);
+      pubsub.publish("pix8.click", [this]);
       render.call(this.parentElement, event, $accordion); //DEVNOTE: scope reasserted
     }, false);
   }); //let $$panes = $$(selector.PANE, $accordion).filter( (node) => node.parentNode === $accordion);
@@ -406,13 +440,9 @@ function uiAccordion(_node) {
         $tab.classList.remove(className$1.TRANSITION);
       } //fire pix8.TRANSITIONEND event handler if present
       //console.log("fire pix8.transitionend >> ", _self, " :: ", this);			
-      //1.
 
 
-      dispatch("pix8.transitionend", [this]);
-      pubsub.publish("pix8.transitionend", [this]); //2.
-      //$accordion.dispatchEvent(transitionendEvent);
-      //$accordion.dispatchEvent.call(this, transitionendEvent);
+      pubsub.publish("pix8.transitionend", [this]);
     }, false);
   }); // transitionstart still in Draft - would have to invoke in render() method; check for presence of transition style prop; check for presence of transition delay prop-if so compensate with setTimeout; fire event.
   // transitionstart would need to apply to both panes. the activated. and the one deactivate.
@@ -458,33 +488,6 @@ function uiAccordion(_node) {
     return false;
   }
 
-  var subscribe = function subscribe(
-  /* String */
-  _identifier,
-  /* Function */
-  _callback) {
-    //register
-    console.log("--2. subscribe--");
-    if (!manifest[_identifier]) manifest[_identifier] = [];
-
-    manifest[_identifier].push(_callback);
-
-    return [_identifier, _callback];
-  };
-
-  var dispatch = function dispatch(
-  /* String */
-  _identifier) {
-    var _args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-
-    //publish
-    if (!manifest[_identifier]) return;
-
-    manifest[_identifier].forEach(function (callback) {
-      callback.apply(_this, _args);
-    });
-  };
-
   function getPosition(_identifier) {
     return eventsAPI.indexOf(_identifier.toLowerCase());
   } // PUBLIC METHODS
@@ -495,17 +498,19 @@ function uiAccordion(_node) {
     on: function on(_eventType, _callback) {
       //console.log("on() = ", _eventType);
       var index = getPosition(_eventType);
-      !(index < 0) && subscribe(eventsAPI[index], _callback);
-      !(index < 0) && pubsub.subscribe(eventsAPI[index], _callback);
-      return this; // Permit function chaining
+      return !(index < 0) && pubsub.subscribe(eventsAPI[index], _callback); //console.log("SIGNATURE :: ", test);
+      //return this; // Permit function chaining
     },
-    off: function off(_eventType) {
-      var _callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    off: function off(_eventTypeOrsignature, _callback) {
+      //off(_eventType, _callback = null) {
+      //console.log("off() = ", _eventType);
+      pubsub.unsubscribe.apply(pubsub, arguments);
+      /*var index = getPosition(_signature[0]);
+      !(index < 0) && pubsub.unsubscribe(_signature);*/
+      //var index = getPosition(_eventType);
+      //!(index < 0) && pubsub.unsubscribe(eventsAPI[index], _callback);
+      //!(index < 0) && pubsub.unsubscribe2(eventsAPI[index], _callback);
 
-      console.log("off() = ", _eventType);
-      var index = getPosition(_eventType); //!(index < 0) && unsubscribe(eventsAPI[index], _callback);
-
-      !(index < 0) && pubsub.unsubscribe(eventsAPI[index], _callback);
       return this; // Permit function chaining
     },
     // ACTIONS API
