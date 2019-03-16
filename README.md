@@ -89,10 +89,10 @@ CRITERIA: when any pane ends a css transition
 
 ##### ~pix8.toggle~
 ~CRITERIA: when any pane is activated or deactivate. non-discriminatory~
-##### ~pix8.show~
-CRITERIA: ~when a pane is activated and becomes visible~
-##### ~pix8.hide~
-~CRITERIA: when a pane is deactivated and becomes invisible~
+##### pix8.enable
+CRITERIA: when a pane is activated and becomes visible
+##### pix8.disable
+CRITERIA: when a pane is deactivated and becomes invisible
 
 ##### ~pix8.initialised~
 ~CRITERIA: when script is primed and ready to accept component invocation~
@@ -107,30 +107,44 @@ CRITERIA: ~when a pane is activated and becomes visible~
 
 #### Subscribe/Register event
 ```javascript
-on(/* event type "String" */, /* callback function { Function }*/)
+on(/* event type "String" */, /* callback function { Function }*/); // returns method returns a 'signature' reference of the event being passed
 ```
 
 #### Unsubscribe/Unregister event
 ```javascript
-off(/* event type "String" */, /* callback function { Function }*/)
+off(/* event type "String" */, /* callback function { Function }*/);
 ```
 
+OR ALTERNATIVELY
+
+```javascript
+var signature = on(/* event type "String" */, /* callback function { Function }*/);
+
+off(signature);
+```
 
 ## Support
-Quite frankly I'm not following any mantra here other than following best practise, using my initiative to research specific areas if there is doubt and applying my cool old wise developer's head. There is no bar set other than it should be compatible with most modern web browsers and devices. Such formalities will kill my buzz and bring back haunting memories of ie6/7/8 conformity from my development youth. Please feel free to chip in by launching an ticket on [Github](https://github.com/pix8/ui-accordion/issues) if you encounter an issue. Thanks.
+Quite frankly it's wild, it's reckless but I'm not following any mantra here other than following best practise, using my initiative to research specific areas if there is doubt and applying my cool old wise developer's head. There is no bar set other than it should be compatible with most modern web browsers and devices. Such formalities will kill my buzz and bring back haunting memories of ie6/7/8 conformity from my development youth. Please feel free to chip in by launching an ticket on [Github](https://github.com/pix8/ui-accordion/issues) if you encounter an issue. Thanks.
+
+## Disclaimer
+I always richly welcome pointers and advice. I recognise even though I strive for perfection I will often miss the mark. And that there are many many smarter and more capable people out then me from which to 'copy and paste' knowledge outside the warm comfort blanket of stackoverflow. However for now, I am not really looking for contributors as this is a personal vendetta and I want to rough it alone like a hobo looking for food.
+
+## ...So what's the point?
+Good question.
+There is no point and there doesn't have to be. I'm doing this for fun. Because I can and I want to. Besides it stops the brain turning to mush. But most importantly because it gives me something to do __I actually want to do__. Remember this is open source. 99% of projects start off with lofty aspirations and good intentions and fizzle into nothingness.
 
 
 ### Possible improvements
-* Lint routines
-* Formulate and write tests
-* Closer alignment to the web component spec(custom elements) and possible translation or forking
-* Migrate event handling to event delegation
-* Improve transition performance with transform3d
-* Expose lifecycle API
-* ~Expose events API~
-* Persistant active pane for hard refresh or bookmarking(hash url? local storage?)
-* Reapply package dependent styles to inline javascript injection on the elements concerned as oppose to internal stylesheet injection
-* Seamless integration with MV* libraries - react, vue - removing the need to compose specialised derivatives of the same darn thing
+- [ ] Lint routines
+- [ ] Formulate and write tests
+- [ ] Closer alignment to the web component spec(custom elements) and possible translation or forking
+- [ ] Migrate event handling to event delegation
+- [ ] Improve transition performance with transform3d
+- [ ] Expose lifecycle API
+- [x] ~Expose events API~
+- [ ] Persistant active pane for hard refresh or bookmarking(hash url? local storage?)
+- [ ] Reapply package dependent styles to inline javascript injection on the elements concerned as oppose to internal stylesheet injection
+- [ ] Seamless integration with MV* libraries - react, vue - removing the need to compose specialised derivatives of the same darn thing
 
 ### Future extensions
 #### UI 101
@@ -149,4 +163,4 @@ _I ultimately hope and aim to put this mantra of **UI polymorphism** into practi
 
 ## License
 
-All I ask in return for publishing and maintaining this module is kudos and respect. 🤘 Peace out.
+All I ask in return for publishing and maintaining this module is kudos and respect(alternatively I will settle for hoes of the non-garden variety). 🤘 Peace out.
